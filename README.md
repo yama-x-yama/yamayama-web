@@ -33,6 +33,10 @@ GitHub側に独自ドメインを登録してから、Cloudflareで `yamaxyama.c
 | A | @ | 185.199.109.153 | DNS only |
 | A | @ | 185.199.110.153 | DNS only |
 | A | @ | 185.199.111.153 | DNS only |
+| AAAA | @ | 2606:50c0:8000::153 | DNS only |
+| AAAA | @ | 2606:50c0:8001::153 | DNS only |
+| AAAA | @ | 2606:50c0:8002::153 | DNS only |
+| AAAA | @ | 2606:50c0:8003::153 | DNS only |
 | CNAME | www | yama-x-yama.github.io | DNS only |
 
 公開先は [yama-x-yama/yamayama-web](https://github.com/yama-x-yama/yamayama-web) です。`www` の接続先は `yama-x-yama.github.io` です。リポジトリ名や `https://` は付けません。
