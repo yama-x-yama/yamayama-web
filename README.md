@@ -8,7 +8,9 @@
 - `site/styles.css`: デザイン、レスポンシブ表示、アニメーション
 - `site/main.js`: 初回イントロ、スキップ、リプレイ。JavaScriptが無効でも本文を表示します。
 
-問い合わせ先: `taiki@ourpins.app`
+問い合わせ先: `kajiyama@yamaxyama.com`
+
+公式Instagram: [@yamaxyama.studio](https://www.instagram.com/yamaxyama.studio/)
 
 App StoreのリンクはOurPins、ほんのメモ、語録部に設定済みです。Day MaxerとLacrosse BoardはComing soon表示です。アプリ画面は元デザインのイメージです。
 
