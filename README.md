@@ -12,7 +12,7 @@
 
 公式Instagram: [@yamaxyama.studio](https://www.instagram.com/yamaxyama.studio/)
 
-App StoreのリンクはOurPins、ほんのメモ、語録部に設定済みです。Day MaxerとLacrosse BoardはComing soon表示です。アプリ画面は元デザインのイメージです。
+OurPinsとほんのメモのカードにはApp Storeと公式サイトへのリンク、語録部のカードにはApp Storeへのリンクがあります。Day Maxer、Lacrosse Board、Medziq.はComing soon表示です。Medziq.には教材と医学用語を並べた実際の画面を掲載しています。
 
 ## 初回のGitHub Pages設定
 
