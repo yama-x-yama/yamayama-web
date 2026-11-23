@@ -7,12 +7,13 @@
 - `site/index.html`: 文言、アプリ紹介、リンク、問い合わせ先
 - `site/styles.css`: デザイン、レスポンシブ表示、アニメーション
 - `site/main.js`: 初回イントロ、スキップ、リプレイ。JavaScriptが無効でも本文を表示します。
+- `site/medziq/`: Medziq.の製品ページ、学習デモ、知識マップ、開発版の画面。
 
 問い合わせ先: `kajiyama@yamaxyama.com`
 
 公式Instagram: [@yamaxyama.studio](https://www.instagram.com/yamaxyama.studio/)
 
-OurPinsとほんのメモのカードにはApp Storeと公式サイトへのリンク、語録部のカードにはApp Storeへのリンクがあります。Day Maxer、Lacrosse Board、Medziq.はComing soon表示です。Medziq.には教材と医学用語を並べた実際の画面を掲載しています。
+OurPinsとほんのメモのカードにはApp Storeと公式サイトへのリンク、語録部のカードにはApp Storeへのリンクがあります。Day Maxer、Lacrosse Board、Medziq.はComing soon表示です。Medziq.のカードからは[専用ページ](https://yamaxyama.com/medziq/)を開けます。
 
 ## 初回のGitHub Pages設定
 

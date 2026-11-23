@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medziq. — 医学生のための学習ワークスペース</title>
+  <meta name="description" content="講義資料も、自分のノートも、問題演習も。医学生のための学習ワークスペース、Medziq.の開発中の機能と、実際に操作できる学習体験を紹介します。">
+  <link rel="canonical" href="https://yamaxyama.com/medziq/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="ja_JP">
+  <meta property="og:title" content="Medziq. — 医学の知識が、つながる。">
+  <meta property="og:description" content="講義資料と学習メモ、問題演習をつなぐ、医学生のための学習ワークスペース。">
+  <meta property="og:url" content="https://yamaxyama.com/medziq/">
+  <meta property="og:image" content="https://yamaxyama.com/medziq-reader.jpg">
+  <meta name="theme-color" content="#f8f7f3">
+  <link rel="icon" type="image/png" href="./icon.png">
+  <link rel="stylesheet" href="./style.css">
+  <link rel="stylesheet" href="./hero.css">
+  <link rel="stylesheet" href="./experience.css">
+  <link rel="stylesheet" href="./knowledge.css">
+  <script defer src="./experience.js"></script>
+  <script defer src="./knowledge.js"></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">本文へ進む</a>
+  <header class="masthead">
+    <div class="container masthead-inner">
+      <a class="wordmark" href="#top" aria-label="Medziq. トップへ">medziq<span>.</span></a>
+      <nav class="masthead-links" aria-label="メイン">
+        <a href="#features">機能</a>
+        <a href="#experience">使い方</a>
+        <a href="#development">開発状況</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="intro" aria-labelledby="intro-title">
+      <div class="container intro-inner">
+        <div class="intro-copy">
+          <p class="intro-kicker">医学生のための学習ワークスペース</p>
+          <h1 id="intro-title">医学の知識が、<br><em>つながる。</em></h1>
+          <p class="intro-summary">講義資料も、自分のノートも、問題演習も。<br class="wide-only">日々の学びをつなぎ、理解を積み重ねるワークスペース。</p>
+          <div class="intro-actions">
+            <a href="#experience" class="action-primary"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M3 5.8c3.2-1.1 6-.8 9 1.3 3-2.1 5.8-2.4 9-1.3v13.4c-3.2-1.1-6-.8-9 1.1-3-1.9-5.8-2.2-9-1.1zM12 7v13" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>使い方を見る</a>
+            <a class="development-link" href="#development"><span aria-hidden="true"></span>開発中</a>
+          </div>
+        </div>
+        <figure class="mq-study-desk" role="img" aria-label="心臓の講義資料と、大動脈についての手書きメモ、復習カードがひとつの学習画面にまとまる様子">
+  <div class="mq-study-window" aria-hidden="true">
+    <div class="mq-study-window-bar">
+      <span>学習ワークスペース</span><span>循環器学</span>
+    </div>
+  </div>
+  <div class="mq-study-pile" aria-hidden="true">
+    <div class="mq-study-underlay"></div>
+    <div class="mq-study-page">
+      <div class="mq-study-page-head"><span>解剖学講義ノート</span><span>循環器系</span></div>
+      <div class="mq-study-page-title"><em>The heart</em><span>心臓と大血管</span></div>
+      <!-- H. V. Carter, Gray's Anatomy (1918), plate 505. Public domain.
+           Source: https://commons.wikimedia.org/wiki/File:Gray505.png -->
+      <img class="mq-study-engraving" src="./heart-plate.png" width="451" height="700" alt="" fetchpriority="high">
+      <svg class="mq-study-ink" viewBox="0 0 360 420" preserveAspectRatio="none" fill="none">
+        <path d="M139 201c-11 2-20 12-14 18 6 7 28 5 38-3 6-5 5-13-3-15-6-2-14-2-21 0z" />
+        <path d="M161 205c22-16 34-27 61-29m-6-3 8 3-7 5" />
+      </svg>
+      <span class="mq-study-aorta">大動脈弓</span>
+      <span class="mq-study-plate-number">Fig. 505</span>
+      <div class="mq-study-source"><span>Gray’s Anatomy, 1918</span><span>24</span></div>
+    </div>
+    <svg class="mq-study-threads" viewBox="0 0 640 510" fill="none" preserveAspectRatio="none">
+      <path d="M427 202C463 204 447 170 482 169" />
+      <path d="M541 246C566 269 554 318 513 343" />
+      <circle cx="427" cy="202" r="3.2" /><circle cx="513" cy="343" r="3.2" />
+    </svg>
+    <div class="mq-study-note">
+      <span class="mq-study-tape"></span>
+      <div class="mq-study-note-head"><span>講義メモ</span><span>p.24</span></div>
+      <p>左心室から出た血液は<br><strong>大動脈</strong>を通って全身へ。</p>
+      <svg class="mq-study-note-mark" viewBox="0 0 120 15" fill="none"><path d="M2 9c20-4 36-4 57-4m-32 6c14-3 36-5 59-4"/></svg>
+    </div>
+    <div class="mq-study-review">
+      <div class="mq-study-review-head">
+        <svg viewBox="0 0 22 18" fill="none"><path d="M3 5.5 3.6 2l14.5 1.7-.3 2.1"/><rect x="2" y="6" width="16" height="10" rx="1.5"/></svg>
+        <span>復習カード</span><i>01</i>
+      </div>
+      <p>左心室から出る血管は？</p>
+      <span class="mq-study-answer">大動脈</span>
+    </div>
+  </div>
+</figure>
+      </div>
+    </section>
+
+    <section id="experience" class="mx-exp" aria-labelledby="mx-exp-heading">
+  <div class="container">
+    <header class="mx-exp-intro">
+      <h2 id="mx-exp-heading">ひとつの講義を、<wbr>復習まで。</h2>
+      <p>循環器学の講義資料を使って、<br>Medziq.が目指す学習の流れを体験できます。</p>
+    </header>
+
+    <nav class="mx-exp-steps" aria-label="学習体験のステップ" hidden>
+      <button type="button" data-mx-step="1" aria-current="step"><span aria-hidden="true">01</span>資料を取り込む</button>
+      <button type="button" data-mx-step="2"><span aria-hidden="true">02</span>知識をつなぐ</button>
+      <button type="button" data-mx-step="3"><span aria-hidden="true">03</span>問題で確かめる</button>
+      <button type="button" data-mx-step="4"><span aria-hidden="true">04</span>元の資料で復習</button>
+    </nav>
+
+    <div class="mx-exp-desk">
+      <div class="mx-exp-bar">
+        <span class="mx-exp-book" aria-hidden="true"></span>
+        <span>学習ワークスペース</span>
+        <span class="mx-exp-sample">サンプル教材</span>
+      </div>
+      <div class="mx-exp-spread">
+        <div class="mx-exp-side">
+          <div data-mx-aside="1">
+            <h3>講義資料を開く</h3>
+            <p>今回の資料は、心不全の講義ノート。心臓が送り出す血液の量について学びます。</p>
+            <div class="mx-exp-file">
+              <span class="mx-exp-paper-icon" aria-hidden="true">PDF</span>
+              <div><strong>循環器学 第4講</strong><small>心不全と循環動態</small></div>
+            </div>
+            <button class="mx-exp-action" type="button" data-mx-go="2" hidden>この資料を取り込む</button>
+          </div>
+          <div data-mx-aside="2" hidden>
+            <h3>用語のつながりを読む</h3>
+            <p>心拍出量を決めるのは、心臓が拍動する回数と、一度に送り出す血液の量。図の用語を選ぶと意味を読めます。</p>
+            <div class="mx-exp-reference">参照元 <span>第4講 · p.12</span></div>
+            <button class="mx-exp-action" type="button" data-mx-go="3">確認問題へ</button>
+          </div>
+          <div data-mx-aside="3" hidden>
+            <h3>覚えた式を使う</h3>
+            <p>講義資料をいったん閉じて、心拍出量を求めてみましょう。回答したら、式が載っていたページに戻れます。</p>
+            <div class="mx-exp-reference">確認問題 <span>全1問</span></div>
+          </div>
+          <div data-mx-aside="4" hidden>
+            <h3>式の出どころに戻る</h3>
+            <p>参照した12ページ目を開きました。ハイライトした式に数字を当てはめてみましょう。</p>
+            <p class="mx-exp-work">60 回/分 × 70 mL/回<br><strong>＝ 4,200 mL/分</strong></p>
+            <button class="mx-exp-action" type="button" data-mx-go="1">最初から試す <span aria-hidden="true">↺</span></button>
+            <button class="mx-exp-text-btn" type="button" data-mx-go="3">問題を解き直す</button>
+          </div>
+        </div>
+        <div class="mx-exp-canvas">
+          <article class="mx-exp-page" data-mx-view="reader" aria-label="循環器学 第4講 12ページ">
+            <div class="mx-exp-running"><span>循環器学 ／ 第4講</span><span>p. 12</span></div>
+            <h4>心拍出量</h4>
+            <p class="mx-exp-term-en" lang="en">Cardiac output</p>
+            <p class="mx-exp-bodycopy">心拍出量（CO）は、心臓の片方の心室が1分間に送り出す血液の量を表す。</p>
+            <div id="mx-exp-equation" class="mx-exp-equation">
+              <span class="mx-exp-source-flag" hidden>問題の出典</span>
+              <span class="mx-exp-formula" aria-hidden="true">CO <i>=</i> HR <i>×</i> SV</span>
+              <span class="mx-exp-formula-jp">心拍出量 ＝ 心拍数 × 一回拍出量</span>
+            </div>
+            <dl class="mx-exp-defs">
+              <div><dt>HR <span>心拍数</span></dt><dd>1分間の拍動回数</dd></div>
+              <div><dt>SV <span>一回拍出量</span></dt><dd>1回の拍動で送り出す血液量</dd></div>
+            </dl>
+          </article>
+          <div class="mx-exp-page mx-exp-map" data-mx-view="map" hidden>
+            <div class="mx-exp-running"><span>講義ノート ／ 用語のつながり</span><span>p. 12</span></div>
+            <div class="mx-exp-tree">
+              <div class="mx-exp-root"><b lang="en">CO</b><span>心拍出量</span></div>
+              <div class="mx-exp-branches">
+                <button type="button" data-mx-term="hr" aria-pressed="true"><b lang="en">HR</b><span>心拍数</span></button>
+                <button type="button" data-mx-term="sv" aria-pressed="false"><b lang="en">SV</b><span>一回拍出量</span></button>
+              </div>
+            </div>
+            <p class="mx-exp-term-note" aria-live="polite" aria-atomic="true"><strong>心拍数（HR）</strong>1分間に心臓が拍動する回数。</p>
+          </div>
+          <div class="mx-exp-page mx-exp-quiz" data-mx-view="quiz" hidden>
+            <div class="mx-exp-running"><span>循環器学 ／ 確認問題</span><span>1 / 1</span></div>
+            <h4 id="mx-exp-question">心拍出量はいくら？</h4>
+            <p class="mx-exp-bodycopy">心拍数が60回/分、一回拍出量が70&nbsp;mL/回のとき、1分間に送り出される血液量を選んでください。</p>
+            <div class="mx-exp-answers" role="group" aria-labelledby="mx-exp-question">
+              <button type="button" data-mx-answer="130" aria-pressed="false">130 mL/分</button>
+              <button type="button" data-mx-answer="4200" aria-pressed="false">4,200 mL/分</button>
+              <button type="button" data-mx-answer="42000" aria-pressed="false">42,000 mL/分</button>
+            </div>
+            <p class="mx-exp-feedback" role="status"></p>
+            <button class="mx-exp-source-link" type="button" data-mx-go="4" hidden>講義資料 p.12で式を確認する</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <noscript><p class="mx-exp-static">この講義では、心拍出量と2つの用語の関係を読み、計算問題で確かめます。復習では、元の12ページにある式を見返します。</p></noscript>
+  </div>
+</section>
+    <section class="km-study" id="knowledge" aria-labelledby="km-heading">
+  <div class="container">
+    <header class="km-intro">
+      <div>
+        <p class="km-kicker" lang="en">Knowledge map</p>
+        <h2 id="km-heading">心不全を、<br>四つの科目から。</h2>
+      </div>
+      <p class="km-lede">生理学で学んだ血液の流れは、臨床で出会う息切れとどうつながる？ 教材に散らばる知識を結び直す、構想中の「知識マップ」を体験できます。</p>
+    </header>
+    <div class="km-plate">
+      <div class="km-excerpt">
+        <span class="km-caption">教材サンプル <span aria-hidden="true">/</span> 循環器学</span>
+        <p><mark>心不全</mark>を理解する手がかりは、心臓のポンプ機能と、血液のうっ滞にある。</p>
+      </div>
+      <div class="km-layout">
+        <div class="km-map">
+          <svg class="km-traces" viewBox="0 0 1000 400" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <path class="km-guide" d="M500 0V400 M0 200H1000"></path>
+            <path class="km-entry" d="M500 0V200" pathLength="1"></path>
+            <path data-km-line="physiology" d="M500 200C402 200 414 84 285 84" pathLength="1"></path>
+            <path data-km-line="pathology" d="M500 200C598 200 586 84 715 84" pathLength="1"></path>
+            <path data-km-line="pharmacology" d="M500 200C402 200 414 316 285 316" pathLength="1"></path>
+            <path data-km-line="clinical" d="M500 200C598 200 586 316 715 316" pathLength="1"></path>
+          </svg>
+          <div class="km-core"><strong>心不全</strong><span lang="en">Heart failure</span></div>
+          <div class="km-subjects" aria-label="関連する四つの科目">
+            <a id="km-tab-physiology" class="km-node km-nw" href="#km-physiology"><strong>生理学</strong><small>心臓のポンプ機能</small></a>
+            <a id="km-tab-pathology" class="km-node km-ne" href="#km-pathology"><strong>病理学</strong><small>肺うっ血</small></a>
+            <a id="km-tab-pharmacology" class="km-node km-sw" href="#km-pharmacology"><strong>薬理学</strong><small>利尿薬の作用</small></a>
+            <a id="km-tab-clinical" class="km-node km-se" href="#km-clinical"><strong>臨床医学</strong><small>労作時の息切れ</small></a>
+          </div>
+        </div>
+        <div class="km-notes">
+          <p class="km-note-index">学習メモ <span>科目を選んで読む</span></p>
+          <article class="km-note" id="km-physiology">
+            <p class="km-note-subject">生理学</p>
+            <h3>左心室から全身へ</h3>
+            <p>肺で酸素を受け取った血液は、左心房を通って左心室に入る。左心室が収縮すると、血液は大動脈へ送り出される。</p>
+            <a href="https://www.nhlbi.nih.gov/health/heart/blood-flow">参考資料 <span lang="en">/ NHLBI</span><span aria-hidden="true"> ↗</span></a>
+          </article>
+          <article class="km-note" id="km-pathology">
+            <p class="km-note-subject">病理学</p>
+            <h3>肺にたまる水分</h3>
+            <p>左心系に血液が滞ると、肺の静脈側にかかる圧が高くなる。水分が血管の外にしみ出すと、肺でのガス交換が妨げられる。</p>
+            <a href="https://medlineplus.gov/ency/article/000140.htm">参考資料 <span lang="en">/ MedlinePlus</span><span aria-hidden="true"> ↗</span></a>
+          </article>
+          <article class="km-note" id="km-pharmacology">
+            <p class="km-note-subject">薬理学</p>
+            <h3>水分とナトリウム</h3>
+            <p>利尿薬は腎臓に働き、余分なナトリウムと水の排泄を促す。体液の量に注目すると、心不全で起こるうっ血と結びつく。</p>
+            <a href="https://www.nhlbi.nih.gov/health/heart-failure/treatment">参考資料 <span lang="en">/ NHLBI</span><span aria-hidden="true"> ↗</span></a>
+          </article>
+          <article class="km-note" id="km-clinical">
+            <p class="km-note-subject">臨床医学</p>
+            <h3>階段で感じる息切れ</h3>
+            <p>心不全の症状のひとつに、階段を上るなど、体を動かしたときの息切れがある。横になったときに息苦しさが強まることもある。</p>
+            <a href="https://www.nhlbi.nih.gov/health/heart-failure/symptoms">参考資料 <span lang="en">/ NHLBI</span><span aria-hidden="true"> ↗</span></a>
+          </article>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section class="product-tour" id="features" aria-labelledby="features-title">
+      <div class="container">
+        <div class="tour-header">
+          <div><p class="section-kicker">機能</p><h2 id="features-title">開発版をのぞく。</h2></div>
+          <p>講義を読むとき、演習を解くとき。<br>いま開発している画面を切り替えて見られます。</p>
+        </div>
+        <fieldset class="tour">
+          <legend class="sr-only">確認したい開発版の画面を選択</legend>
+          <div class="tour-options">
+            <div class="tour-option">
+              <input class="sr-only" type="radio" name="tour" id="tour-library" checked>
+              <label for="tour-library">資料とノートの管理</label>
+              <p>講義スライドをPDFで取り込み、科目・章ごとのフォルダへ。iPadではApple Pencilで余白に書き込めます。</p>
+            </div>
+            <div class="tour-option">
+              <input class="sr-only" type="radio" name="tour" id="tour-terms">
+              <label for="tour-terms">教材を開いたまま用語検索</label>
+              <p>講義資料の隣で医学用語の解説を読み、同じ語が出てくる教材のページを探せます。</p>
+            </div>
+            <div class="tour-option">
+              <input class="sr-only" type="radio" name="tour" id="tour-practice">
+              <label for="tour-practice">メモから問題演習へ</label>
+              <p>自分のメモを一問一答や穴埋め問題に。答えを確認したあと、理解度に合わせて次の復習日を決められます。</p>
+            </div>
+            <div class="tour-option">
+              <input class="sr-only" type="radio" name="tour" id="tour-assistant">
+              <label for="tour-assistant">資料を見ながらAIに質問</label>
+              <p>教材の本文やページ画像を自分で選んで質問できます。質問を始めたページは、読み進めても参照元として残ります。</p>
+            </div>
+          </div>
+          <div class="tour-previews">
+            <figure class="shot-library"><img loading="lazy" src="./library.jpg" alt="Medziq.開発版の教材一覧。科目フォルダの下に取り込んだPDFが並ぶ" width="1194" height="834"><figcaption>開発版の画面 ／ 教材一覧</figcaption></figure>
+            <figure class="shot-terms"><img loading="lazy" src="../medziq-reader.jpg" alt="左に腎小体の教材、右に糸球体の用語解説を並べた画面" width="1194" height="834"><figcaption>開発版の画面 ／ 教材と医学用語</figcaption></figure>
+            <figure class="shot-practice"><img loading="lazy" src="./practice.jpg" alt="解答と元の教材へのリンクを確認し、理解度を記録する演習画面" width="1194" height="834"><figcaption>開発版の画面 ／ 問題演習</figcaption></figure>
+            <figure class="shot-assistant"><img loading="lazy" src="./assistant.jpg" alt="講義PDFに重ねてAIアシスタントの質問欄を開いた画面" width="1280" height="720"><figcaption>開発版の画面 ／ AIアシスタント</figcaption></figure>
+          </div>
+        </fieldset>
+      </div>
+    </section>
+
+    <section class="development" id="development" aria-labelledby="development-title">
+      <div class="container development-grid">
+        <div class="development-heading">
+          <p class="section-kicker">開発状況</p>
+          <h2 id="development-title">これからの<br>Medziq<span>.</span></h2>
+          <p>現在、iPadを中心に開発・検証を進めています。</p>
+        </div>
+        <div class="roadmap">
+          <h3>今後取り組むこと</h3>
+          <dl>
+            <dt>科目を越えた関連づけ</dt>
+            <dd>解剖・生理・病理・薬理・臨床の資料を、一つの知識ポイントからたどれるようにする構想です。</dd>
+            <dt>AIで復習の準備を手伝う</dt>
+            <dd>講義資料の整理や要約、確認問題の作成を支援する仕組みを検討しています。</dd>
+            <dt>言語をまたぐ教材整理</dt>
+            <dd>日本語・中国語・韓国語・英語の資料に、同じ概念がどう登場するかを照らし合わせられるようにしたいと考えています。</dd>
+          </dl>
+        </div>
+      </div>
+    </section>
+    <section class="closing">
+      <div class="container closing-inner">
+        <h2>今日の講義を、<wbr>明日の理解へ。</h2>
+        <a class="action-primary" href="#experience">学習体験に戻る</a>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <a class="wordmark" href="#top" aria-label="Medziq. ページの先頭へ">medziq<span>.</span></a>
+      <a href="/#medziq">開発スタジオ　yama × yama.</a>
+    </div>
+  </footer>
+</body>
+</html>
