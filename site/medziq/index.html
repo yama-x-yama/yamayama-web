@@ -11,8 +11,8 @@
   <meta property="og:title" content="Medziq. — 医学の知識が、つながる。">
   <meta property="og:description" content="講義資料と学習メモ、問題演習をつなぐ、医学生のための学習ワークスペース。">
   <meta property="og:url" content="https://yamaxyama.com/medziq/">
-  <meta property="og:image" content="https://yamaxyama.com/medziq-reader.jpg">
-  <meta name="theme-color" content="#f8f7f3">
+  <meta property="og:image" content="https://yamaxyama.com/medziq-reader.jpg?rev=84">
+  <meta name="theme-color" content="#FAFBF9">
   <link rel="icon" type="image/png" href="./icon.png">
   <link rel="stylesheet" href="./style.css">
   <link rel="stylesheet" href="./hero.css">
@@ -46,7 +46,7 @@
             <a class="development-link" href="#development"><span aria-hidden="true"></span>開発中</a>
           </div>
         </div>
-        <figure class="mq-study-desk" role="img" aria-label="心臓の講義資料と、大動脈についての手書きメモ、復習カードがひとつの学習画面にまとまる様子">
+        <figure class="mq-study-desk">
   <div class="mq-study-window" aria-hidden="true">
     <div class="mq-study-window-bar">
       <span>学習ワークスペース</span><span>循環器学</span>
@@ -88,6 +88,10 @@
       <span class="mq-study-answer">大動脈</span>
     </div>
   </div>
+  <div class="mq-live-screen">
+    <img src="./anatomy.jpg" width="1791" height="1251" alt="Medziq.の解剖3Dで心臓を選んだ画面">
+  </div>
+  <figcaption class="mq-live-caption">解剖3D ／ Web開発版のタブレット表示 · <a href="#model-credit">模型の出典</a></figcaption>
 </figure>
       </div>
     </section>
@@ -194,7 +198,7 @@
         <p class="km-kicker" lang="en">Knowledge map</p>
         <h2 id="km-heading">心不全を、<br>四つの科目から。</h2>
       </div>
-      <p class="km-lede">生理学で学んだ血液の流れは、臨床で出会う息切れとどうつながる？ 教材に散らばる知識を結び直す、構想中の「知識マップ」を体験できます。</p>
+      <p class="km-lede">生理学で学ぶ血液の流れと、臨床で出会う息切れ。科目を選ぶと学習メモが切り替わります。この図は、科目を横断する学び方を試せるサイト用デモです。</p>
     </header>
     <div class="km-plate">
       <div class="km-excerpt">
@@ -255,20 +259,25 @@
       <div class="container">
         <div class="tour-header">
           <div><p class="section-kicker">機能</p><h2 id="features-title">開発版をのぞく。</h2></div>
-          <p>講義を読むとき、演習を解くとき。<br>いま開発している画面を切り替えて見られます。</p>
+          <p>教材・ノートから解剖3D、問題演習まで。<br>Web開発版をタブレット幅で撮影した画面です。</p>
         </div>
         <fieldset class="tour">
           <legend class="sr-only">確認したい開発版の画面を選択</legend>
           <div class="tour-options">
             <div class="tour-option">
               <input class="sr-only" type="radio" name="tour" id="tour-library" checked>
-              <label for="tour-library">資料とノートの管理</label>
-              <p>講義スライドをPDFで取り込み、科目・章ごとのフォルダへ。iPadではApple Pencilで余白に書き込めます。</p>
+              <label for="tour-library">教材・ノート</label>
+              <p>講義スライドをPDFで取り込み、科目ごとのフォルダに整理。「最近開いた教材」から前回のページに戻れます。iPadではApple Pencilで書き込めます。</p>
             </div>
             <div class="tour-option">
               <input class="sr-only" type="radio" name="tour" id="tour-terms">
-              <label for="tour-terms">教材を開いたまま用語検索</label>
-              <p>講義資料の隣で医学用語の解説を読み、同じ語が出てくる教材のページを探せます。</p>
+              <label for="tour-terms">ページ情報と医学用語</label>
+              <p>教材の横に「ページ情報」を開くと、そのページの用語と出典を読めます。「糸球体」の解説から、自分の別の教材に同じ語が出てくるページも探せます。</p>
+            </div>
+            <div class="tour-option">
+              <input class="sr-only" type="radio" name="tour" id="tour-anatomy">
+              <label for="tour-anatomy">解剖3D</label>
+              <p>模型を回して心臓や血管を観察し、選んだ部位の要点を科目別に読み進められます。</p>
             </div>
             <div class="tour-option">
               <input class="sr-only" type="radio" name="tour" id="tour-practice">
@@ -277,17 +286,19 @@
             </div>
             <div class="tour-option">
               <input class="sr-only" type="radio" name="tour" id="tour-assistant">
-              <label for="tour-assistant">資料を見ながらAIに質問</label>
-              <p>教材の本文やページ画像を自分で選んで質問できます。質問を始めたページは、読み進めても参照元として残ります。</p>
+              <label for="tour-assistant">エムに質問</label>
+              <p>教材を開いたまま、AIアシスタント「エム」に質問。ログインすると、選んだページの要点を尋ねたり、教材をもとに確認問題を作ったりできます。</p>
             </div>
           </div>
           <div class="tour-previews">
-            <figure class="shot-library"><img loading="lazy" src="./library.jpg" alt="Medziq.開発版の教材一覧。科目フォルダの下に取り込んだPDFが並ぶ" width="1194" height="834"><figcaption>開発版の画面 ／ 教材一覧</figcaption></figure>
-            <figure class="shot-terms"><img loading="lazy" src="../medziq-reader.jpg" alt="左に腎小体の教材、右に糸球体の用語解説を並べた画面" width="1194" height="834"><figcaption>開発版の画面 ／ 教材と医学用語</figcaption></figure>
-            <figure class="shot-practice"><img loading="lazy" src="./practice.jpg" alt="解答と元の教材へのリンクを確認し、理解度を記録する演習画面" width="1194" height="834"><figcaption>開発版の画面 ／ 問題演習</figcaption></figure>
-            <figure class="shot-assistant"><img loading="lazy" src="./assistant.jpg" alt="講義PDFに重ねてAIアシスタントの質問欄を開いた画面" width="1280" height="720"><figcaption>開発版の画面 ／ AIアシスタント</figcaption></figure>
+            <figure class="shot-library"><img loading="lazy" src="./library.jpg?rev=84" alt="「腎」で検索し、二つのサンプル教材を表紙付きで表示したライブラリ" width="1791" height="1251"><figcaption>教材・ノート ／ ライブラリ <a href="./library.jpg?rev=84">画像を拡大</a></figcaption></figure>
+            <figure class="shot-terms"><img loading="lazy" src="../medziq-reader.jpg?rev=84" alt="「腎小体の構造」の横にページ情報を開き、糸球体の用語解説と出典を表示した画面" width="1791" height="1251"><figcaption>ページ情報 ／ 医学用語 <a href="../medziq-reader.jpg?rev=84">画像を拡大</a></figcaption></figure>
+            <figure class="shot-anatomy"><img loading="lazy" src="./anatomy.jpg" alt="解剖3Dアトラスで心臓の模型と「心臓の学習」の科目パネルを並べた画面" width="1791" height="1251"><figcaption>解剖3D ／ 心臓の学習 <a href="./anatomy.jpg">画像を拡大</a></figcaption></figure>
+            <figure class="shot-practice"><img loading="lazy" src="./practice.jpg?rev=84" alt="糸球体の問題に対して解答を表示し、元の教材に戻れる演習画面" width="1791" height="1251"><figcaption>問題演習 ／ 解答と参照ページ <a href="./practice.jpg?rev=84">画像を拡大</a></figcaption></figure>
+            <figure class="shot-assistant"><img loading="lazy" src="./assistant.jpg?rev=84" alt="エムの質問欄に、開いている教材名と参照ページが表示された画面" width="1791" height="1251"><figcaption>エム ／ 表示中のページを参照 <a href="./assistant.jpg?rev=84">画像を拡大</a></figcaption></figure>
           </div>
         </fieldset>
+        <p class="model-credit" id="model-credit">心臓模型は<a href="https://dbarchive.biosciencedbc.jp/jp/bodyparts3d/desc.html">BodyParts3D</a>（© The Database Center for Life Science）をもとにMedziq.で描画しています。<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a></p>
       </div>
     </section>
 
@@ -295,18 +306,18 @@
       <div class="container development-grid">
         <div class="development-heading">
           <p class="section-kicker">開発状況</p>
-          <h2 id="development-title">これからの<br>Medziq<span>.</span></h2>
+          <h2 id="development-title">いまの<br>Medziq<span>.</span></h2>
           <p>現在、iPadを中心に開発・検証を進めています。</p>
         </div>
         <div class="roadmap">
-          <h3>今後取り組むこと</h3>
+          <h3>開発版で試せること</h3>
           <dl>
             <dt>科目を越えた関連づけ</dt>
-            <dd>解剖・生理・病理・薬理・臨床の資料を、一つの知識ポイントからたどれるようにする構想です。</dd>
-            <dt>AIで復習の準備を手伝う</dt>
-            <dd>講義資料の整理や要約、確認問題の作成を支援する仕組みを検討しています。</dd>
-            <dt>言語をまたぐ教材整理</dt>
-            <dd>日本語・中国語・韓国語・英語の資料に、同じ概念がどう登場するかを照らし合わせられるようにしたいと考えています。</dd>
+            <dd>解剖3Dで選んだ部位から科目別の要点や出典を読めます。一致する用語が自分の教材にあれば、そのページも開けます。</dd>
+            <dt>AIで教材整理と復習を手伝う</dt>
+            <dd>教材のフォルダ分けの提案を確認してから整理できます。エムに授業を指定して問題作成を頼むと、教材を参照する確認問題に取り組めます。</dd>
+            <dt>医学用語を複数の言語で読む</dt>
+            <dd>アプリの表示は日本語と英語に対応。医学用語には英語名があり、収録されている語は中国語名や韓国語名も設定で併記できます。</dd>
           </dl>
         </div>
       </div>
