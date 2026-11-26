@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="yama × yama. が多言語ページの見本として作った、架空の日帰り温泉「湯処 あかがね」のデモサイトです。実在の施設ではありません。">
+<meta name="theme-color" content="#14161a">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>湯処 あかがね</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* 日帰り温泉。石と水の濃い色。情報が主役で写真は使わない。
+   数字（料金・時間）を大きく、手順とルールを読み違えようがない形で出す。 */
+:root{
+  --bg:#14161a; --panel:#1b1e24; --line:#2b3037; --line-soft:#232830;
+  --ink:#eef1f4; --sub:#9aa4b0; --faint:#6b7480;
+  --steam:#7fb8c4; --steam-dim:#2a3f45; --warn:#e0a35c; --warn-dim:#3a2d1c;
+  --font-num:"Barlow Condensed",ui-sans-serif,system-ui,sans-serif;
+  --font-jp:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --pad:max(20px,env(safe-area-inset-left,0px));
+  --pad-r:max(20px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-jp);
+  font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+.w{max-width:40rem;margin:0 auto;padding-left:var(--pad);padding-right:var(--pad-r)}
+
+/* ── 言語バー：細い罫線の列。既存デモのピル型とは別物にする ── */
+.lang{position:sticky;top:0;z-index:30;background:rgba(20,22,26,.92);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.lang .w{display:flex;align-items:stretch;gap:0;padding-left:0;padding-right:0}
+.lang button{flex:1;min-height:46px;padding:0 2px;background:none;border:0;border-right:1px solid var(--line-soft);
+  color:var(--faint);font:500 12px/1 var(--font-jp);letter-spacing:.02em;cursor:pointer;
+  transition:color .25s ease,background-color .25s ease}
+.lang button:last-child{border-right:0}
+.lang button:hover{color:var(--ink)}
+.lang button[aria-pressed="true"]{color:var(--ink);background:var(--panel);
+  box-shadow:inset 0 -2px 0 var(--steam)}
+
+/* ── 冒頭：写真を使わず、文字と罫線だけで立ち上げる ── */
+.top{padding:clamp(34px,9vw,64px) 0 clamp(26px,6vw,44px);border-bottom:1px solid var(--line)}
+.place{margin:0 0 14px;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint)}
+.name{margin:0;font-size:clamp(34px,10vw,56px);font-weight:700;letter-spacing:-.01em;line-height:1.18;
+  font-feature-settings:"palt"}
+.sub{margin:16px 0 0;font-size:15px;line-height:1.9;color:var(--sub)}
+
+/* いま入れるか：罫線で区切った横並び。カードにしない */
+.now{display:flex;align-items:stretch;margin-top:clamp(26px,6vw,38px);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.now-state{flex:1;padding:16px 16px 16px 0;border-right:1px solid var(--line-soft)}
+.now-last{flex:1;padding:16px 0 16px 16px}
+.now-k{display:block;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+.now-v{display:flex;align-items:center;gap:9px;margin-top:6px;font-size:17px;font-weight:700;line-height:1.3}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--faint);flex:none}
+.now[data-open="true"] .dot{background:var(--steam);box-shadow:0 0 0 4px rgba(127,184,196,.16)}
+.now-time{font-family:var(--font-num);font-size:26px;font-weight:600;letter-spacing:.01em;line-height:1.1}
+
+/* ── セクション ── */
+section{padding:clamp(34px,8vw,56px) 0;border-bottom:1px solid var(--line)}
+.h{margin:0 0 6px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--steam)}
+.h2{margin:0 0 clamp(18px,4vw,26px);font-size:clamp(21px,5.4vw,28px);font-weight:700;
+  letter-spacing:-.01em;line-height:1.45;font-feature-settings:"palt"}
+.lede{margin:-8px 0 clamp(20px,4vw,28px);font-size:14.5px;line-height:1.9;color:var(--sub)}
+
+/* 料金：数字を主役にした行組み。表組みの罫線は最小限 */
+.fee{margin:0;padding:0;list-style:none}
+.fee li{display:flex;align-items:baseline;gap:14px;padding:13px 0;border-top:1px solid var(--line-soft)}
+.fee li:first-child{border-top:0;padding-top:0}
+.fee-n{flex:1;min-width:0;font-size:15.5px;line-height:1.6}
+.fee-n small{display:block;margin-top:2px;font-size:12.5px;line-height:1.7;color:var(--faint)}
+.fee-y{flex:none;font-family:var(--font-num);font-size:30px;font-weight:600;line-height:1;letter-spacing:.01em}
+.fee-y sup{font-family:var(--font-jp);font-size:11px;font-weight:400;vertical-align:.9em;margin-left:3px;color:var(--faint)}
+.fee-free{font-size:16px;font-weight:700;color:var(--steam)}
+
+/* 入浴の手順：番号を罫線の外に出した縦の流れ */
+.steps{margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{position:relative;padding:0 0 clamp(20px,4.5vw,28px) 44px;counter-increment:s}
+.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:-2px;
+  font-family:var(--font-num);font-size:22px;font-weight:600;color:var(--steam)}
+.steps li::after{content:"";position:absolute;left:11px;top:24px;bottom:4px;width:1px;background:var(--line)}
+.steps li:last-child{padding-bottom:0}
+.steps li:last-child::after{display:none}
+.steps b{display:block;font-size:16.5px;font-weight:700;line-height:1.6}
+.steps p{margin:4px 0 0;font-size:14px;line-height:1.9;color:var(--sub)}
+
+/* タトゥー：見落とされては困るので、唯一の強い囲み */
+.rule{padding:clamp(18px,4.5vw,24px);background:var(--warn-dim);border-left:3px solid var(--warn)}
+.rule-h{display:block;margin-bottom:8px;font-size:15px;font-weight:700;color:var(--warn)}
+.rule p{margin:0;font-size:14.5px;line-height:1.95}
+.rule p + p{margin-top:10px}
+
+/* 設備・貸出：2列の素朴な定義リスト */
+.kv{display:grid;grid-template-columns:7.5em 1fr;gap:0;margin:0}
+.kv dt{padding:11px 0;border-top:1px solid var(--line-soft);font-size:13px;color:var(--faint)}
+.kv dd{margin:0;padding:11px 0;border-top:1px solid var(--line-soft);font-size:14.5px;line-height:1.8}
+.kv dt:first-of-type,.kv dt:first-of-type + dd{border-top:0}
+@media (max-width:420px){
+  .kv{grid-template-columns:1fr}
+  .kv dt{padding-bottom:0;border-top:1px solid var(--line-soft)}
+  .kv dd{padding-top:2px;border-top:0}
+  .kv dt:first-of-type + dd{border-top:0}
+}
+
+/* 支払い：使える/使えないを色だけに頼らず記号と文字で */
+.pay{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.pay li{display:flex;align-items:center;gap:8px;padding:9px 13px;border:1px solid var(--line);
+  font-size:13.5px;line-height:1.4}
+.pay li[data-ok="0"]{color:var(--faint);border-style:dashed}
+.pay .mk{font-family:var(--font-num);font-size:15px;font-weight:600;color:var(--steam)}
+.pay li[data-ok="0"] .mk{color:var(--faint)}
+.pay-s{font-size:12px;color:var(--faint)}
+
+/* 行き方：ボタンは固定せず、この節の中に置く */
+.go{display:inline-flex;align-items:center;gap:9px;min-height:52px;margin-top:20px;padding:0 22px;
+  background:var(--ink);color:var(--bg);font-size:14.5px;font-weight:700;text-decoration:none;
+  transition:opacity .25s ease}
+.go:hover{opacity:.82}
+.tel{font-family:var(--font-num);font-size:26px;font-weight:600;letter-spacing:.02em}
+
+footer{padding:clamp(28px,7vw,44px) 0 calc(clamp(28px,7vw,44px) + env(safe-area-inset-bottom,0px));
+  border-bottom:0}
+.demo-tag{display:inline-block;margin-bottom:10px;padding:4px 10px;border:1px solid var(--warn);
+  color:var(--warn);font-size:11px;letter-spacing:.1em}
+footer p{margin:0;font-size:13px;line-height:1.85;color:var(--faint)}
+
+:focus-visible{outline:2px solid var(--steam);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="lang" aria-label="Language">
+  <div class="w" id="langbar"></div>
+</nav>
+
+<header class="top">
+  <div class="w">
+    <p class="place" data-k="place"></p>
+    <h1 class="name" data-k="name"></h1>
+    <p class="sub" data-k="tagline"></p>
+    <div class="now" id="now">
+      <div class="now-state">
+        <span class="now-k" data-k="k_now"></span>
+        <span class="now-v"><i class="dot" aria-hidden="true"></i><span id="now-text"></span></span>
+      </div>
+      <div class="now-last">
+        <span class="now-k" data-k="k_last"></span>
+        <span class="now-v"><span class="now-time" data-k="v_last"></span></span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section id="fee">
+  <div class="w">
+    <p class="h">Admission</p>
+    <h2 class="h2" data-k="h_fee"></h2>
+    <p class="lede" data-k="fee_lede"></p>
+    <ul class="fee" id="fee-list"></ul>
+  </div>
+</section>
+
+<section id="how">
+  <div class="w">
+    <p class="h">How to bathe</p>
+    <h2 class="h2" data-k="h_how"></h2>
+    <p class="lede" data-k="how_lede"></p>
+    <ol class="steps" id="steps"></ol>
+  </div>
+</section>
+
+<section id="tattoo">
+  <div class="w">
+    <p class="h">Tattoos</p>
+    <h2 class="h2" data-k="h_tat"></h2>
+    <div class="rule">
+      <span class="rule-h" data-k="tat_h"></span>
+      <p data-k="tat_1"></p>
+      <p data-k="tat_2"></p>
+    </div>
+  </div>
+</section>
+
+<section id="bring">
+  <div class="w">
+    <p class="h">Facilities</p>
+    <h2 class="h2" data-k="h_bring"></h2>
+    <dl class="kv" id="kv"></dl>
+  </div>
+</section>
+
+<section id="pay">
+  <div class="w">
+    <p class="h">Payment</p>
+    <h2 class="h2" data-k="h_pay"></h2>
+    <p class="lede" data-k="pay_lede"></p>
+    <ul class="pay" id="pay-list"></ul>
+  </div>
+</section>
+
+<section id="visit">
+  <div class="w">
+    <p class="h">Getting here</p>
+    <h2 class="h2" data-k="h_visit"></h2>
+    <dl class="kv" id="visit-kv"></dl>
+    <a class="go" id="map" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A0%83%E6%9C%A8%E7%9C%8C%E9%82%A3%E9%A0%88%E5%A1%A9%E5%8E%9F%E5%B8%82" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></svg>
+      <span data-k="cta_map"></span>
+    </a>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="w">
+    <span class="demo-tag" data-k="demo"></span>
+    <p data-k="foot"></p>
+  </div>
+</footer>
+
+<script>
+const LANGS = [["ja","日本語"],["en","EN"],["zh-Hant","繁體"],["zh-Hans","简体"],["ko","한국어"]];
+const FEE  = [{id:"adult",y:"850"},{id:"child",y:"400"},{id:"sauna",y:"300"},{id:"towel",y:"200"},{id:"infant",y:null}];
+const STEP = ["st1","st2","st3","st4","st5"];
+const KV   = ["bath","sauna_f","rest","locker","lend","sell","kids","barrier"];
+const PAY  = [{id:"cash",ok:1},{id:"card",ok:1},{id:"qr",ok:1},{id:"ic",ok:0}];
+const VISIT= ["hours","closed","access","park","stay"];
+/* 営業：10:00–21:00（最終受付20:30）／第3火曜定休 */
+const OPEN_H = [10,0], CLOSE_H = [21,0], CLOSED_WEEKDAY = 2; /* 2=火曜。第3火曜のみ休み */
+
+const T = {
+ja:{place:"栃木県・塩原",name:"湯処 あかがね",
+ tagline:"塩原の谷あいにある日帰りの湯です。源泉かけ流しで、宿泊はできません。",
+ k_now:"ただいま",k_last:"最終受付",v_last:"20:30",
+ s_open:"営業中",s_closed:"営業時間外",s_closedday:"本日は定休日",
+ h_fee:"料金",fee_lede:"すべて税込。回数券や会員制度はありません。",
+ adult:"大人",adult_s:"中学生以上",child:"子ども",child_s:"4歳〜小学生",
+ sauna:"サウナ",sauna_s:"入浴料に追加。館内着つき",towel:"タオル",towel_s:"レンタル。返却不要のものは300円で販売",
+ infant:"3歳以下",infant_s:"おむつが取れていないお子さまは浴室に入れません",free:"無料",
+ h_how:"入り方",how_lede:"日本の公衆浴場に慣れていない方へ。順番どおりにすれば大丈夫です。",
+ st1:"下足箱に靴を入れる",st1_n:"玄関で靴を脱ぎ、木札のついた下足箱へ。木札は受付で渡します。",
+ st2:"脱衣所で、身につけているものをすべて脱ぐ",st2_n:"水着やタオルを巻いたままの入浴はできません。浴室は男女で分かれています。貴重品は100円返却式のロッカーへ。",
+ st3:"湯に入る前に、体を洗う",st3_n:"洗い場に座り、桶で湯をかけてから石けんで洗います。長い髪はゴムで結んでください。",
+ st4:"湯船につかる",st4_n:"タオルは湯に入れず、頭の上か縁に置きます。泳ぐ、潜る、大きな声で話すのは避けてください。",
+ st5:"体を拭いてから脱衣所へ戻る",st5_n:"浴室の出口で体の水気を拭きます。床が濡れると滑って危険です。",
+ h_tat:"刺青・タトゥーのある方へ",
+ tat_h:"大きさによって、お入りいただけます",
+ tat_1:"縦横それぞれ10cm以内であれば、そのままお入りいただけます。受付でのご申告は不要です。",
+ tat_2:"それより大きい場合は、受付で防水シール（無料・1枚まで）をお渡ししますので、隠してからお入りください。シールで覆いきれない場合は、恐れ入りますが貸切風呂（60分2,000円・要予約）をご利用ください。",
+ h_bring:"設備と貸出",
+ bath:"浴室",bath_v:"内湯・露天ともに源泉かけ流し。男女別で、入れ替えはありません。",
+ sauna_f:"サウナ",sauna_f_v:"ドライサウナ（12人）と水風呂。外気浴のいすが4脚あります。",
+ rest:"休憩",rest_v:"畳の広間と、飲み物の自動販売機。食事の提供はありません。",
+ locker:"ロッカー",locker_v:"100円返却式。鍵は手首に巻いてお持ちください。",
+ lend:"貸出",lend_v:"タオル200円、館内着300円、ドライヤー無料。シャンプー・石けんは備え付けです。",
+ sell:"販売",sell_v:"タオル300円、下着、カミソリ。現金以外も使えます。",
+ kids:"お子さま",kids_v:"おむつが取れていれば入浴できます。おむつの着用が必要なお子さまは浴室に入れません。",
+ barrier:"段差",barrier_v:"玄関から浴室まで段差が3段あります。手すりはありますが、車いすでの入浴はできません。",
+ h_pay:"お支払い",pay_lede:"受付でまとめてお支払いください。両替はできません。",
+ cash:"現金",card:"カード",qr:"QR決済",ic:"交通系IC",ok:"使えます",ng:"使えません",
+ h_visit:"行き方と営業時間",
+ hours:"営業時間",hours_v:"10:00〜21:00（最終受付 20:30）",
+ closed:"定休日",closed_v:"第3火曜日、年末年始",
+ access:"行き方",access_v:"JR那須塩原駅からバスで約40分、「塩原支所前」下車、徒歩5分。",
+ park:"駐車場",park_v:"30台。無料です。",
+ stay:"所在地",stay_v:"栃木県那須塩原市（架空の住所です）",
+ cta_map:"地図を開く",
+ demo:"デモンストレーション",
+ foot:"これは営業用のデモサイトです。架空の施設で、実在の温泉とは関係ありません。料金・営業時間・ルールもすべて架空のものです。"},
+
+en:{place:"Shiobara, Tochigi",name:"Akagane Onsen",
+ tagline:"A day-use hot spring in the Shiobara valley. Free-flowing spring water. No overnight stays.",
+ k_now:"Right now",k_last:"Last entry",v_last:"20:30",
+ s_open:"Open",s_closed:"Closed now",s_closedday:"Closed today",
+ h_fee:"Admission",fee_lede:"All prices include tax. No passes or memberships.",
+ adult:"Adult",adult_s:"Age 13 and over",child:"Child",child_s:"Age 4 to 12",
+ sauna:"Sauna",sauna_s:"Added to admission. Includes indoor wear",towel:"Towel",towel_s:"Rental. Towels to keep are sold at ¥300",
+ infant:"Age 3 and under",infant_s:"Children still in nappies cannot enter the bath",free:"Free",
+ h_how:"How to bathe",how_lede:"For anyone new to a Japanese public bath. Follow these in order and you will be fine.",
+ st1:"Put your shoes in a shoe box",st1_n:"Take your shoes off at the entrance and put them in a box. The wooden tag goes to the front desk.",
+ st2:"In the changing room, take everything off",st2_n:"Swimwear and wrapped towels are not allowed in the bath. Baths are separate for men and women. Valuables go in a ¥100 returnable locker.",
+ st3:"Wash your body before entering the bath",st3_n:"Sit at a washing station, rinse with the bucket, then wash with soap. Please tie up long hair.",
+ st4:"Soak in the bath",st4_n:"Keep your towel out of the water — rest it on your head or the edge. No swimming, diving or loud conversation.",
+ st5:"Dry off before returning to the changing room",st5_n:"Wipe the water off at the bath exit. A wet floor is slippery and dangerous.",
+ h_tat:"If you have a tattoo",
+ tat_h:"You may bathe, depending on the size",
+ tat_1:"If the tattoo is within 10cm by 10cm, you may bathe as you are. There is no need to tell the front desk.",
+ tat_2:"If it is larger, the front desk will give you a waterproof cover sticker (free, one per person). Please cover the tattoo before bathing. If a sticker cannot cover it, please use the private bath instead (60 minutes, ¥2,000, reservation required).",
+ h_bring:"Facilities and rentals",
+ bath:"Baths",bath_v:"Indoor and open-air, both free-flowing spring water. Separate for men and women; they are not swapped.",
+ sauna_f:"Sauna",sauna_f_v:"Dry sauna for 12 people, plus a cold bath. Four chairs outside for cooling down.",
+ rest:"Resting",rest_v:"A tatami room and drink vending machines. No food is served.",
+ locker:"Lockers",locker_v:"¥100 returnable. Please wear the key band on your wrist.",
+ lend:"Rentals",lend_v:"Towel ¥200, indoor wear ¥300, hairdryer free. Shampoo and soap are provided.",
+ sell:"For sale",sell_v:"Towels ¥300, underwear, razors. Cashless payment accepted.",
+ kids:"Children",kids_v:"Children out of nappies may bathe. Children still in nappies cannot enter the bath.",
+ barrier:"Steps",barrier_v:"There are three steps between the entrance and the bath. Handrails are fitted, but wheelchair bathing is not possible.",
+ h_pay:"Payment",pay_lede:"Pay for everything at the front desk. We cannot exchange foreign currency.",
+ cash:"Cash",card:"Card",qr:"QR payment",ic:"Transit IC",ok:"Accepted",ng:"Not accepted",
+ h_visit:"Getting here and opening hours",
+ hours:"Hours",hours_v:"10:00–21:00 (last entry 20:30)",
+ closed:"Closed",closed_v:"Third Tuesday of the month, and the New Year period",
+ access:"Getting here",access_v:"About 40 minutes by bus from JR Nasushiobara Station. Get off at Shiobara Shisho-mae, then 5 minutes on foot.",
+ park:"Parking",park_v:"30 spaces, free of charge.",
+ stay:"Address",stay_v:"Nasushiobara, Tochigi (this address is fictional)",
+ cta_map:"Open in Maps",
+ demo:"Demonstration",
+ foot:"This is a demonstration site. The facility is fictional and bears no relation to any real hot spring. The prices, hours and rules are fictional too."},
+
+"zh-Hant":{place:"栃木縣・鹽原",name:"湯處 赤金",
+ tagline:"位於鹽原山谷的純泡湯設施。源泉放流，不提供住宿。",
+ k_now:"目前",k_last:"最後入場",v_last:"20:30",
+ s_open:"營業中",s_closed:"非營業時間",s_closedday:"本日公休",
+ h_fee:"費用",fee_lede:"皆為含稅價。沒有回數票或會員制度。",
+ adult:"成人",adult_s:"國中生以上",child:"兒童",child_s:"4歲〜小學生",
+ sauna:"三溫暖",sauna_s:"另加於入浴費。附館內服",towel:"毛巾",towel_s:"租借。可帶走的毛巾另售300日圓",
+ infant:"3歲以下",infant_s:"尚未脫離尿布的孩童不可進入浴室",free:"免費",
+ h_how:"入浴方式",how_lede:"給不熟悉日本公共浴場的朋友。依照順序即可。",
+ st1:"將鞋子放入鞋櫃",st1_n:"在玄關脫鞋放入鞋櫃，木牌請交給櫃檯。",
+ st2:"在更衣室脫下身上所有衣物",st2_n:"不可穿泳衣或圍毛巾入浴。浴室男女分開。貴重物品請放入投幣100日圓可退還的置物櫃。",
+ st3:"入浴前先清洗身體",st3_n:"坐在洗澡區，用木桶舀水沖身後再以肥皂清洗。長髮請綁起。",
+ st4:"進入浴池",st4_n:"毛巾請勿放入水中，放在頭上或池邊。請勿游泳、潛水或大聲交談。",
+ st5:"擦乾身體後再回更衣室",st5_n:"請在浴室出口擦乾身上的水。地板濕滑容易危險。",
+ h_tat:"有刺青的客人",
+ tat_h:"依尺寸大小可以入浴",
+ tat_1:"若刺青在10公分見方以內，可直接入浴，無需向櫃檯申報。",
+ tat_2:"若超過該尺寸，櫃檯會提供防水遮貼（免費，每人1張），請遮住後入浴。若遮貼無法完全覆蓋，請改用包場湯屋（60分鐘2,000日圓，需預約）。",
+ h_bring:"設施與租借",
+ bath:"浴室",bath_v:"室內湯與露天湯皆為源泉放流。男女分開，不作交換。",
+ sauna_f:"三溫暖",sauna_f_v:"乾式三溫暖（12人）與冷水池。戶外設有4張休息椅。",
+ rest:"休息",rest_v:"榻榻米大廳與飲料自動販賣機。不供應餐食。",
+ locker:"置物櫃",locker_v:"投幣100日圓可退還。鑰匙請戴在手腕上。",
+ lend:"租借",lend_v:"毛巾200日圓、館內服300日圓、吹風機免費。洗髮精與肥皂為店內提供。",
+ sell:"販售",sell_v:"毛巾300日圓、內衣褲、刮鬍刀。可使用現金以外的支付方式。",
+ kids:"孩童",kids_v:"已脫離尿布的孩童可入浴。仍需包尿布的孩童不可進入浴室。",
+ barrier:"高低差",barrier_v:"從玄關到浴室有3階台階。設有扶手，但無法以輪椅入浴。",
+ h_pay:"支付方式",pay_lede:"請於櫃檯一併結帳。無法兌換外幣。",
+ cash:"現金",card:"信用卡",qr:"QR支付",ic:"交通IC卡",ok:"可使用",ng:"不可使用",
+ h_visit:"交通與營業時間",
+ hours:"營業時間",hours_v:"10:00〜21:00（最後入場 20:30）",
+ closed:"公休日",closed_v:"每月第3個星期二、年末年初",
+ access:"交通",access_v:"從JR那須鹽原站搭巴士約40分鐘，於「鹽原支所前」下車後步行5分鐘。",
+ park:"停車場",park_v:"30個車位，免費。",
+ stay:"地址",stay_v:"栃木縣那須鹽原市（此為虛構地址）",
+ cta_map:"開啟地圖",
+ demo:"示範用",
+ foot:"這是示範網站。設施為虛構，與任何實際溫泉無關。費用、營業時間與規則亦為虛構。"},
+
+"zh-Hans":{place:"栃木县・盐原",name:"汤处 赤金",
+ tagline:"位于盐原山谷的纯泡汤设施。源泉放流，不提供住宿。",
+ k_now:"目前",k_last:"最后入场",v_last:"20:30",
+ s_open:"营业中",s_closed:"非营业时间",s_closedday:"今日休息",
+ h_fee:"费用",fee_lede:"均为含税价。没有回数票或会员制度。",
+ adult:"成人",adult_s:"初中生以上",child:"儿童",child_s:"4岁〜小学生",
+ sauna:"桑拿",sauna_s:"另加于入浴费。含馆内服",towel:"毛巾",towel_s:"租借。可带走的毛巾另售300日元",
+ infant:"3岁以下",infant_s:"尚未脱离尿布的儿童不可进入浴室",free:"免费",
+ h_how:"入浴方式",how_lede:"给不熟悉日本公共浴场的朋友。按顺序来即可。",
+ st1:"将鞋子放入鞋柜",st1_n:"在玄关脱鞋放入鞋柜，木牌请交给前台。",
+ st2:"在更衣室脱下身上所有衣物",st2_n:"不可穿泳衣或围毛巾入浴。浴室男女分开。贵重物品请放入投币100日元可退还的储物柜。",
+ st3:"入浴前先清洗身体",st3_n:"坐在洗浴区，用木桶舀水冲身后再用肥皂清洗。长发请扎起。",
+ st4:"进入浴池",st4_n:"毛巾请勿放入水中，放在头上或池边。请勿游泳、潜水或大声交谈。",
+ st5:"擦干身体后再回更衣室",st5_n:"请在浴室出口擦干身上的水。地板湿滑容易危险。",
+ h_tat:"有纹身的客人",
+ tat_h:"根据尺寸大小可以入浴",
+ tat_1:"若纹身在10厘米见方以内，可直接入浴，无需向前台申报。",
+ tat_2:"若超过该尺寸，前台会提供防水遮贴（免费，每人1张），请遮住后入浴。若遮贴无法完全覆盖，请改用包场汤屋（60分钟2,000日元，需预约）。",
+ h_bring:"设施与租借",
+ bath:"浴室",bath_v:"室内汤与露天汤均为源泉放流。男女分开，不作交换。",
+ sauna_f:"桑拿",sauna_f_v:"干式桑拿（12人）与冷水池。室外设有4张休息椅。",
+ rest:"休息",rest_v:"榻榻米大厅与饮料自动售货机。不供应餐食。",
+ locker:"储物柜",locker_v:"投币100日元可退还。钥匙请戴在手腕上。",
+ lend:"租借",lend_v:"毛巾200日元、馆内服300日元、吹风机免费。洗发水与肥皂为店内提供。",
+ sell:"销售",sell_v:"毛巾300日元、内衣裤、剃须刀。可使用现金以外的支付方式。",
+ kids:"儿童",kids_v:"已脱离尿布的儿童可入浴。仍需穿尿布的儿童不可进入浴室。",
+ barrier:"台阶",barrier_v:"从玄关到浴室有3级台阶。设有扶手，但无法乘轮椅入浴。",
+ h_pay:"支付方式",pay_lede:"请在前台一并结账。无法兑换外币。",
+ cash:"现金",card:"信用卡",qr:"QR支付",ic:"交通IC卡",ok:"可使用",ng:"不可使用",
+ h_visit:"交通与营业时间",
+ hours:"营业时间",hours_v:"10:00〜21:00（最后入场 20:30）",
+ closed:"休息日",closed_v:"每月第3个星期二、年末年初",
+ access:"交通",access_v:"从JR那须盐原站乘巴士约40分钟，在「盐原支所前」下车后步行5分钟。",
+ park:"停车场",park_v:"30个车位，免费。",
+ stay:"地址",stay_v:"栃木县那须盐原市（此为虚构地址）",
+ cta_map:"打开地图",
+ demo:"演示用",
+ foot:"这是演示网站。设施为虚构，与任何实际温泉无关。费用、营业时间与规则也均为虚构。"},
+
+ko:{place:"도치기현・시오바라",name:"유도코로 아카가네",
+ tagline:"시오바라 계곡에 있는 당일 온천입니다. 원천 그대로 흘려보내며, 숙박은 하지 않습니다.",
+ k_now:"지금",k_last:"마지막 입장",v_last:"20:30",
+ s_open:"영업 중",s_closed:"영업 시간 외",s_closedday:"오늘은 휴무",
+ h_fee:"요금",fee_lede:"모두 세금 포함입니다. 회수권이나 회원제는 없습니다.",
+ adult:"어른",adult_s:"중학생 이상",child:"어린이",child_s:"4세〜초등학생",
+ sauna:"사우나",sauna_s:"입욕료에 추가. 관내복 포함",towel:"수건",towel_s:"대여. 가져갈 수 있는 수건은 300엔에 판매",
+ infant:"3세 이하",infant_s:"기저귀를 떼지 않은 아이는 욕실에 들어갈 수 없습니다",free:"무료",
+ h_how:"입욕 방법",how_lede:"일본 공중목욕탕이 처음이신 분께. 순서대로 하시면 됩니다.",
+ st1:"신발을 신발장에 넣습니다",st1_n:"현관에서 신발을 벗어 신발장에 넣고, 나무 패는 프런트에 맡겨 주세요.",
+ st2:"탈의실에서 입고 있는 것을 모두 벗습니다",st2_n:"수영복을 입거나 수건을 두른 채로는 입욕할 수 없습니다. 욕실은 남녀가 나뉘어 있습니다. 귀중품은 100엔 반환식 사물함에 넣어 주세요.",
+ st3:"탕에 들어가기 전에 몸을 씻습니다",st3_n:"샤워 자리에 앉아 바가지로 물을 끼얹은 뒤 비누로 씻습니다. 긴 머리는 묶어 주세요.",
+ st4:"탕에 들어갑니다",st4_n:"수건은 물에 넣지 말고 머리 위나 탕 가장자리에 두세요. 수영, 잠수, 큰 소리로 말하는 것은 삼가 주세요.",
+ st5:"몸을 닦고 탈의실로 돌아갑니다",st5_n:"욕실 출구에서 물기를 닦아 주세요. 바닥이 젖으면 미끄러워 위험합니다.",
+ h_tat:"문신이 있으신 분께",
+ tat_h:"크기에 따라 입욕하실 수 있습니다",
+ tat_1:"가로세로 각각 10cm 이내라면 그대로 입욕하실 수 있습니다. 프런트에 말씀하지 않으셔도 됩니다.",
+ tat_2:"그보다 큰 경우에는 프런트에서 방수 스티커(무료, 1인 1장)를 드리니 가린 후에 입욕해 주세요. 스티커로 다 가릴 수 없는 경우에는 전세탕(60분 2,000엔, 예약 필요)을 이용해 주세요.",
+ h_bring:"시설과 대여",
+ bath:"욕실",bath_v:"실내탕과 노천탕 모두 원천을 그대로 흘려보냅니다. 남녀별이며 교대하지 않습니다.",
+ sauna_f:"사우나",sauna_f_v:"건식 사우나(12명)와 냉탕. 야외에 쉬는 의자가 4개 있습니다.",
+ rest:"휴식",rest_v:"다다미 넓은 방과 음료 자판기가 있습니다. 식사는 제공하지 않습니다.",
+ locker:"사물함",locker_v:"100엔 반환식입니다. 열쇠는 손목에 차고 다녀 주세요.",
+ lend:"대여",lend_v:"수건 200엔, 관내복 300엔, 드라이어 무료. 샴푸와 비누는 비치되어 있습니다.",
+ sell:"판매",sell_v:"수건 300엔, 속옷, 면도기. 현금 외 결제도 가능합니다.",
+ kids:"어린이",kids_v:"기저귀를 뗀 아이는 입욕할 수 있습니다. 기저귀가 필요한 아이는 욕실에 들어갈 수 없습니다.",
+ barrier:"턱",barrier_v:"현관에서 욕실까지 계단이 3개 있습니다. 손잡이는 있지만 휠체어로는 입욕할 수 없습니다.",
+ h_pay:"결제",pay_lede:"프런트에서 한 번에 결제해 주세요. 환전은 불가능합니다.",
+ cash:"현금",card:"카드",qr:"QR 결제",ic:"교통 IC",ok:"사용 가능",ng:"사용 불가",
+ h_visit:"오시는 길과 영업시간",
+ hours:"영업시간",hours_v:"10:00〜21:00 (마지막 입장 20:30)",
+ closed:"휴무일",closed_v:"매월 셋째 화요일, 연말연시",
+ access:"오시는 길",access_v:"JR 나스시오바라역에서 버스로 약 40분, 「시오바라 시쇼마에」 하차 후 도보 5분.",
+ park:"주차장",park_v:"30대, 무료입니다.",
+ stay:"주소",stay_v:"도치기현 나스시오바라시 (가상의 주소입니다)",
+ cta_map:"지도 열기",
+ demo:"데모",
+ foot:"영업용 데모 사이트입니다. 가상의 시설이며 실제 온천과는 관계가 없습니다. 요금, 영업시간, 규칙도 모두 가상입니다."}
+};
+
+let current = "ja";
+const el = (t,c,x)=>{const n=document.createElement(t); if(c)n.className=c; if(x!=null)n.textContent=x; return n;};
+
+function state(){
+  const d = new Date();
+  const w = d.getDay(), day = d.getDate();
+  /* 第3火曜：その月の3回目の火曜日 */
+  if(w === CLOSED_WEEKDAY && day >= 15 && day <= 21) return "closedday";
+  const m = d.getHours()*60 + d.getMinutes();
+  const o = OPEN_H[0]*60 + OPEN_H[1], c = CLOSE_H[0]*60 + CLOSE_H[1];
+  return (m >= o && m < c) ? "open" : "closed";
+}
+
+function build(t){
+  const fl = document.getElementById("fee-list"); fl.textContent = "";
+  for(const f of FEE){
+    const li = el("li");
+    const n = el("div","fee-n"); n.appendChild(document.createTextNode(t[f.id]));
+    n.appendChild(el("small",null,t[f.id+"_s"]));
+    li.appendChild(n);
+    if(f.y){
+      li.appendChild(el("div","fee-y","¥"+f.y));
+    } else {
+      li.appendChild(el("div","fee-free",t.free));
+    }
+    fl.appendChild(li);
+  }
+
+  const sl = document.getElementById("steps"); sl.textContent = "";
+  for(const s of STEP){
+    const li = el("li");
+    li.appendChild(el("b",null,t[s]));
+    li.appendChild(el("p",null,t[s+"_n"]));
+    sl.appendChild(li);
+  }
+
+  const kv = document.getElementById("kv"); kv.textContent = "";
+  for(const k of KV){ kv.appendChild(el("dt",null,t[k])); kv.appendChild(el("dd",null,t[k+"_v"])); }
+
+  const vk = document.getElementById("visit-kv"); vk.textContent = "";
+  for(const k of VISIT){ vk.appendChild(el("dt",null,t[k])); vk.appendChild(el("dd",null,t[k+"_v"])); }
+
+  const pl = document.getElementById("pay-list"); pl.textContent = "";
+  for(const p of PAY){
+    const li = el("li"); li.dataset.ok = String(p.ok);
+    li.appendChild(el("span","mk", p.ok ? "○" : "×"));
+    li.appendChild(el("span",null,t[p.id]));
+    li.appendChild(el("span","pay-s", p.ok ? t.ok : t.ng));
+    pl.appendChild(li);
+  }
+}
+
+function apply(code){
+  current = code;
+  const t = T[code];
+  for(const n of document.querySelectorAll("[data-k]")){ const v = t[n.dataset.k]; if(v != null) n.textContent = v; }
+  build(t);
+  const st = state();
+  const now = document.getElementById("now");
+  now.dataset.open = String(st === "open");
+  document.getElementById("now-text").textContent =
+    st === "open" ? t.s_open : (st === "closedday" ? t.s_closedday : t.s_closed);
+  document.documentElement.lang = code;
+  for(const b of document.querySelectorAll("#langbar button")) b.setAttribute("aria-pressed", String(b.dataset.lang === code));
+  document.title = t.name;
+}
+
+const bar = document.getElementById("langbar");
+for(const [code,label] of LANGS){
+  const b = el("button",null,label); b.type = "button"; b.dataset.lang = code;
+  b.addEventListener("click", ()=>apply(code));
+  bar.appendChild(b);
+}
+
+apply("ja");
+</script>
+</body>
+</html>
