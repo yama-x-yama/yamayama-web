@@ -5,184 +5,170 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
 <meta name="description" content="yama × yama. が多言語ページの見本として作った、架空のお店「湯波茶屋 すぎもと」のデモサイトです。実在の店舗ではありません。">
-<meta name="theme-color" content="#f4f1e9">
+<meta name="theme-color" content="#ffffff">
 <link rel="icon" href="/favicon.png" type="image/png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>湯波茶屋すぎもと</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
 <style>
-/* スマホ前提の一本スクロール。杉の黒・和紙の生成り・苔色。写真で食欲を、文字は静かに、操作は親指の届く下端に。 */
+/* この店は写真が全部。だから地は白一色にして色を一切足さず、色は料理の写真だけが持つ。
+   書体も一種類だけ。大きさと太さの差だけで段をつける。
+   写真は文字を乗せず、大きく、縁まで。見出しは左の軸に突き当てる。
+   動きは写真がわずかに寄ってくることだけ。文字は動かさない。 */
 :root{
-  --paper:#f4f1e9; --card:#fffdf8; --ink:#1b1915; --sub:#625b4f; --faint:#8a8274;
-  --line:#e2dacb; --moss:#3f6238; --moss-ink:#2d4728; --moss-wash:#e9efe4;
-  --lacquer:#9a3a2b; --lacquer-wash:#f6e7e2; --gold:#9a7a3e;
-  --shadow:0 1px 2px rgba(27,25,21,.05),0 10px 28px -16px rgba(27,25,21,.22);
-  --font-display:"Shippori Mincho",ui-serif,Georgia,"Times New Roman",serif;
-  --font-body:"Noto Sans JP",system-ui,-apple-system,"Hiragino Sans",sans-serif;
-  --gutter-l:max(18px,env(safe-area-inset-left,0px));
-  --gutter-r:max(18px,env(safe-area-inset-right,0px));
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --paper:#141318; --card:#1d1c23; --ink:#efeae0; --sub:#b0a898; --faint:#857e70;
-  --line:#2f2d36; --moss:#9fc490; --moss-ink:#c6dcba; --moss-wash:#1e281c;
-  --lacquer:#e39a8d; --lacquer-wash:#2e1f1c; --gold:#d0b07a;
-  --shadow:0 1px 2px rgba(0,0,0,.45),0 12px 30px -16px rgba(0,0,0,.75); color-scheme:dark;
-}}
-:root[data-theme="dark"]{
-  --paper:#141318; --card:#1d1c23; --ink:#efeae0; --sub:#b0a898; --faint:#857e70;
-  --line:#2f2d36; --moss:#9fc490; --moss-ink:#c6dcba; --moss-wash:#1e281c;
-  --lacquer:#e39a8d; --lacquer-wash:#2e1f1c; --gold:#d0b07a;
-  --shadow:0 1px 2px rgba(0,0,0,.45),0 12px 30px -16px rgba(0,0,0,.75); color-scheme:dark;
+  --paper:#ffffff;
+  --ink:#17171a;
+  --ink-2:#55555c;
+  --ink-3:#8e8e96;
+  --rule:#e5e5e2;
+  --fill:#f4f4f1;
+  --f:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --gl:max(20px,env(safe-area-inset-left,0px));
+  --gr:max(20px,env(safe-area-inset-right,0px));
 }
 *{box-sizing:border-box}
-body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;
-  line-height:1.8;margin:0;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f);
+  font-size:15px;line-height:1.9;-webkit-font-smoothing:antialiased}
 img{display:block;max-width:100%;height:auto}
-.wrap{max-width:44rem;margin:0 auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+.wrap{max-width:46rem;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
 
-/* ── 言語バー ─────────────────────────── */
+/* 言語：白地に細い行。暖簾の札にしない */
+.langbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:rgba(255,255,255,.93);
+  -webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border-bottom:1px solid var(--rule)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
-  z-index:41;background:var(--paper)}
-.langbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
-  background:color-mix(in srgb,var(--paper) 90%,transparent);
-  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
-.langbar .wrap{display:flex;align-items:center;gap:.75rem;padding-block:.45rem}
-.mark{display:none;font-family:var(--font-display);font-weight:800;font-size:.95rem;
-  letter-spacing:.06em;white-space:nowrap}
-@media (min-width:560px){.mark{display:block}}
-.langs{display:flex;gap:.25rem;margin-left:auto;margin-right:auto;flex-wrap:nowrap}
-@media (min-width:560px){.langs{margin-right:0}}
-.langs button{font:500 .82rem/1 var(--font-body);color:var(--sub);background:none;
-  border:1px solid transparent;border-radius:999px;padding:.55rem .7rem;min-height:2.25rem;cursor:pointer}
-.langs button[aria-pressed="true"]{color:var(--card);background:var(--moss);border-color:var(--moss)}
-.langs button:focus-visible{outline:2px solid var(--moss);outline-offset:2px}
+  z-index:31;background:var(--paper)}
+.langbar .wrap{display:flex;align-items:center;gap:14px;padding-top:11px;padding-bottom:11px}
+.mark{flex:none;font-size:13px;font-weight:700;letter-spacing:.02em;white-space:nowrap}
+.langs{display:flex;gap:14px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+.langs::-webkit-scrollbar{display:none}
+.langs button{flex:none;padding:0;background:none;border:0;color:var(--ink-3);
+  font:400 12.5px/1.6 var(--f);cursor:pointer;white-space:nowrap;transition:color .2s}
+.langs button:hover{color:var(--ink)}
+.langs button[aria-pressed="true"]{color:var(--ink);font-weight:500}
 
-/* ── ヒーロー（写真が埋めるのでセーフエリアの食い込みはしない） ── */
-.hero{position:relative;isolation:isolate;height:min(64svh,520px);min-height:22rem;overflow:hidden}
-.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% 55%}
-.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:linear-gradient(to top,rgba(12,10,8,.9) 0%,rgba(12,10,8,.6) 34%,rgba(12,10,8,.12) 64%,rgba(12,10,8,0) 100%)}
-.hero-body{position:absolute;inset:auto 0 0 0;z-index:2;padding-block:0 1.5rem}
-.kicker{font:500 .7rem/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;
-  color:#e2d8bd;margin:0 0 .6rem}
-.hero h1{font-family:var(--font-display);font-weight:800;color:#fcfaf4;
-  font-size:clamp(2.1rem,10vw,3.3rem);line-height:1.15;margin:0 0 .5rem;text-wrap:balance;
-  text-shadow:0 2px 18px rgba(0,0,0,.45)}
-.hero-tag{color:#ebe4d4;margin:0;font-size:.92rem;line-height:1.7;max-width:30rem}
-.status{display:inline-flex;align-items:center;gap:.45rem;font:700 .76rem/1 var(--font-body);
-  border-radius:999px;padding:.45rem .75rem;margin:0 0 .75rem;
-  background:rgba(252,250,244,.16);color:#fcfaf4;border:1px solid rgba(252,250,244,.32);
-  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
-.status .dot{width:.5rem;height:.5rem;border-radius:50%;background:#8fd07c;box-shadow:0 0 0 3px rgba(143,208,124,.25)}
-.status[data-open="false"] .dot{background:#e8a596;box-shadow:0 0 0 3px rgba(232,165,150,.22)}
+/* 冒頭：写真は縁まで。文字は乗せず、下に置く */
+.hero img{width:100%;aspect-ratio:3/2;object-fit:cover}
+.hero-body{padding-top:clamp(22px,5.5vw,34px)}
+.kicker{margin:0;font-size:12.5px;letter-spacing:.1em;color:var(--ink-3)}
+.hero h1{margin:10px 0 0;font-size:clamp(29px,8vw,44px);font-weight:700;line-height:1.25;
+  letter-spacing:-.01em;font-feature-settings:"palt"}
+.hero-tag{margin:14px 0 0;max-width:28em;font-size:14.5px;line-height:2;color:var(--ink-2)}
+.status{display:inline-flex;align-items:center;gap:8px;margin:18px 0 0;font-size:14px;font-weight:500}
+.status .dot{width:7px;height:7px;border-radius:50%;background:var(--ink-3)}
+.status[data-open="true"] .dot{background:var(--ink)}
 
-/* 早見の帯 */
-.quick{background:var(--card);border-bottom:1px solid var(--line)}
-.quick .wrap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding-block:.85rem}
-.q{padding-inline:.25rem;text-align:center;min-width:0}
-.q + .q{border-left:1px solid var(--line)}
-.q b{display:block;font-family:var(--font-display);font-weight:600;font-size:1rem;line-height:1.35;
-  font-variant-numeric:tabular-nums}
-.q span{display:block;font-size:.7rem;color:var(--faint);letter-spacing:.04em;line-height:1.5;margin-top:.15rem}
+/* 三つの数字。囲まず、罫線で区切るだけ */
+.quick .wrap{display:flex;margin-top:clamp(22px,5vw,32px);padding-top:16px;padding-bottom:16px;
+  border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.q{flex:1;min-width:0;padding-right:12px;border-right:1px solid var(--rule)}
+.q:last-child{border-right:0;padding-right:0}
+.q b{display:block;font-size:15.5px;font-weight:700;line-height:1.5;letter-spacing:-.01em}
+.q span{display:block;font-size:11.5px;line-height:1.7;color:var(--ink-3)}
 
-/* ── 共通 ─────────────────────────────── */
-section{padding-block:2.75rem}
-section + section{border-top:1px solid var(--line)}
-.eyebrow{font:500 .68rem/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;
-  color:var(--gold);margin:0 0 .55rem}
-h2{font-family:var(--font-display);font-weight:600;font-size:1.6rem;line-height:1.35;margin:0 0 .5rem}
-.lede{color:var(--sub);margin:0 0 1.5rem;font-size:.95rem}
+section{padding:clamp(36px,9vw,60px) 0 0}
+section h2{margin:0;font-size:clamp(20px,5vw,27px);font-weight:700;line-height:1.5;
+  letter-spacing:-.01em;font-feature-settings:"palt"}
+.lede{margin:12px 0 0;max-width:32em;font-size:14px;line-height:2;color:var(--ink-2)}
 
-/* ── 写真の帯 ─────────────────────────── */
-.strip{display:grid;grid-auto-flow:column;grid-auto-columns:82%;gap:.7rem;overflow-x:auto;
-  scroll-snap-type:x mandatory;scrollbar-width:none;margin-top:1.5rem;
-  margin-inline:calc(-1 * var(--gutter-l)) calc(-1 * var(--gutter-r));
-  padding-inline:var(--gutter-l) var(--gutter-r);scroll-padding-inline:var(--gutter-l)}
-.strip::-webkit-scrollbar{display:none}
-.strip figure{margin:0;scroll-snap-align:start;min-width:0}
-.strip img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.6rem;box-shadow:var(--shadow)}
-.strip figcaption{font-size:.76rem;color:var(--faint);margin-top:.45rem}
-@media (min-width:640px){.strip{grid-auto-columns:1fr;overflow:visible;margin-inline:0;padding-inline:0}}
+/* 二枚並べ。角丸もカードもつけない */
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,12rem),1fr));
+  gap:clamp(10px,2.4vw,16px);margin-top:clamp(18px,4vw,26px)}
+.strip figure{margin:0}
+.strip img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.strip figcaption{margin-top:7px;font-size:11.5px;line-height:1.7;color:var(--ink-3)}
 
-/* ── 品書き ───────────────────────────── */
-.menu{display:grid;gap:1rem}
-@media (min-width:640px){.menu{grid-template-columns:repeat(2,minmax(0,1fr))}}
-.dish{background:var(--card);border:1px solid var(--line);border-radius:.7rem;overflow:hidden;
-  box-shadow:var(--shadow);min-width:0}
-.dish img{width:100%;aspect-ratio:3/2;object-fit:cover}
-.dish-body{padding:.95rem 1rem 1.05rem}
-.dish-top{display:flex;gap:.75rem;align-items:baseline}
-.dish-name{font-family:var(--font-display);font-weight:600;font-size:1.15rem;line-height:1.4;flex:1;min-width:0}
-.price{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:700;font-size:1.02rem;color:var(--moss-ink)}
-.dish-note{color:var(--sub);font-size:.88rem;line-height:1.7;margin:.3rem 0 0}
-.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.65rem}
-.tag{font:500 .72rem/1 var(--font-body);border-radius:999px;padding:.32rem .6rem}
-.tag.veg{color:var(--moss-ink);background:var(--moss-wash)}
-.tag.raw{color:var(--lacquer);background:var(--lacquer-wash)}
+/* 品書き：写真を左、名と値を右。カードにしない */
+.menu{margin-top:clamp(18px,4vw,26px)}
+.dish{display:grid;grid-template-columns:clamp(84px,24vw,116px) minmax(0,1fr);
+  gap:0 clamp(14px,3.4vw,20px);padding:clamp(15px,3.6vw,20px) 0;border-top:1px solid var(--rule)}
+.dish:last-child{border-bottom:1px solid var(--rule)}
+.dish > img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.dish-body{min-width:0}
+.dish-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.dish-name{margin:0;font-size:16.5px;font-weight:700;line-height:1.5}
+.price{flex:none;font-size:15px;font-weight:500;letter-spacing:.01em}
+.dish-note{margin:4px 0 0;font-size:13px;line-height:1.85;color:var(--ink-2)}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{padding:3px 9px;border:1px solid var(--rule);font-size:11px;line-height:1.6;color:var(--ink-2)}
+.tag.raw{border-color:var(--ink);color:var(--ink);font-weight:500}
 
-/* ── アレルギー（スマホでは表より札の方が読める） ── */
-.allergens{display:grid;gap:.6rem}
-.al{display:flex;gap:.9rem;align-items:center;background:var(--card);border:1px solid var(--line);
-  border-radius:.6rem;padding:.75rem .85rem;min-width:0}
-.al img{width:3.25rem;height:3.25rem;object-fit:cover;border-radius:.4rem;flex:0 0 3.25rem}
-.al-main{flex:1;min-width:0}
-.al-name{font-weight:700;font-size:.95rem;line-height:1.4}
-.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.35rem}
-.chip{font:700 .74rem/1 var(--font-body);color:var(--lacquer);background:var(--lacquer-wash);
-  border-radius:.3rem;padding:.3rem .5rem}
-.chip.none{color:var(--moss-ink);background:var(--moss-wash);font-weight:500}
-.al-key{font-size:.78rem;color:var(--faint);margin-top:.8rem}
+/* アレルギー：品ごとに一行。写真は小さく添えるだけ */
+.allergens{margin-top:clamp(16px,3.6vw,22px)}
+.al{display:grid;grid-template-columns:40px minmax(0,1fr);gap:0 13px;align-items:center;
+  padding:12px 0;border-top:1px solid var(--rule)}
+.al:last-child{border-bottom:1px solid var(--rule)}
+.al > img{width:40px;height:40px;object-fit:cover}
+.al-main{min-width:0}
+.al-name{font-size:14.5px;font-weight:500;line-height:1.6}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px}
+.chip{padding:2px 8px;background:var(--fill);font-size:11px;line-height:1.7;color:var(--ink)}
+.chip.none{background:none;padding-left:0;color:var(--ink-3)}
+.al-key{margin:12px 0 0;font-size:12px;line-height:1.8;color:var(--ink-3)}
 
-.note{background:var(--moss-wash);border-radius:.65rem;padding:1.05rem 1.1rem;font-size:.92rem;
-  line-height:1.85;margin-top:1.25rem;border:1px solid color-mix(in srgb,var(--moss) 20%,transparent)}
-.note strong{display:block;font-family:var(--font-display);font-size:1.05rem;color:var(--moss-ink);margin-bottom:.3rem}
+/* 宗教上の制限。囲まず、左の線で示す */
+.note{margin-top:clamp(20px,4.4vw,28px);padding-left:16px;border-left:2px solid var(--ink)}
+.note strong{display:block;font-size:14.5px;font-weight:700;line-height:1.7}
+.note span{display:block;margin-top:5px;font-size:13.5px;line-height:1.95;color:var(--ink-2)}
 
-/* ── 支払い ───────────────────────────── */
-.pay{display:grid;gap:.5rem;grid-template-columns:repeat(2,minmax(0,1fr))}
-.pay-item{background:var(--card);border:1px solid var(--line);border-radius:.6rem;padding:.8rem .85rem;min-width:0}
-.pay-item b{display:block;font-size:.88rem;line-height:1.45}
-.pay-item small{display:block;color:var(--faint);font-size:.74rem;line-height:1.45;margin-top:.15rem}
-.pay-state{display:inline-block;font:700 .72rem/1 var(--font-body);border-radius:999px;padding:.3rem .55rem;margin-top:.55rem}
-.pay-state.ok{color:var(--moss-ink);background:var(--moss-wash)}
-.pay-state.ng{color:var(--lacquer);background:var(--lacquer-wash)}
+/* 支払い */
+.pay{margin-top:clamp(16px,3.6vw,22px)}
+.pay-item{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 14px;align-items:baseline;
+  padding:11px 0;border-top:1px solid var(--rule)}
+.pay-item:last-child{border-bottom:1px solid var(--rule)}
+.pay-item b{font-size:14.5px;font-weight:500;line-height:1.6}
+.pay-item small{grid-column:1;font-size:12px;line-height:1.7;color:var(--ink-3)}
+.pay-state{grid-column:2;grid-row:1 / span 2;font-size:13px;white-space:nowrap}
+.pay-state.ng{color:var(--ink-3);text-decoration:line-through}
 
-/* ── 来店情報 ─────────────────────────── */
-.visit{background:var(--card);border:1px solid var(--line);border-radius:.7rem;box-shadow:var(--shadow);margin:0}
-.row{padding:.85rem 1rem;border-bottom:1px solid var(--line)}
-.row:last-child{border-bottom:0}
-.row dt{color:var(--faint);font-size:.74rem;letter-spacing:.06em;margin:0 0 .15rem}
-.row dd{margin:0;font-size:.95rem;line-height:1.7}
-@media (min-width:560px){.row{display:flex;gap:1rem}.row dt{flex:0 0 7rem;margin:0;padding-top:.2rem}.row dd{flex:1;min-width:0}}
-.tel{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.1rem;letter-spacing:.04em;-webkit-user-select:all;user-select:all}
-
-footer{padding-block:2.25rem 2.5rem;color:var(--faint);font-size:.8rem;border-top:1px solid var(--line)}
-.demo-badge{background:var(--lacquer);color:var(--card);font:700 .7rem/1 var(--font-body);letter-spacing:.06em;
-  border-radius:.25rem;padding:.32rem .55rem;display:inline-block;margin-bottom:.7rem}
-
-/* ── 下端の操作バー（スマホのみ） ─────── */
-.dock{position:fixed;left:0;right:0;bottom:0;z-index:40;background:color-mix(in srgb,var(--card) 94%,transparent);
-  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);
-  padding:.6rem var(--gutter-r) calc(.6rem + env(safe-area-inset-bottom,0px)) var(--gutter-l);
-  display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
-.btn{display:flex;align-items:center;justify-content:center;gap:.4rem;text-align:center;white-space:nowrap;overflow:hidden;
-  font:700 .92rem/1.2 var(--font-body);border-radius:.55rem;min-height:3rem;padding:.6rem .8rem;
-  cursor:pointer;border:1px solid var(--moss);text-decoration:none}
-.btn-fill{background:var(--moss);color:var(--card)}
-.btn-line{background:var(--card);color:var(--moss-ink)}
-.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
-.btn svg{width:1.05rem;height:1.05rem;flex:0 0 auto}
-body{padding-bottom:calc(4.5rem + env(safe-area-inset-bottom,0px))}
-@media (min-width:760px){
-  .dock{position:static;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;border:0;
-    padding:1rem 0 0;max-width:44rem;margin:0 auto}
-  body{padding-bottom:0}
+/* 行き方 */
+.visit{display:grid;margin:clamp(16px,3.6vw,22px) 0 0;font-size:14px}
+.visit .row{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:0 16px;
+  padding:9px 0;border-top:1px solid var(--rule)}
+.visit .row:last-child{border-bottom:1px solid var(--rule)}
+.visit dt{color:var(--ink-3);font-size:12.5px;line-height:1.9}
+.visit dd{margin:0;line-height:1.9}
+@media (max-width:430px){
+  .visit .row{grid-template-columns:minmax(0,1fr);gap:0}
+  .visit dt{padding-bottom:0}
 }
+.tel{font-size:16px;font-weight:700;letter-spacing:.02em}
+
+/* 下に貼りつく二つのボタン。この店だけは店頭で見られるので残す */
+.dock{position:sticky;bottom:0;z-index:25;display:flex;gap:8px;
+  margin-top:clamp(30px,7vw,46px);padding:10px var(--gr) calc(10px + env(safe-area-inset-bottom,0px)) var(--gl);
+  background:rgba(255,255,255,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);
+  border-top:1px solid var(--rule)}
+.btn{display:flex;flex:1;align-items:center;justify-content:center;gap:8px;min-height:50px;
+  font-family:var(--f);font-size:14px;font-weight:500;text-decoration:none;cursor:pointer;
+  transition:opacity .2s}
+.btn svg{width:17px;height:17px;flex:none}
+.btn:hover{opacity:.8}
+.btn-fill{background:var(--ink);color:var(--paper);border:1px solid var(--ink)}
+.btn-line{background:none;color:var(--ink);border:1px solid var(--ink)}
+
+footer{padding:clamp(26px,6vw,36px) 0 clamp(30px,7vw,44px);border-top:1px solid var(--rule);
+  margin-top:clamp(26px,6vw,36px)}
+.demo-badge{display:inline-block;margin-bottom:9px;padding:3px 9px;border:1px solid var(--ink-3);
+  font-size:11px;letter-spacing:.08em;color:var(--ink-2)}
+footer p{font-size:12.5px;line-height:1.9;color:var(--ink-3)}
+
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+/* ── 動き：写真だけがわずかに寄ってくる。文字は一切動かさない ── */
 @media (prefers-reduced-motion:no-preference){
-  .langs button{transition:background .18s,color .18s}
-  .btn{transition:transform .12s}
-  .btn:active{transform:scale(.98)}
+  .hero img{animation:close 1.2s cubic-bezier(.22,1,.36,1) both}
+  @supports (animation-timeline:view()){
+    .strip img,.dish > img{animation:close linear both;animation-timeline:view();
+      animation-range:entry 0 entry 55%}
+    .al,.pay-item,.visit .row{animation:tone .01s linear both;animation-timeline:view();
+      animation-range:entry 0 entry 150px}
+  }
 }
+@keyframes close{from{transform:scale(1.07);opacity:.55}to{transform:none;opacity:1}}
+@keyframes tone{from{opacity:.25}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
@@ -199,9 +185,9 @@ body{padding-bottom:calc(4.5rem + env(safe-area-inset-bottom,0px))}
   <div class="hero-body">
     <div class="wrap">
       <p class="kicker" data-k="kicker"></p>
-      <p class="status" id="status" data-open="true"><span class="dot"></span><span id="status-text"></span></p>
       <h1 data-k="name"></h1>
       <p class="hero-tag" data-k="tagline"></p>
+      <p class="status" id="status" data-open="true"><span class="dot"></span><span id="status-text"></span></p>
     </div>
   </div>
 </header>
@@ -217,7 +203,6 @@ body{padding-bottom:calc(4.5rem + env(safe-area-inset-bottom,0px))}
 <main>
   <section>
     <div class="wrap">
-      <p class="eyebrow">What is yuba</p>
       <h2 data-k="h_about"></h2>
       <p class="lede" data-k="about"></p>
       <div class="strip">
@@ -229,7 +214,6 @@ body{padding-bottom:calc(4.5rem + env(safe-area-inset-bottom,0px))}
 
   <section>
     <div class="wrap">
-      <p class="eyebrow">Menu</p>
       <h2 data-k="h_menu"></h2>
       <p class="lede" data-k="menu_lede"></p>
       <div class="menu" id="menu"></div>
@@ -238,7 +222,6 @@ body{padding-bottom:calc(4.5rem + env(safe-area-inset-bottom,0px))}
 
   <section>
     <div class="wrap">
-      <p class="eyebrow">Allergens &amp; diet</p>
       <h2 data-k="h_diet"></h2>
       <p class="lede" data-k="diet_lede"></p>
       <div class="allergens" id="allergen"></div>
@@ -252,7 +235,6 @@ body{padding-bottom:calc(4.5rem + env(safe-area-inset-bottom,0px))}
 
   <section>
     <div class="wrap">
-      <p class="eyebrow">Payment</p>
       <h2 data-k="h_pay"></h2>
       <p class="lede" data-k="pay_lede"></p>
       <div class="pay" id="pay"></div>
@@ -261,7 +243,6 @@ body{padding-bottom:calc(4.5rem + env(safe-area-inset-bottom,0px))}
 
   <section>
     <div class="wrap">
-      <p class="eyebrow">Visit</p>
       <h2 data-k="h_visit"></h2>
       <dl class="visit">
         <div class="row"><dt data-k="l_hours"></dt><dd data-k="v_hours"></dd></div>
