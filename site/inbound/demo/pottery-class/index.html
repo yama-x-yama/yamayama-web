@@ -16,8 +16,8 @@
    いちばん効くのは、作ったものがいつ手に届くかの図。ここだけ図版にして大きく出す。
    色は生の粘土の灰と窯の火の色。火の色は焼成の図にだけ使う。 */
 :root{
-  --clay:#f2efe9;
-  --clay-d:#e4dfd5;
+  --clay:#ece7dc;
+  --clay-d:#ded7c8;
   --ink:#232019;
   --ink-2:#5f594e;
   --ink-3:#938c7e;
@@ -51,19 +51,25 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   font-feature-settings:"palt"}
 .sub{margin:16px 0 0;max-width:30em;font-size:14.5px;line-height:2;color:var(--ink-2)}
 
-/* 二つのプランを並べて比べる。これがこのページの本体 */
-.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:1px;
-  margin:clamp(26px,6vw,38px) 0 0;background:var(--rule);border:1px solid var(--rule)}
-.pl{background:var(--clay);padding:clamp(20px,4.6vw,28px)}
-.pl-n{margin:0;font-size:19px;font-weight:700;line-height:1.5}
-.pl-y{margin:10px 0 0;font:600 30px/1 var(--f-gro);letter-spacing:-.01em}
-.pl-y span{font-family:var(--f-jp);font-size:12px;font-weight:400;color:var(--ink-3);margin-left:6px}
-.pl-b{margin:12px 0 0;font-size:13.5px;line-height:1.95;color:var(--ink-2)}
-.pl-s{margin:16px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.9}
-.pl-s li{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:0 10px;padding:4px 0;
-  border-top:1px solid var(--rule)}
-.pl-s li:first-child{border-top:0}
-.pl-s b{font-weight:400;color:var(--ink-3)}
+/* 二つのプランは、カードを二枚並べるのではなく一枚の対照表にする。
+   見るべきは差であって、箱ではない */
+.ptable{width:100%;margin:clamp(24px,5.6vw,34px) 0 0;border-collapse:collapse;
+  table-layout:fixed;font-size:13.5px}
+.ptable th,.ptable td{padding:clamp(9px,2.2vw,12px) 0;border-bottom:1px solid var(--rule);
+  text-align:left;vertical-align:top;line-height:1.8}
+.ptable th[scope="col"]{padding-bottom:clamp(12px,2.8vw,16px);border-bottom:2px solid var(--ink);
+  font-size:17px;font-weight:700;line-height:1.45}
+.ptable th[scope="row"]{width:4.6rem;padding-right:10px;font-size:12px;font-weight:400;
+  color:var(--ink-3);white-space:nowrap}
+.ptable td{padding-right:14px}
+.ptable td:last-child{padding-right:0}
+.ptable .yen{font:600 clamp(23px,6.4vw,30px)/1.1 var(--f-gro);letter-spacing:-.01em;display:block}
+.ptable .per{display:block;margin-top:3px;font-size:11.5px;line-height:1.7;color:var(--ink-3)}
+.ptable .lead{font-size:13px;line-height:1.9;color:var(--ink-2)}
+@media (max-width:430px){
+  .ptable th[scope="row"]{width:3.9rem;font-size:11.5px}
+  .ptable{font-size:12.5px}
+}
 
 .sec{margin-top:clamp(40px,9vw,64px)}
 .sec h2{margin:0 0 clamp(14px,3.2vw,20px);font-size:clamp(19px,4.6vw,24px);font-weight:700;
@@ -147,7 +153,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   <main>
 
     <section>
-      <div class="plans" id="plans"></div>
+      <table class="ptable" id="ptable"></table>
     </section>
 
     <section class="sec">
@@ -413,24 +419,36 @@ function rich(node,s){
 }
 
 function build(t){
-  const pl=document.getElementById("plans"); pl.textContent="";
+  /* プランの対照表。左に項目名、右に2つのプランを並べる */
+  const tb=document.getElementById("ptable"); tb.textContent="";
+  const head=document.createElement("thead"), hr=document.createElement("tr");
+  hr.appendChild(el("td"));
+  for(const p of PLANS){ const th=el("th",null,t[p.id]); th.scope="col"; hr.appendChild(th); }
+  head.appendChild(hr); tb.appendChild(head);
+
+  const tbody=document.createElement("tbody");
+  const money=document.createElement("tr");
+  money.appendChild(el("td"));
   for(const p of PLANS){
-    const d=el("div","pl");
-    d.appendChild(el("h3","pl-n",t[p.id]));
-    const y=el("p","pl-y","¥"+p.y);
-    y.appendChild(el("span",null,t.unit));
-    d.appendChild(y);
-    d.appendChild(el("p","pl-b",t[p.id+"_b"]));
-    const ul=el("ul","pl-s");
-    for(let i=1;i<=4;i++){
-      const li=el("li");
-      li.appendChild(el("b",null,t[p.id+"_s"+i]));
-      li.appendChild(el("span",null,t[p.id+"_s"+i+"v"]));
-      ul.appendChild(li);
-    }
-    d.appendChild(ul);
-    pl.appendChild(d);
+    const td=document.createElement("td");
+    td.appendChild(el("span","yen","¥"+p.y));
+    td.appendChild(el("span","per",t.unit));
+    money.appendChild(td);
   }
+  tbody.appendChild(money);
+
+  const lead=document.createElement("tr");
+  lead.appendChild(el("td"));
+  for(const p of PLANS) lead.appendChild(el("td","lead",t[p.id+"_b"]));
+  tbody.appendChild(lead);
+
+  for(let i=1;i<=4;i++){
+    const tr=document.createElement("tr");
+    const th=el("th",null,t[PLANS[0].id+"_s"+i]); th.scope="row"; tr.appendChild(th);
+    for(const p of PLANS) tr.appendChild(el("td",null,t[p.id+"_s"+i+"v"]));
+    tbody.appendChild(tr);
+  }
+  tb.appendChild(tbody);
 
   const fl=document.getElementById("flow"); fl.textContent="";
   for(const f of FLOW){
