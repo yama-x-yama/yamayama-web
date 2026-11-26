@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="yama × yama. が多言語ページの見本として作った、架空の旅館「茅野や」のデモサイトです。実在の宿ではありません。">
+<meta name="theme-color" content="#201c18">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>茅野や</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<style>
+/* 旅館は一泊の時間割そのもの。だから時刻を背骨にして、縦の線に沿って出来事を並べる。
+   外の人がいちばん戸惑うのは、何時に何が起きるか。部屋の写真より先にそれを置く。
+   色は古材の暗い茶と障子の白の二色だけ。差し色は使わない。
+   動きは、時間の線が上から下へ引かれること。 */
+:root{
+  --wood:#201c18;
+  --wood-2:#2b2621;
+  --shoji:#efeae1;
+  --shoji-2:#b9b1a5;
+  --shoji-3:#7d756a;
+  --line:#3a342d;
+  --f-ser:"Noto Serif JP",ui-serif,Georgia,serif;
+  --f-jp:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --gl:max(22px,env(safe-area-inset-left,0px));
+  --gr:max(22px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--wood);color:var(--shoji);font-family:var(--f-jp);
+  font-size:15px;line-height:1.95;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+.c{max-width:46rem;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+
+.lang{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:rgba(32,28,24,.94);
+  -webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:21;background:var(--wood)}
+.lang .c{display:flex;gap:18px;padding-top:13px;padding-bottom:13px;overflow-x:auto;scrollbar-width:none}
+.lang .c::-webkit-scrollbar{display:none}
+.lang button{flex:none;padding:0;background:none;border:0;color:var(--shoji-3);
+  font:400 12.5px/1.6 var(--f-jp);cursor:pointer;white-space:nowrap;transition:color .25s}
+.lang button:hover{color:var(--shoji)}
+.lang button[aria-pressed="true"]{color:var(--shoji)}
+
+.gate{padding:clamp(40px,12vw,84px) 0 clamp(30px,7vw,46px)}
+.vill{margin:0;font-size:12px;letter-spacing:.24em;color:var(--shoji-3)}
+.inn{margin:18px 0 0;font-family:var(--f-ser);font-weight:400;font-size:clamp(38px,11vw,62px);
+  line-height:1.2;letter-spacing:.08em}
+.inn small{display:block;margin-top:.7em;font-family:var(--f-jp);font-size:13px;font-weight:400;
+  letter-spacing:.16em;color:var(--shoji-3)}
+.lede{margin:26px 0 0;max-width:28em;font-size:15px;line-height:2.1;color:var(--shoji-2)}
+
+/* 一泊の時間割。これがこのページの背骨 */
+.day{position:relative;margin:clamp(40px,10vw,68px) 0 0;padding:0 0 0 clamp(62px,17vw,78px);list-style:none}
+.day::before{content:"";position:absolute;left:clamp(53px,14.6vw,66px);top:.9em;bottom:1.4em;width:1px;
+  background:var(--line);transform-origin:top center}
+.day li{position:relative;padding:0 0 clamp(26px,6vw,34px)}
+.day li:last-child{padding-bottom:0}
+.day .hh{position:absolute;left:calc(clamp(62px,17vw,78px) * -1);top:-.12em;width:clamp(46px,12.4vw,56px);
+  font-family:var(--f-ser);font-weight:300;font-size:clamp(19px,5vw,23px);line-height:1.3;
+  letter-spacing:.02em;text-align:right;color:var(--shoji)}
+.day li::after{content:"";position:absolute;left:calc(clamp(9px,2.4vw,12px) * -1);top:.62em;
+  width:7px;height:7px;border-radius:50%;background:var(--shoji-3)}
+.day li[data-key="1"]::after{background:var(--shoji);box-shadow:0 0 0 4px rgba(239,234,225,.12)}
+.day b{display:block;font-size:16.5px;font-weight:500;line-height:1.7}
+.day p{margin:4px 0 0;font-size:13.5px;line-height:2;color:var(--shoji-2)}
+
+/* 部屋。間取りを線で描く。写真の代わりに広さと造りを見せる */
+.rooms{margin:0;padding:0;list-style:none}
+.room{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 20px;
+  padding:clamp(22px,5vw,28px) 0;border-top:1px solid var(--line)}
+.room:last-child{border-bottom:1px solid var(--line)}
+.rm-n{grid-column:1;font-family:var(--f-ser);font-weight:400;font-size:19px;line-height:1.5;letter-spacing:.04em}
+.rm-b{grid-column:1;font-size:13.5px;line-height:1.95;color:var(--shoji-2)}
+.rm-p{grid-column:2;grid-row:1 / span 2;text-align:right;white-space:nowrap}
+.rm-p b{display:block;font-family:var(--f-ser);font-weight:600;font-size:20px;line-height:1.3;letter-spacing:.01em}
+.rm-p span{display:block;font-size:11.5px;line-height:1.8;color:var(--shoji-3)}
+.plan{grid-column:1 / -1;margin-top:12px}
+.plan svg{display:block;width:100%;max-width:230px;height:auto}
+.plan .wl{fill:none;stroke:var(--shoji-3);stroke-width:1.3}
+.plan .tm{fill:none;stroke:var(--line);stroke-width:1}
+.plan text{font:400 8.5px var(--f-jp);fill:var(--shoji-3)}
+
+.part{margin-top:clamp(44px,10vw,72px)}
+.part h2{margin:0 0 clamp(16px,3.6vw,22px);font-family:var(--f-ser);font-weight:400;
+  font-size:clamp(20px,5vw,26px);line-height:1.6;letter-spacing:.06em}
+.part > p{margin:0 0 clamp(16px,3.4vw,22px);max-width:32em;font-size:14px;line-height:2.05;color:var(--shoji-2)}
+
+.rows{display:grid;grid-template-columns:7rem minmax(0,1fr);margin:0;font-size:14px}
+.rows dt{padding:10px 0;border-top:1px solid var(--line);color:var(--shoji-3);font-size:12.5px;line-height:1.9}
+.rows dd{margin:0;padding:10px 0;border-top:1px solid var(--line);line-height:1.9}
+.rows dt:first-of-type,.rows dt:first-of-type + dd{border-top:0}
+@media (max-width:450px){
+  .rows{grid-template-columns:minmax(0,1fr)}
+  .rows dt{padding-bottom:0;border-top:1px solid var(--line)}
+  .rows dd{padding-top:0;border-top:0}
+  .rows dt:first-of-type{border-top:0}
+}
+
+/* 宿のきまり。守ってほしいことは囲まずに、字下げで示す */
+.rules{margin:0;padding:0;list-style:none}
+.rules li{padding:clamp(12px,2.8vw,16px) 0 clamp(12px,2.8vw,16px) 18px;
+  border-left:1px solid var(--line);margin-left:2px}
+.rules b{display:block;font-size:15px;font-weight:500;line-height:1.7}
+.rules p{margin:2px 0 0;font-size:13.5px;line-height:1.95;color:var(--shoji-2)}
+
+.book{display:inline-block;margin-top:22px;padding:14px 26px;background:var(--shoji);color:var(--wood);
+  font-size:14.5px;font-weight:500;text-decoration:none;transition:opacity .25s}
+.book:hover{opacity:.8}
+.book-n{margin:12px 0 0;font-size:12.5px;line-height:1.9;color:var(--shoji-3)}
+
+.end{margin-top:clamp(44px,10vw,70px);padding:clamp(22px,5vw,28px) 0
+  calc(clamp(30px,7vw,46px) + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line)}
+.end b{display:block;font-size:11px;letter-spacing:.2em;color:var(--shoji-3)}
+.end p{margin:8px 0 0;font-size:12.5px;line-height:1.9;color:var(--shoji-3)}
+
+:focus-visible{outline:2px solid var(--shoji);outline-offset:3px}
+
+/* ── 動き：時間の線が上から引かれ、間取りの壁が描かれる ── */
+@media (prefers-reduced-motion:no-preference){
+  .day::before{animation:fall 1.3s cubic-bezier(.22,1,.36,1) both}
+  .inn,.lede{animation:soft 1s ease both}
+  .lede{animation-delay:.15s}
+  .plan .wl{stroke-dasharray:var(--len,400);stroke-dashoffset:var(--len,400);
+    animation:draw 1.2s cubic-bezier(.3,1,.4,1) forwards}
+  @supports (animation-timeline:view()){
+    .day li{animation:soft .01s linear both;animation-timeline:view();animation-range:entry 0 entry 200px}
+    .plan .wl{animation-timeline:view();animation-range:entry 0 entry 280px;animation-duration:1ms}
+  }
+}
+@keyframes fall{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+@keyframes soft{from{opacity:0}to{opacity:1}}
+@keyframes draw{to{stroke-dashoffset:0}}
+</style>
+</head>
+<body>
+
+<nav class="lang" aria-label="Language"><div class="c" id="lb"></div></nav>
+
+<div class="c">
+
+  <header class="gate">
+    <p class="vill" data-k="vill"></p>
+    <h1 class="inn"><span data-k="name"></span><small data-k="name_r"></small></h1>
+    <p class="lede" data-k="lede"></p>
+  </header>
+
+  <main>
+
+    <section>
+      <h2 class="part" style="margin-top:0;margin-bottom:0" data-k="h_day"></h2>
+      <p style="margin:14px 0 0;max-width:32em;font-size:14px;line-height:2.05;color:var(--shoji-2)" data-k="day_n"></p>
+      <ol class="day" id="day"></ol>
+    </section>
+
+    <section class="part">
+      <h2 data-k="h_rooms"></h2>
+      <p data-k="rooms_n"></p>
+      <ul class="rooms" id="rooms"></ul>
+    </section>
+
+    <section class="part">
+      <h2 data-k="h_meal"></h2>
+      <p data-k="meal_n"></p>
+      <dl class="rows" id="meal"></dl>
+    </section>
+
+    <section class="part">
+      <h2 data-k="h_rules"></h2>
+      <ul class="rules" id="rules"></ul>
+    </section>
+
+    <section class="part">
+      <h2 data-k="h_visit"></h2>
+      <dl class="rows" id="visit"></dl>
+      <a class="book" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A0%83%E6%9C%A8%E7%9C%8C%E6%97%A5%E5%85%89%E5%B8%82%E5%A5%A5%E9%AC%BC%E6%80%92%E5%B7%9D" target="_blank" rel="noopener" data-k="cta_map"></a>
+      <p class="book-n" data-k="book_n"></p>
+    </section>
+
+    <footer class="end">
+      <b data-k="demo"></b>
+      <p data-k="foot"></p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const LANGS=[["ja","日本語"],["en","English"],["zh-Hant","繁體"],["zh-Hans","简体"],["ko","한국어"]];
+const DAY=[{t:"15:00",k:"d1",key:1},{t:"15:30",k:"d2"},{t:"18:00",k:"d3"},{t:"20:00",k:"d4"},
+           {t:"23:00",k:"d5"},{t:"07:30",k:"d6"},{t:"10:00",k:"d7",key:1}];
+/* 間取りは線で描く。部屋ごとに形が違う */
+const PLANS={
+  eight:'<svg viewBox="0 0 230 96" role="img" aria-hidden="true"><path class="wl" d="M2 2h150v92H2z"/><path class="wl" d="M152 20h50v56h-50"/><path class="tm" d="M2 25h150M2 48h150M2 71h150M40 2v92M78 2v92M116 2v92"/><text x="8" y="16">8</text><text x="158" y="52">engawa</text></svg>',
+  ten:'<svg viewBox="0 0 230 110" role="img" aria-hidden="true"><path class="wl" d="M2 2h140v106H2z"/><path class="wl" d="M142 2h60v54h-60"/><path class="wl" d="M142 56h60v52h-60"/><path class="tm" d="M2 28h140M2 55h140M2 82h140M37 2v106M72 2v106M107 2v106"/><text x="8" y="18">10</text><text x="148" y="32">bath</text><text x="148" y="86">engawa</text></svg>',
+  two:'<svg viewBox="0 0 230 112" role="img" aria-hidden="true"><path class="wl" d="M2 2h112v68H2z"/><path class="wl" d="M2 70h112v40H2z"/><path class="wl" d="M114 2h88v108h-88"/><path class="tm" d="M2 25h112M2 47h112M40 2v68M77 2v68"/><text x="8" y="17">6</text><text x="8" y="92">bed</text><text x="120" y="60">bath</text></svg>'
+};
+const ROOMS=[{id:"r1",pl:"eight",p:"18,000"},{id:"r2",pl:"ten",p:"26,000"},{id:"r3",pl:"two",p:"32,000"}];
+const MEAL=["dinner","breakfast","diet","drink"];
+const RULES=["u1","u2","u3","u4","u5"];
+const VISIT=["in","out","access","pick","park","addr"];
+
+const T={
+ja:{vill:"栃木県 日光市 奥鬼怒",name:"茅野や",name_r:"KAYANOYA ／ 全6室",
+ lede:"奥鬼怒の川沿いに建つ、部屋が六つだけの宿です。食事は部屋ではなく、一階の板の間で出します。",
+ h_day:"一泊の流れ",
+ day_n:"何時に何があるかを、先に書いておきます。食事の時刻は選べません。",
+ d1:"お着きになる",d1_n:"玄関で靴を脱ぎます。靴は番号のついた下足箱へ。お荷物は部屋までお運びします。",
+ d2:"お茶とお菓子",d2_n:"部屋で一服してから、館内をご案内します。浴衣と帯は部屋に置いてあります。着方は係がお見せします。",
+ d3:"夕食",d3_n:"一階の板の間でお出しします。18:00の一斉です。時間をずらすことはできません。浴衣のままでどうぞ。",
+ d4:"貸切風呂",d4_n:"20:00から22:00まで、45分ずつの入れ替え制。到着時に時間をお選びいただきます。追加の料金はかかりません。",
+ d5:"玄関を閉めます",d5_n:"23:00に施錠します。それ以降に戻られる場合は、必ず先にお知らせください。",
+ d6:"朝食",d6_n:"7:30の一斉です。夕食と同じ板の間で。",
+ d7:"お発ちになる",d7_n:"10:00までにお部屋をお出ください。荷物は夕方までお預かりできます。",
+ h_rooms:"部屋",
+ rooms_n:"ひとり分の料金です。二食（夕食・朝食）と、温泉の入浴が含まれます。繁忙期は変わります。",
+ r1:"八畳　川に面した間",r1_b:"布団を敷いてお休みいただきます。縁側あり。風呂は共同のものをお使いください。",
+ r2:"十畳　内風呂つき",r2_b:"源泉を引いた檜の内風呂があります。縁側あり。二名から。",
+ r3:"寝台の間",r3_b:"六畳の畳の間に寝台を二つ。畳に寝るのが難しい方へ。内風呂つき。",
+ per:"一名一泊",
+ h_meal:"食事",
+ meal_n:"献立はその日の仕入れで決まります。お品書きは当日、席に置いてあります。",
+ dinner:"夕食",dinner_v:"18:00から。川魚と山のものが中心の一汁六菜。だしに鰹節を使います。",
+ breakfast:"朝食",breakfast_v:"7:30から。ご飯、味噌汁、焼き魚、小鉢。",
+ diet:"食べられないもの",diet_v:"肉を抜く、魚を抜くなどのご相談は、ご予約の3日前までにお願いします。当日のご変更はできません。えび・かに・卵・乳・小麦・そばを使います。",
+ drink:"お酒",drink_v:"地酒とビールを置いています。お持ち込みは1本まで、持ち込み料500円です。",
+ h_rules:"宿のきまり",
+ u1:"入れ墨のある方も、共同の湯をお使いいただけます",u1_n:"大きさや数による制限はありません。",
+ u2:"館内は素足か、用意したスリッパで",u2_n:"畳の部屋にはスリッパのまま入らないでください。",
+ u3:"全館禁煙です",u3_n:"喫煙は玄関の外の灰皿でお願いします。電子たばこも館内では吸えません。",
+ u4:"お子さまは5歳から",u4_n:"4歳以下のお子さまはお泊めしていません。設備と食事の都合によるものです。",
+ u5:"Wi-Fiは一階だけ届きます",u5_n:"部屋には届きません。携帯電話の電波も弱い場所です。",
+ h_visit:"着き方",
+ in:"お入り",in_v:"15:00〜18:00（18:00を過ぎる場合はお電話ください）",
+ out:"お発ち",out_v:"10:00",
+ access:"行き方",access_v:"東武鬼怒川温泉駅からバスで約1時間20分、終点下車。",
+ pick:"送迎",pick_v:"終点バス停まで、15:00と16:00にお迎えに出ます。前日までにお申し付けください。",
+ park:"駐車場",park_v:"8台、無料。冬は冬用タイヤが要ります。",
+ addr:"所在地",addr_v:"栃木県日光市（架空の住所です）",
+ cta_map:"地図を開く",
+ book_n:"ご予約は電話かメールで承っています。このページからは予約できません。",
+ demo:"Demonstration",
+ foot:"これは営業用のデモサイトです。架空の宿で、実在の旅館とは関係ありません。料金・部屋・規則もすべて架空のものです。"},
+
+en:{vill:"Okukinu, Nikko, Tochigi",name:"Kayanoya",name_r:"茅野や / six rooms",
+ lede:"An inn of six rooms beside the river in Okukinu. Meals are served downstairs on the wooden floor, not in your room.",
+ h_day:"How one night goes",
+ day_n:"Here is what happens and when. Meal times are fixed and cannot be moved.",
+ d1:"You arrive",d1_n:"Take your shoes off at the entrance and put them in a numbered box. We carry your luggage to the room.",
+ d2:"Tea and a sweet",d2_n:"Rest in your room, then we show you around. A yukata and sash are laid out for you; staff will show you how to wear them.",
+ d3:"Dinner",d3_n:"Downstairs on the wooden floor. Everyone eats at 18:00; this cannot be shifted. A yukata is fine to wear.",
+ d4:"Private bath",d4_n:"From 20:00 to 22:00 in 45-minute slots. You choose your slot when you arrive. There is no extra charge.",
+ d5:"The front door is locked",d5_n:"We lock up at 23:00. If you will be back later than that, please tell us beforehand.",
+ d6:"Breakfast",d6_n:"Everyone eats at 7:30, in the same room as dinner.",
+ d7:"You leave",d7_n:"Please be out of the room by 10:00. We can keep your luggage until the evening.",
+ h_rooms:"Rooms",
+ rooms_n:"Price is per person and includes two meals (dinner and breakfast) and use of the hot spring. Peak seasons differ.",
+ r1:"Eight mats, facing the river",r1_b:"Futon laid out on the tatami. Has a veranda. Use the shared baths.",
+ r2:"Ten mats, with its own bath",r2_b:"A cypress bath fed from the spring. Has a veranda. Two guests minimum.",
+ r3:"Bed room",r3_b:"Two beds on a six-mat tatami floor, for anyone who finds sleeping on the floor difficult. Own bath.",
+ per:"per person, per night",
+ h_meal:"Meals",
+ meal_n:"The menu is decided by what comes in that day. A written menu is on your place at the table.",
+ dinner:"Dinner",dinner_v:"From 18:00. River fish and mountain vegetables; one soup and six dishes. The stock is made with bonito.",
+ breakfast:"Breakfast",breakfast_v:"From 7:30. Rice, miso soup, grilled fish, small dishes.",
+ diet:"What you cannot eat",diet_v:"Tell us at least three days before you stay if you need meat or fish left out. We cannot change it on the day. We use prawn, crab, egg, dairy, wheat and buckwheat.",
+ drink:"Drinks",drink_v:"Local sake and beer. You may bring one bottle of your own; the corkage is ¥500.",
+ h_rules:"House rules",
+ u1:"Tattoos are welcome in the shared baths",u1_n:"There is no limit on size or number.",
+ u2:"Bare feet, or the slippers we provide",u2_n:"Please do not wear slippers onto the tatami.",
+ u3:"No smoking anywhere indoors",u3_n:"There is an ashtray outside the front door. Vaping is also not allowed indoors.",
+ u4:"Children from age five",u4_n:"We do not take children aged four or under. This is a matter of the rooms and the food.",
+ u5:"Wi-Fi reaches the ground floor only",u5_n:"It does not reach the rooms. Mobile signal is weak here too.",
+ h_visit:"Getting here",
+ in:"Check-in",in_v:"15:00–18:00 (please call if you will be later than 18:00)",
+ out:"Check-out",out_v:"10:00",
+ access:"Getting here",access_v:"About 1 hour 20 minutes by bus from Tobu Kinugawa-Onsen Station, to the last stop.",
+ pick:"Pick-up",pick_v:"We meet the 15:00 and 16:00 arrivals at the last bus stop. Please ask the day before.",
+ park:"Parking",park_v:"8 spaces, free. Winter tyres are needed in winter.",
+ addr:"Address",addr_v:"Nikko, Tochigi (this address is fictional)",
+ cta_map:"Open in Maps",
+ book_n:"Bookings are taken by phone or email. You cannot book from this page.",
+ demo:"Demonstration",
+ foot:"This is a demonstration site. The inn is fictional and bears no relation to any real ryokan. The prices, rooms and rules are fictional too."},
+
+"zh-Hant":{vill:"栃木縣 日光市 奧鬼怒",name:"茅野や",name_r:"KAYANOYA ／ 全6間客房",
+ lede:"位於奧鬼怒河畔、僅有六間客房的旅館。餐食不在客房內，而是在一樓的木板間供應。",
+ h_day:"一晚的流程",
+ day_n:"先把幾點做什麼寫出來。用餐時間為固定，無法更動。",
+ d1:"抵達",d1_n:"在玄關脫鞋，放入編號鞋櫃。行李由我們送到客房。",
+ d2:"茶與點心",d2_n:"先在房內歇息，之後為您導覽館內。浴衣與腰帶已備於房中，服務人員會示範穿法。",
+ d3:"晚餐",d3_n:"於一樓木板間供應。全館18:00統一用餐，無法調整時間。穿浴衣前往即可。",
+ d4:"包場風呂",d4_n:"20:00至22:00，每45分鐘輪替。抵達時選擇時段，不另收費。",
+ d5:"大門上鎖",d5_n:"23:00上鎖。若會晚於此時間返回，請務必事先告知。",
+ d6:"早餐",d6_n:"7:30統一用餐，地點與晚餐相同。",
+ d7:"退房離開",d7_n:"請於10:00前離開客房。行李可代為保管至傍晚。",
+ h_rooms:"客房",
+ rooms_n:"為每人費用，含兩餐（晚餐・早餐）與溫泉入浴。旺季費用另計。",
+ r1:"八疊　面河客房",r1_b:"鋪設被褥就寢。附緣廊。請使用公共浴場。",
+ r2:"十疊　附室內風呂",r2_b:"設有引自源泉的檜木浴池。附緣廊。兩人以上成行。",
+ r3:"寢台客房",r3_b:"六疊榻榻米上設兩張床，適合不習慣睡地板的客人。附室內風呂。",
+ per:"每人每晚",
+ h_meal:"餐食",
+ meal_n:"菜色依當日進貨決定。菜單於當天置於座位上。",
+ dinner:"晚餐",dinner_v:"18:00開始。以溪魚與山菜為主的一汁六菜。高湯使用柴魚。",
+ breakfast:"早餐",breakfast_v:"7:30開始。白飯、味噌湯、烤魚、小菜。",
+ diet:"飲食限制",diet_v:"如需去除肉類或魚類，請於住宿3天前告知。當天無法變更。本館使用蝦、蟹、蛋、乳、小麥、蕎麥。",
+ drink:"酒類",drink_v:"備有地酒與啤酒。自行攜帶以1瓶為限，開瓶費500日圓。",
+ h_rules:"住宿規則",
+ u1:"有刺青的客人亦可使用公共浴場",u1_n:"不限尺寸與數量。",
+ u2:"館內請赤足或穿著館內拖鞋",u2_n:"請勿穿拖鞋踏上榻榻米。",
+ u3:"全館禁菸",u3_n:"吸菸請至玄關外的菸灰缸處。電子菸於館內同樣禁止。",
+ u4:"兒童限5歲以上",u4_n:"恕不接待4歲以下兒童，係因設備與餐食之故。",
+ u5:"Wi-Fi僅一樓可用",u5_n:"客房內收不到訊號。此處手機訊號亦較弱。",
+ h_visit:"交通方式",
+ in:"入住",in_v:"15:00〜18:00（若晚於18:00請來電）",
+ out:"退房",out_v:"10:00",
+ access:"交通",access_v:"從東武鬼怒川溫泉站搭巴士約1小時20分，於終點站下車。",
+ pick:"接送",pick_v:"15:00與16:00於終點巴士站接送。請於前一日告知。",
+ park:"停車場",park_v:"8個車位，免費。冬季需雪胎。",
+ addr:"地址",addr_v:"栃木縣日光市（此為虛構地址）",
+ cta_map:"開啟地圖",
+ book_n:"訂房請以電話或電子郵件辦理。本頁面無法訂房。",
+ demo:"Demonstration",
+ foot:"這是示範網站。旅館為虛構，與任何實際旅館無關。費用、客房與規則亦為虛構。"},
+
+"zh-Hans":{vill:"栃木县 日光市 奥鬼怒",name:"茅野や",name_r:"KAYANOYA ／ 共6间客房",
+ lede:"位于奥鬼怒河畔、仅有六间客房的旅馆。餐食不在客房内，而是在一楼的木板间供应。",
+ h_day:"一晚的流程",
+ day_n:"先把几点做什么写出来。用餐时间固定，无法变更。",
+ d1:"抵达",d1_n:"在玄关脱鞋，放入编号鞋柜。行李由我们送到客房。",
+ d2:"茶与点心",d2_n:"先在房内歇息，之后为您导览馆内。浴衣与腰带已备于房中，服务人员会示范穿法。",
+ d3:"晚餐",d3_n:"于一楼木板间供应。全馆18:00统一用餐，无法调整时间。穿浴衣前往即可。",
+ d4:"包场风吕",d4_n:"20:00至22:00，每45分钟轮替。抵达时选择时段，不另收费。",
+ d5:"大门上锁",d5_n:"23:00上锁。若会晚于此时间返回，请务必事先告知。",
+ d6:"早餐",d6_n:"7:30统一用餐，地点与晚餐相同。",
+ d7:"退房离开",d7_n:"请于10:00前离开客房。行李可代为保管至傍晚。",
+ h_rooms:"客房",
+ rooms_n:"为每人费用，含两餐（晚餐・早餐）与温泉入浴。旺季费用另计。",
+ r1:"八叠　面河客房",r1_b:"铺设被褥就寝。附缘廊。请使用公共浴场。",
+ r2:"十叠　附室内风吕",r2_b:"设有引自源泉的桧木浴池。附缘廊。两人以上成行。",
+ r3:"寝台客房",r3_b:"六叠榻榻米上设两张床，适合不习惯睡地板的客人。附室内风吕。",
+ per:"每人每晚",
+ h_meal:"餐食",
+ meal_n:"菜色依当日进货决定。菜单于当天置于座位上。",
+ dinner:"晚餐",dinner_v:"18:00开始。以溪鱼与山菜为主的一汁六菜。高汤使用柴鱼。",
+ breakfast:"早餐",breakfast_v:"7:30开始。白饭、味噌汤、烤鱼、小菜。",
+ diet:"饮食限制",diet_v:"如需去除肉类或鱼类，请于住宿3天前告知。当天无法变更。本馆使用虾、蟹、蛋、乳、小麦、荞麦。",
+ drink:"酒类",drink_v:"备有地酒与啤酒。自带以1瓶为限，开瓶费500日元。",
+ h_rules:"住宿规则",
+ u1:"有纹身的客人亦可使用公共浴场",u1_n:"不限尺寸与数量。",
+ u2:"馆内请赤足或穿着馆内拖鞋",u2_n:"请勿穿拖鞋踏上榻榻米。",
+ u3:"全馆禁烟",u3_n:"吸烟请至玄关外的烟灰缸处。电子烟于馆内同样禁止。",
+ u4:"儿童限5岁以上",u4_n:"恕不接待4岁以下儿童，系因设备与餐食之故。",
+ u5:"Wi-Fi仅一楼可用",u5_n:"客房内收不到信号。此处手机信号亦较弱。",
+ h_visit:"交通方式",
+ in:"入住",in_v:"15:00〜18:00（若晚于18:00请来电）",
+ out:"退房",out_v:"10:00",
+ access:"交通",access_v:"从东武鬼怒川温泉站搭巴士约1小时20分，于终点站下车。",
+ pick:"接送",pick_v:"15:00与16:00于终点巴士站接送。请于前一日告知。",
+ park:"停车场",park_v:"8个车位，免费。冬季需雪胎。",
+ addr:"地址",addr_v:"栃木县日光市（此为虚构地址）",
+ cta_map:"打开地图",
+ book_n:"订房请以电话或电子邮件办理。本页面无法订房。",
+ demo:"Demonstration",
+ foot:"这是演示网站。旅馆为虚构，与任何实际旅馆无关。费用、客房与规则也均为虚构。"},
+
+ko:{vill:"도치기현 닛코시 오쿠키누",name:"가야노야",name_r:"茅野や / 전 6실",
+ lede:"오쿠키누 강가에 있는, 객실이 여섯 개뿐인 숙소입니다. 식사는 객실이 아니라 1층 마루에서 냅니다.",
+ h_day:"하룻밤의 흐름",
+ day_n:"몇 시에 무엇이 있는지 먼저 적어 둡니다. 식사 시간은 정해져 있어 바꿀 수 없습니다.",
+ d1:"도착",d1_n:"현관에서 신발을 벗어 번호가 붙은 신발장에 넣습니다. 짐은 객실까지 옮겨 드립니다.",
+ d2:"차와 과자",d2_n:"객실에서 쉬신 뒤 관내를 안내해 드립니다. 유카타와 띠는 객실에 준비되어 있고, 입는 법은 직원이 보여 드립니다.",
+ d3:"저녁 식사",d3_n:"1층 마루에서 냅니다. 18:00에 다 함께 먹으며 시간을 옮길 수 없습니다. 유카타 차림으로 오셔도 됩니다.",
+ d4:"전세탕",d4_n:"20:00부터 22:00까지 45분씩 교대제입니다. 도착하실 때 시간을 고르시며, 추가 요금은 없습니다.",
+ d5:"현관을 잠급니다",d5_n:"23:00에 잠급니다. 그보다 늦게 돌아오실 때는 반드시 미리 알려 주세요.",
+ d6:"아침 식사",d6_n:"7:30에 다 함께. 저녁과 같은 마루에서 냅니다.",
+ d7:"출발",d7_n:"10:00까지 객실을 비워 주세요. 짐은 저녁때까지 맡아 드립니다.",
+ h_rooms:"객실",
+ rooms_n:"1인 요금이며 두 끼(저녁·아침)와 온천 입욕이 포함됩니다. 성수기에는 달라집니다.",
+ r1:"8조　강이 보이는 방",r1_b:"이부자리를 깔고 주무십니다. 툇마루가 있습니다. 목욕은 공용탕을 이용해 주세요.",
+ r2:"10조　실내탕 포함",r2_b:"원천을 끌어온 편백 욕조가 있습니다. 툇마루가 있습니다. 2인부터.",
+ r3:"침대방",r3_b:"6조 다다미 방에 침대 두 개. 바닥에서 주무시기 어려운 분께. 실내탕 포함.",
+ per:"1인 1박",
+ h_meal:"식사",
+ meal_n:"차림은 그날 들어온 재료로 정합니다. 차림표는 당일 자리에 놓여 있습니다.",
+ dinner:"저녁",dinner_v:"18:00부터. 민물고기와 산나물 중심의 일즙육채. 국물에 가쓰오부시를 씁니다.",
+ breakfast:"아침",breakfast_v:"7:30부터. 밥, 된장국, 생선구이, 작은 반찬.",
+ diet:"못 드시는 것",diet_v:"고기나 생선을 빼는 상의는 숙박 3일 전까지 부탁드립니다. 당일 변경은 불가능합니다. 새우·게·달걀·유제품·밀·메밀을 사용합니다.",
+ drink:"술",drink_v:"지역 술과 맥주가 있습니다. 반입은 1병까지이며, 반입료는 500엔입니다.",
+ h_rules:"숙소의 규칙",
+ u1:"문신이 있으셔도 공용탕을 쓰실 수 있습니다",u1_n:"크기나 개수에 제한은 없습니다.",
+ u2:"관내에서는 맨발이나 준비된 슬리퍼로",u2_n:"다다미 방에는 슬리퍼를 신고 들어가지 말아 주세요.",
+ u3:"전관 금연입니다",u3_n:"흡연은 현관 밖 재떨이에서 부탁드립니다. 전자담배도 관내에서는 피우실 수 없습니다.",
+ u4:"어린이는 5세부터",u4_n:"4세 이하 어린이는 받지 않습니다. 시설과 식사 사정 때문입니다.",
+ u5:"와이파이는 1층에만 닿습니다",u5_n:"객실에는 닿지 않습니다. 휴대전화 전파도 약한 곳입니다.",
+ h_visit:"오시는 길",
+ in:"체크인",in_v:"15:00〜18:00 (18:00을 넘으실 때는 전화 주세요)",
+ out:"체크아웃",out_v:"10:00",
+ access:"오시는 길",access_v:"도부 기누가와온센역에서 버스로 약 1시간 20분, 종점 하차.",
+ pick:"마중",pick_v:"종점 버스 정류장으로 15:00과 16:00에 마중 나갑니다. 전날까지 말씀해 주세요.",
+ park:"주차장",park_v:"8대, 무료. 겨울에는 겨울용 타이어가 필요합니다.",
+ addr:"주소",addr_v:"도치기현 닛코시 (가상의 주소입니다)",
+ cta_map:"지도 열기",
+ book_n:"예약은 전화나 이메일로 받습니다. 이 페이지에서는 예약할 수 없습니다.",
+ demo:"Demonstration",
+ foot:"영업용 데모 사이트입니다. 가상의 숙소이며 실제 료칸과는 관계가 없습니다. 요금, 객실, 규칙도 모두 가상입니다."}
+};
+
+const el=(t,c,x)=>{const n=document.createElement(t); if(c)n.className=c; if(x!=null)n.textContent=x; return n;};
+
+function build(t){
+  const dy=document.getElementById("day"); dy.textContent="";
+  for(const d of DAY){
+    const li=el("li"); if(d.key) li.dataset.key="1";
+    li.appendChild(el("span","hh",d.t));
+    li.appendChild(el("b",null,t[d.k]));
+    li.appendChild(el("p",null,t[d.k+"_n"]));
+    dy.appendChild(li);
+  }
+
+  const rm=document.getElementById("rooms"); rm.textContent="";
+  for(const r of ROOMS){
+    const li=el("li","room");
+    li.appendChild(el("p","rm-n",t[r.id]));
+    li.appendChild(el("p","rm-b",t[r.id+"_b"]));
+    const pr=el("div","rm-p");
+    pr.appendChild(el("b",null,"¥"+r.p));
+    pr.appendChild(el("span",null,t.per));
+    li.appendChild(pr);
+    const pl=el("div","plan"); pl.innerHTML=PLANS[r.pl];
+    li.appendChild(pl);
+    rm.appendChild(li);
+  }
+  for(const p of document.querySelectorAll(".plan .wl")){
+    try{ p.style.setProperty("--len", Math.ceil(p.getTotalLength())); }catch(e){}
+  }
+
+  for(const [id,keys] of [["meal",MEAL],["visit",VISIT]]){
+    const dl=document.getElementById(id); dl.textContent="";
+    for(const k of keys){ dl.appendChild(el("dt",null,t[k])); dl.appendChild(el("dd",null,t[k+"_v"])); }
+  }
+
+  const ru=document.getElementById("rules"); ru.textContent="";
+  for(const u of RULES){
+    const li=el("li");
+    li.appendChild(el("b",null,t[u]));
+    li.appendChild(el("p",null,t[u+"_n"]));
+    ru.appendChild(li);
+  }
+}
+
+function apply(code){
+  const t=T[code];
+  for(const n of document.querySelectorAll("[data-k]")){ const v=t[n.dataset.k]; if(v!=null) n.textContent=v; }
+  build(t);
+  document.documentElement.lang=code;
+  for(const b of document.querySelectorAll("#lb button")) b.setAttribute("aria-pressed",String(b.dataset.lang===code));
+  document.title=t.name;
+}
+
+const lb=document.getElementById("lb");
+for(const [code,label] of LANGS){
+  const b=el("button",null,label); b.type="button"; b.dataset.lang=code;
+  b.addEventListener("click",()=>apply(code));
+  lb.appendChild(b);
+}
+apply("ja");
+</script>
+</body>
+</html>

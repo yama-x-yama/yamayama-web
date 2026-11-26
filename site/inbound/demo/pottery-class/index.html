@@ -1,0 +1,479 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="yama × yama. が多言語ページの見本として作った、架空の陶芸体験「益子 ろくろ場」のデモサイトです。実在の教室ではありません。">
+<meta name="theme-color" content="#f2efe9">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>益子 ろくろ場</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap">
+<style>
+/* 体験は「申し込む前に決めること」が全部。だから二つのプランを横に並べて比べられる形にする。
+   いちばん効くのは、作ったものがいつ手に届くかの図。ここだけ図版にして大きく出す。
+   色は生の粘土の灰と窯の火の色。火の色は焼成の図にだけ使う。 */
+:root{
+  --clay:#f2efe9;
+  --clay-d:#e4dfd5;
+  --ink:#232019;
+  --ink-2:#5f594e;
+  --ink-3:#938c7e;
+  --rule:#cfc8ba;
+  --kiln:#b8491f;        /* 窯の火。焼成の図にだけ */
+  --f-gro:"Space Grotesk",ui-sans-serif,system-ui,sans-serif;
+  --f-jp:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --gl:max(20px,env(safe-area-inset-left,0px));
+  --gr:max(20px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--clay);color:var(--ink);font-family:var(--f-jp);
+  font-size:15px;line-height:1.9;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+.c{max-width:52rem;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+
+.lang{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--clay-d)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:21;background:var(--clay-d)}
+.lang .c{display:flex;gap:0;padding:0;overflow-x:auto;scrollbar-width:none}
+.lang .c::-webkit-scrollbar{display:none}
+.lang button{flex:none;padding:12px 14px;background:none;border:0;color:var(--ink-3);
+  font:500 12.5px/1.5 var(--f-jp);cursor:pointer;white-space:nowrap;transition:background-color .2s,color .2s}
+.lang button:hover{color:var(--ink)}
+.lang button[aria-pressed="true"]{background:var(--clay);color:var(--ink)}
+
+.top{padding:clamp(30px,8vw,56px) 0 clamp(24px,5vw,34px)}
+.where{margin:0;font:500 11.5px/1.6 var(--f-gro);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.h1{margin:12px 0 0;font-size:clamp(28px,7.6vw,44px);font-weight:700;line-height:1.3;letter-spacing:-.01em;
+  font-feature-settings:"palt"}
+.sub{margin:16px 0 0;max-width:30em;font-size:14.5px;line-height:2;color:var(--ink-2)}
+
+/* 二つのプランを並べて比べる。これがこのページの本体 */
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:1px;
+  margin:clamp(26px,6vw,38px) 0 0;background:var(--rule);border:1px solid var(--rule)}
+.pl{background:var(--clay);padding:clamp(20px,4.6vw,28px)}
+.pl-n{margin:0;font-size:19px;font-weight:700;line-height:1.5}
+.pl-y{margin:10px 0 0;font:600 30px/1 var(--f-gro);letter-spacing:-.01em}
+.pl-y span{font-family:var(--f-jp);font-size:12px;font-weight:400;color:var(--ink-3);margin-left:6px}
+.pl-b{margin:12px 0 0;font-size:13.5px;line-height:1.95;color:var(--ink-2)}
+.pl-s{margin:16px 0 0;padding:0;list-style:none;font-size:13px;line-height:1.9}
+.pl-s li{display:grid;grid-template-columns:5.6rem minmax(0,1fr);gap:0 10px;padding:4px 0;
+  border-top:1px solid var(--rule)}
+.pl-s li:first-child{border-top:0}
+.pl-s b{font-weight:400;color:var(--ink-3)}
+
+.sec{margin-top:clamp(40px,9vw,64px)}
+.sec h2{margin:0 0 clamp(14px,3.2vw,20px);font-size:clamp(19px,4.6vw,24px);font-weight:700;
+  line-height:1.55;font-feature-settings:"palt"}
+.sec > p{margin:0;max-width:34em;font-size:14px;line-height:2;color:var(--ink-2)}
+
+/* 届くまでの図。ここだけ火の色を使い、大きく出す */
+.kilnmap{margin:clamp(18px,4vw,26px) 0 0;padding:clamp(20px,4.6vw,28px);background:var(--clay-d)}
+.kilnmap svg{display:block;width:100%;height:auto;overflow:visible}
+.kilnmap .trk{fill:none;stroke:var(--ink-3);stroke-width:1.5}
+.kilnmap .hot{fill:none;stroke:var(--kiln);stroke-width:3;stroke-linecap:round}
+.kilnmap .nd{fill:var(--clay-d);stroke:var(--ink);stroke-width:1.5}
+.kilnmap .nd-hot{fill:var(--kiln);stroke:var(--kiln)}
+.kilnmap text{font:500 9.5px var(--f-jp);fill:var(--ink-2)}
+.kilnmap text.w{font-family:var(--f-gro);font-weight:600;font-size:10px;fill:var(--ink)}
+.kiln-n{margin:14px 0 0;font-size:13.5px;line-height:1.95;color:var(--ink-2)}
+.kiln-n b{font-weight:500;color:var(--ink)}
+
+/* 当日の流れ。番号ではなく経過時間で示す */
+.flow{margin:0;padding:0;list-style:none}
+.flow li{display:grid;grid-template-columns:3.6rem minmax(0,1fr);gap:0 16px;padding:clamp(11px,2.6vw,15px) 0;
+  border-bottom:1px solid var(--rule)}
+.flow li:first-child{border-top:1px solid var(--rule)}
+.flow .mn{font:500 13px/1.7 var(--f-gro);letter-spacing:.02em;color:var(--ink-3)}
+.flow b{font-size:15px;font-weight:500;line-height:1.7}
+.flow p{grid-column:2;margin:1px 0 0;font-size:13px;line-height:1.9;color:var(--ink-2)}
+
+.bring{display:flex;flex-wrap:wrap;gap:7px;margin:0;padding:0;list-style:none}
+.bring li{padding:7px 13px;background:var(--clay-d);font-size:13px;line-height:1.5}
+.bring li[data-no="1"]{background:none;border:1px dashed var(--rule);color:var(--ink-3)}
+
+.rows{display:grid;grid-template-columns:6.4rem minmax(0,1fr);margin:0;font-size:14px}
+.rows dt{padding:9px 0;border-top:1px solid var(--rule);color:var(--ink-3);font-size:12.5px;line-height:1.9}
+.rows dd{margin:0;padding:9px 0;border-top:1px solid var(--rule);line-height:1.9}
+.rows dt:first-of-type,.rows dt:first-of-type + dd{border-top:0}
+@media (max-width:450px){
+  .rows{grid-template-columns:minmax(0,1fr)}
+  .rows dt{padding-bottom:0;border-top:1px solid var(--rule)}
+  .rows dd{padding-top:0;border-top:0}
+  .rows dt:first-of-type{border-top:0}
+}
+.cta{display:inline-block;margin-top:20px;padding:14px 24px;background:var(--ink);color:var(--clay);
+  font-size:14.5px;font-weight:500;text-decoration:none;transition:opacity .25s}
+.cta:hover{opacity:.82}
+.cta-n{margin:12px 0 0;font-size:12.5px;line-height:1.9;color:var(--ink-3)}
+
+.end{margin-top:clamp(40px,9vw,64px);padding:clamp(20px,5vw,26px) 0
+  calc(clamp(28px,7vw,44px) + env(safe-area-inset-bottom,0px));border-top:1px solid var(--rule)}
+.end b{display:block;font:600 11px/1.9 var(--f-gro);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.end p{margin:6px 0 0;font-size:12.5px;line-height:1.9;color:var(--ink-3)}
+
+:focus-visible{outline:2px solid var(--kiln);outline-offset:3px}
+
+/* ── 動き：窯の線に火が通る。プランは動かさない ── */
+@media (prefers-reduced-motion:no-preference){
+  .kilnmap .hot{stroke-dasharray:var(--len,300);stroke-dashoffset:var(--len,300);
+    animation:fire 1.6s cubic-bezier(.4,0,.2,1) forwards}
+  .h1,.sub{animation:up .7s cubic-bezier(.22,1,.36,1) both}
+  .sub{animation-delay:.08s}
+  @supports (animation-timeline:view()){
+    .kilnmap .hot{animation-timeline:view();animation-range:entry 40px entry 320px;animation-duration:1ms}
+    .flow li{animation:up .01s linear both;animation-timeline:view();animation-range:entry 10px entry 160px}
+  }
+}
+@keyframes fire{to{stroke-dashoffset:0}}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav class="lang" aria-label="Language"><div class="c" id="lb"></div></nav>
+
+<div class="c">
+
+  <header class="top">
+    <p class="where" data-k="where"></p>
+    <h1 class="h1" data-k="name"></h1>
+    <p class="sub" data-k="sub"></p>
+  </header>
+
+  <main>
+
+    <section>
+      <div class="plans" id="plans"></div>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_kiln"></h2>
+      <p data-k="kiln_lede"></p>
+      <div class="kilnmap">
+        <svg viewBox="0 0 320 86" role="img" aria-labelledby="kilntitle">
+          <title id="kilntitle" data-k="kiln_alt"></title>
+          <path class="trk" d="M16 44h288"/>
+          <path class="hot" id="hotline" d="M16 44h288"/>
+          <circle class="nd nd-hot" cx="16" cy="44" r="6"/>
+          <circle class="nd" cx="112" cy="44" r="6"/>
+          <circle class="nd" cx="208" cy="44" r="6"/>
+          <circle class="nd" cx="304" cy="44" r="6"/>
+          <text class="w" x="16" y="26" text-anchor="middle" data-k="kw1"></text>
+          <text class="w" x="112" y="26" text-anchor="middle" data-k="kw2"></text>
+          <text class="w" x="208" y="26" text-anchor="middle" data-k="kw3"></text>
+          <text class="w" x="296" y="26" text-anchor="end" data-k="kw4"></text>
+          <text x="16" y="66" text-anchor="start" data-k="kl1"></text>
+          <text x="112" y="66" text-anchor="middle" data-k="kl2"></text>
+          <text x="208" y="66" text-anchor="middle" data-k="kl3"></text>
+          <text x="304" y="66" text-anchor="end" data-k="kl4"></text>
+        </svg>
+      </div>
+      <p class="kiln-n" data-k="kiln_n1"></p>
+      <p class="kiln-n" data-k="kiln_n2"></p>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_flow"></h2>
+      <ol class="flow" id="flow"></ol>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_bring"></h2>
+      <p style="margin-bottom:clamp(14px,3vw,18px)" data-k="bring_n"></p>
+      <ul class="bring" id="bring"></ul>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_book"></h2>
+      <dl class="rows" id="rows"></dl>
+      <a class="cta" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A0%83%E6%9C%A8%E7%9C%8C%E7%9B%8A%E5%AD%90%E7%94%BA" target="_blank" rel="noopener" data-k="cta_map"></a>
+      <p class="cta-n" data-k="cta_n"></p>
+    </section>
+
+    <footer class="end">
+      <b data-k="demo"></b>
+      <p data-k="foot"></p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const LANGS=[["ja","日本語"],["en","English"],["zh-Hant","繁體"],["zh-Hans","简体"],["ko","한국어"]];
+const PLANS=[{id:"p1",y:"3,500"},{id:"p2",y:"5,000"}];
+const FLOW=[{m:"0:00",k:"f1"},{m:"0:10",k:"f2"},{m:"0:25",k:"f3"},{m:"1:10",k:"f4"},{m:"1:25",k:"f5"}];
+const BRING=[{k:"g1"},{k:"g2"},{k:"g3"},{k:"g4",no:1},{k:"g5",no:1}];
+const ROWS=["open","closed","lang","age","group","cancel","access","addr"];
+
+const T={
+ja:{where:"栃木県 益子町",name:"益子 ろくろ場",
+ sub:"益子焼の工房で、器を一つ作っていただきます。作ったものは焼いてから、後日お送りします。その場では持ち帰れません。",
+ p1:"手びねり",p1_y:"3,500",p1_b:"粘土を手で押し広げて形を作ります。はじめての方はこちら。湯呑か小鉢を一つ。",
+ p1_s1:"所要",p1_s1v:"90分",p1_s2:"作る数",p1_s2v:"1つ",p1_s3:"対象",p1_s3v:"6歳から",p1_s4:"粘土",p1_s4v:"800g込み",
+ p2:"ろくろ",p2_y:"5,000",p2_b:"電動ろくろを回して作ります。形が崩れたら、何度でもやり直せます。できのよい一つを焼きます。",
+ p2_s1:"所要",p2_s1v:"90分",p2_s2:"作る数",p2_s2v:"3つ作って1つ選ぶ",p2_s3:"対象",p2_s3v:"12歳から",p2_s4:"粘土",p2_s4v:"使い放題",
+ unit:"税込・ひとり",
+ h_kiln:"作ったものが届くまで",
+ kiln_lede:"いちばん大事なところです。体験した日に持ち帰ることはできません。",
+ kiln_alt:"体験の日から発送までの流れを示した図",
+ kw1:"DAY 0",kw2:"2 WEEKS",kw3:"6 WEEKS",kw4:"8–10 WEEKS",
+ kl1:"作る",kl2:"乾かす",kl3:"素焼き・釉がけ",kl4:"本焼き・発送",
+ kiln_n1:"<b>お手元に届くまで、おおよそ2〜3か月かかります。</b>登り窯は年に4回しか焚かないため、焼く順番を待つ時間があります。急ぐことはできません。",
+ kiln_n2:"日本国内への発送は着払いです。<b>海外へもお送りできます。</b>送料は国と重さによるので、焼き上がってから見積りをお送りし、お支払いいただいてから発送します。関税がかかるかどうかは、お受け取りになる国の決まりによります。",
+ h_flow:"当日の90分",
+ f1:"受付と、手を洗う",f1_n:"エプロンをお貸しします。爪が長い方は、ろくろは難しいことがあります。",
+ f2:"かたちの説明",f2_n:"見本を見ながら、何を作るか決めます。身振りでも通じます。",
+ f3:"作る",f3_n:"いちばん長い時間です。職人が横について、手を添えます。",
+ f4:"大きさと色を決める",f4_n:"底に名前を彫ります。釉薬は5色から選べます。写真を撮るならこの時間に。",
+ f5:"住所を書いて、おしまい",f5_n:"送り先をご記入ください。海外の住所も大丈夫です。",
+ h_bring:"持ち物と服装",
+ bring_n:"手ぶらで来ていただいて構いません。あると助かるもの、置いてきてほしいものだけ書きます。",
+ g1:"汚れてもいい服",g2:"短く切った爪（ろくろの場合）",g3:"髪を結ぶもの",
+ g4:"指輪・腕時計は外します",g5:"長い付け爪では、ろくろはできません",
+ h_book:"申し込みと、きまり",
+ open:"開催",open_v:"毎日 10:00 / 13:00 / 15:30 の3回",
+ closed:"休み",closed_v:"木曜日、年末年始、窯焚きの日",
+ lang:"ことば",lang_v:"日本語と英語。中国語・韓国語は翻訳機を使ってご案内します。",
+ age:"年齢",age_v:"手びねりは6歳から、ろくろは12歳から。小学生以下は保護者の方もご一緒に。",
+ group:"人数",group_v:"1回につき6名まで。7名以上のご相談は電話で。",
+ cancel:"取り消し",cancel_v:"前日までは無料。当日は全額。ご連絡がないまま来られなかった場合も全額いただきます。",
+ access:"行き方",access_v:"JR宇都宮駅から関東バス「益子行」で約1時間、「道の駅ましこ」下車、徒歩7分。",
+ addr:"所在地",addr_v:"栃木県芳賀郡益子町（架空の住所です）",
+ cta_map:"地図を開く",
+ cta_n:"ご予約は電話かメールで承ります。このページからは申し込めません。",
+ demo:"Demonstration",
+ foot:"これは営業用のデモサイトです。架空の工房で、実在の陶芸教室とは関係ありません。料金・日程・規則もすべて架空のものです。"},
+
+en:{where:"Mashiko, Tochigi",name:"Mashiko Wheel Room",
+ sub:"Make one pot in a Mashiko pottery. We fire it afterwards and post it to you. You cannot take it home on the day.",
+ p1:"Hand building",p1_y:"3,500",p1_b:"Press and open the clay by hand. Start here if you have never done this. One tea cup or small bowl.",
+ p1_s1:"Takes",p1_s1v:"90 minutes",p1_s2:"You make",p1_s2v:"One piece",p1_s3:"Age",p1_s3v:"6 and over",p1_s4:"Clay",p1_s4v:"800g included",
+ p2:"The wheel",p2_y:"5,000",p2_b:"Throw on an electric wheel. If it collapses you simply start again. We fire the best one.",
+ p2_s1:"Takes",p2_s1v:"90 minutes",p2_s2:"You make",p2_s2v:"Three, keep one",p2_s3:"Age",p2_s3v:"12 and over",p2_s4:"Clay",p2_s4v:"As much as you need",
+ unit:"tax included, per person",
+ h_kiln:"When your pot reaches you",
+ kiln_lede:"This is the part to understand first. You cannot take your pot home on the day.",
+ kiln_alt:"A diagram of the stages from the workshop day to posting",
+ kw1:"DAY 0",kw2:"2 WEEKS",kw3:"6 WEEKS",kw4:"8–10 WEEKS",
+ kl1:"You make it",kl2:"Drying",kl3:"Bisque and glaze",kl4:"Firing and posting",
+ kiln_n1:"<b>It takes roughly two to three months to reach you.</b> The climbing kiln is lit only four times a year, so pieces wait their turn. This cannot be hurried.",
+ kiln_n2:"Within Japan we post cash-on-delivery. <b>We can also send overseas.</b> Postage depends on country and weight, so we send you a quote once it is fired and post it after payment. Whether customs duty applies is decided by the country receiving it.",
+ h_flow:"The ninety minutes",
+ f1:"Sign in and wash your hands",f1_n:"We lend you an apron. Long nails make the wheel difficult.",
+ f2:"What you will make",f2_n:"Look at the samples and decide. Gestures work fine.",
+ f3:"Making",f3_n:"The longest part. A potter sits beside you and steadies your hands.",
+ f4:"Size and colour",f4_n:"We carve your name into the base. Five glazes to choose from. This is the moment for photos.",
+ f5:"Write your address, and you are done",f5_n:"Fill in where it should be sent. An address outside Japan is fine.",
+ h_bring:"What to bring, what to wear",
+ bring_n:"You can come with nothing. These are the things that help, and the things to leave behind.",
+ g1:"Clothes that can get dirty",g2:"Short nails (for the wheel)",g3:"Something to tie your hair",
+ g4:"Rings and watches come off",g5:"Long false nails make the wheel impossible",
+ h_book:"Booking and conditions",
+ open:"Sessions",open_v:"Daily at 10:00, 13:00 and 15:30",
+ closed:"Closed",closed_v:"Thursdays, the New Year period, and kiln-firing days",
+ lang:"Languages",lang_v:"Japanese and English. For Chinese and Korean we use a translation device.",
+ age:"Age",age_v:"Hand building from 6, the wheel from 12. A guardian must join children of primary school age or younger.",
+ group:"Group size",group_v:"Up to six people per session. For seven or more, please call.",
+ cancel:"Cancellation",cancel_v:"Free until the day before. On the day, the full fee. Not arriving without telling us is also charged in full.",
+ access:"Getting here",access_v:"About one hour by Kanto bus bound for Mashiko from JR Utsunomiya Station. Get off at Michi-no-Eki Mashiko, then 7 minutes on foot.",
+ addr:"Address",addr_v:"Mashiko, Haga, Tochigi (this address is fictional)",
+ cta_map:"Open in Maps",
+ cta_n:"Bookings are taken by phone or email. You cannot book from this page.",
+ demo:"Demonstration",
+ foot:"This is a demonstration site. The workshop is fictional and bears no relation to any real pottery class. The prices, times and rules are fictional too."},
+
+"zh-Hant":{where:"栃木縣 益子町",name:"益子 轆轤工房",
+ sub:"在益子燒的工房製作一件器皿。作品燒製完成後再寄送給您，當天無法帶回。",
+ p1:"手捏",p1_y:"3,500",p1_b:"以手推開陶土塑形。初次體驗建議選此項。可製作茶杯或小缽一件。",
+ p1_s1:"時間",p1_s1v:"90分鐘",p1_s2:"製作數",p1_s2v:"1件",p1_s3:"年齡",p1_s3v:"6歲以上",p1_s4:"陶土",p1_s4v:"含800公克",
+ p2:"轆轤",p2_y:"5,000",p2_b:"使用電動轆轤拉坯。失敗可重來，最後選出最滿意的一件燒製。",
+ p2_s1:"時間",p2_s1v:"90分鐘",p2_s2:"製作數",p2_s2v:"做3件選1件",p2_s3:"年齡",p2_s3v:"12歲以上",p2_s4:"陶土",p2_s4v:"不限量",
+ unit:"含稅・每人",
+ h_kiln:"作品何時送達",
+ kiln_lede:"這是最重要的一點。體驗當天無法將作品帶回。",
+ kiln_alt:"從體驗日到寄送的流程圖",
+ kw1:"DAY 0",kw2:"2 WEEKS",kw3:"6 WEEKS",kw4:"8–10 WEEKS",
+ kl1:"製作",kl2:"陰乾",kl3:"素燒・上釉",kl4:"本燒・寄送",
+ kiln_n1:"<b>送達約需2〜3個月。</b>登窯一年只燒四次，需等待排窯，恕無法加急。",
+ kiln_n2:"日本國內以貨到付款寄送。<b>亦可寄往海外。</b>運費依國家與重量而定，燒製完成後會寄上報價，收到款項後安排寄送。是否課徵關稅取決於收件國家的規定。",
+ h_flow:"當天的90分鐘",
+ f1:"報到與洗手",f1_n:"提供圍裙。指甲較長者操作轆轤可能較困難。",
+ f2:"決定形狀",f2_n:"看著樣品決定要做什麼。以手勢溝通也沒問題。",
+ f3:"製作",f3_n:"最長的一段時間。師傅會在旁協助扶手。",
+ f4:"決定大小與顏色",f4_n:"於底部刻上姓名。釉色有5種可選。想拍照請利用此時段。",
+ f5:"填寫地址，結束",f5_n:"請填寫寄送地址，海外地址亦可。",
+ h_bring:"攜帶物品與服裝",
+ bring_n:"空手前來即可。以下僅列出建議攜帶與請勿攜帶的物品。",
+ g1:"不怕弄髒的衣物",g2:"剪短的指甲（轆轤）",g3:"綁頭髮的髮圈",
+ g4:"戒指與手錶請取下",g5:"長的水晶指甲無法操作轆轤",
+ h_book:"報名與規定",
+ open:"場次",open_v:"每日 10:00 / 13:00 / 15:30 共3場",
+ closed:"休息",closed_v:"星期四、年末年初、燒窯日",
+ lang:"語言",lang_v:"日語與英語。中文與韓語將使用翻譯機協助。",
+ age:"年齡",age_v:"手捏6歲以上，轆轤12歲以上。小學以下須由監護人陪同。",
+ group:"人數",group_v:"每場至多6人。7人以上請來電洽詢。",
+ cancel:"取消",cancel_v:"前一日前免費。當日取消收取全額。未通知而未到場亦收取全額。",
+ access:"交通",access_v:"從JR宇都宮站搭關東巴士「往益子」約1小時，於「道之驛益子」下車步行7分鐘。",
+ addr:"地址",addr_v:"栃木縣芳賀郡益子町（此為虛構地址）",
+ cta_map:"開啟地圖",
+ cta_n:"報名請以電話或電子郵件辦理。本頁面無法報名。",
+ demo:"Demonstration",
+ foot:"這是示範網站。工房為虛構，與任何實際陶藝教室無關。費用、時段與規定亦為虛構。"},
+
+"zh-Hans":{where:"栃木县 益子町",name:"益子 辘轳工房",
+ sub:"在益子烧的工房制作一件器皿。作品烧制完成后再寄送给您，当天无法带回。",
+ p1:"手捏",p1_y:"3,500",p1_b:"以手推开陶土塑形。初次体验建议选此项。可制作茶杯或小钵一件。",
+ p1_s1:"时间",p1_s1v:"90分钟",p1_s2:"制作数",p1_s2v:"1件",p1_s3:"年龄",p1_s3v:"6岁以上",p1_s4:"陶土",p1_s4v:"含800克",
+ p2:"辘轳",p2_y:"5,000",p2_b:"使用电动辘轳拉坯。失败可重来，最后选出最满意的一件烧制。",
+ p2_s1:"时间",p2_s1v:"90分钟",p2_s2:"制作数",p2_s2v:"做3件选1件",p2_s3:"年龄",p2_s3v:"12岁以上",p2_s4:"陶土",p2_s4v:"不限量",
+ unit:"含税・每人",
+ h_kiln:"作品何时送达",
+ kiln_lede:"这是最重要的一点。体验当天无法将作品带回。",
+ kiln_alt:"从体验日到寄送的流程图",
+ kw1:"DAY 0",kw2:"2 WEEKS",kw3:"6 WEEKS",kw4:"8–10 WEEKS",
+ kl1:"制作",kl2:"阴干",kl3:"素烧・上釉",kl4:"本烧・寄送",
+ kiln_n1:"<b>送达约需2〜3个月。</b>登窑一年只烧四次，需等待排窑，恕无法加急。",
+ kiln_n2:"日本国内以货到付款寄送。<b>亦可寄往海外。</b>运费依国家与重量而定，烧制完成后会寄上报价，收到款项后安排寄送。是否征收关税取决于收件国家的规定。",
+ h_flow:"当天的90分钟",
+ f1:"报到与洗手",f1_n:"提供围裙。指甲较长者操作辘轳可能较困难。",
+ f2:"决定形状",f2_n:"看着样品决定要做什么。用手势沟通也没问题。",
+ f3:"制作",f3_n:"最长的一段时间。师傅会在旁协助扶手。",
+ f4:"决定大小与颜色",f4_n:"于底部刻上姓名。釉色有5种可选。想拍照请利用此时段。",
+ f5:"填写地址，结束",f5_n:"请填写寄送地址，海外地址亦可。",
+ h_bring:"携带物品与服装",
+ bring_n:"空手前来即可。以下仅列出建议携带与请勿携带的物品。",
+ g1:"不怕弄脏的衣物",g2:"剪短的指甲（辘轳）",g3:"绑头发的发圈",
+ g4:"戒指与手表请取下",g5:"长的美甲无法操作辘轳",
+ h_book:"报名与规定",
+ open:"场次",open_v:"每日 10:00 / 13:00 / 15:30 共3场",
+ closed:"休息",closed_v:"星期四、年末年初、烧窑日",
+ lang:"语言",lang_v:"日语与英语。中文与韩语将使用翻译机协助。",
+ age:"年龄",age_v:"手捏6岁以上，辘轳12岁以上。小学以下须由监护人陪同。",
+ group:"人数",group_v:"每场至多6人。7人以上请来电咨询。",
+ cancel:"取消",cancel_v:"前一日前免费。当日取消收取全额。未通知而未到场亦收取全额。",
+ access:"交通",access_v:"从JR宇都宫站搭关东巴士「往益子」约1小时，在「道之站益子」下车步行7分钟。",
+ addr:"地址",addr_v:"栃木县芳贺郡益子町（此为虚构地址）",
+ cta_map:"打开地图",
+ cta_n:"报名请以电话或电子邮件办理。本页面无法报名。",
+ demo:"Demonstration",
+ foot:"这是演示网站。工房为虚构，与任何实际陶艺教室无关。费用、时段与规定也均为虚构。"},
+
+ko:{where:"도치기현 마시코마치",name:"마시코 물레방",
+ sub:"마시코야키 공방에서 그릇을 하나 만드십니다. 만드신 것은 구운 뒤에 보내 드리며, 그날 가져가실 수는 없습니다.",
+ p1:"손으로 빚기",p1_y:"3,500",p1_b:"흙을 손으로 밀어 펴서 모양을 만듭니다. 처음이시라면 이쪽으로. 찻잔이나 작은 그릇 하나.",
+ p1_s1:"소요",p1_s1v:"90분",p1_s2:"만드는 수",p1_s2v:"1개",p1_s3:"나이",p1_s3v:"6세부터",p1_s4:"흙",p1_s4v:"800g 포함",
+ p2:"물레",p2_y:"5,000",p2_b:"전동 물레를 돌려 만듭니다. 무너지면 몇 번이든 다시 하실 수 있고, 가장 잘된 하나를 굽습니다.",
+ p2_s1:"소요",p2_s1v:"90분",p2_s2:"만드는 수",p2_s2v:"3개 만들어 1개 선택",p2_s3:"나이",p2_s3v:"12세부터",p2_s4:"흙",p2_s4v:"제한 없음",
+ unit:"세금 포함·1인",
+ h_kiln:"만든 것이 도착하기까지",
+ kiln_lede:"가장 중요한 부분입니다. 체험하신 날에 가져가실 수는 없습니다.",
+ kiln_alt:"체험일부터 발송까지의 흐름을 나타낸 그림",
+ kw1:"DAY 0",kw2:"2 WEEKS",kw3:"6 WEEKS",kw4:"8–10 WEEKS",
+ kl1:"만들기",kl2:"말리기",kl3:"초벌·유약",kl4:"본벌·발송",
+ kiln_n1:"<b>손에 닿기까지 대략 2〜3개월이 걸립니다.</b> 오름가마는 일 년에 네 번만 때기 때문에 구울 차례를 기다리는 시간이 있습니다. 앞당길 수는 없습니다.",
+ kiln_n2:"일본 국내는 착불로 보냅니다. <b>해외로도 보내 드립니다.</b> 배송비는 나라와 무게에 따라 달라지므로, 다 구워진 뒤 견적을 보내 드리고 결제가 확인되면 발송합니다. 관세가 붙는지는 받으시는 나라의 규정에 따릅니다.",
+ h_flow:"당일의 90분",
+ f1:"접수와 손 씻기",f1_n:"앞치마를 빌려 드립니다. 손톱이 길면 물레는 어려울 수 있습니다.",
+ f2:"모양 정하기",f2_n:"견본을 보며 무엇을 만들지 정합니다. 손짓으로도 통합니다.",
+ f3:"만들기",f3_n:"가장 긴 시간입니다. 장인이 옆에 앉아 손을 받쳐 드립니다.",
+ f4:"크기와 색 정하기",f4_n:"바닥에 이름을 새깁니다. 유약은 다섯 가지 중에서 고르실 수 있습니다. 사진은 이때 찍으세요.",
+ f5:"주소를 적고 끝",f5_n:"보낼 곳을 적어 주세요. 해외 주소도 괜찮습니다.",
+ h_bring:"가져올 것과 옷차림",
+ bring_n:"맨손으로 오셔도 됩니다. 있으면 좋은 것과 두고 오셔야 할 것만 적습니다.",
+ g1:"더러워져도 되는 옷",g2:"짧게 자른 손톱 (물레)",g3:"머리를 묶을 것",
+ g4:"반지와 손목시계는 빼 주세요",g5:"긴 네일로는 물레를 하실 수 없습니다",
+ h_book:"신청과 규칙",
+ open:"회차",open_v:"매일 10:00 / 13:00 / 15:30 세 번",
+ closed:"휴무",closed_v:"목요일, 연말연시, 가마를 때는 날",
+ lang:"언어",lang_v:"일본어와 영어. 중국어·한국어는 번역기를 써서 안내합니다.",
+ age:"나이",age_v:"손으로 빚기는 6세부터, 물레는 12세부터. 초등학생 이하는 보호자와 함께.",
+ group:"인원",group_v:"회차당 6명까지. 7명 이상은 전화로 상의해 주세요.",
+ cancel:"취소",cancel_v:"전날까지는 무료. 당일은 전액. 연락 없이 오지 않으신 경우에도 전액 받습니다.",
+ access:"오시는 길",access_v:"JR 우쓰노미야역에서 간토버스 「마시코행」으로 약 1시간, 「미치노에키 마시코」 하차 후 도보 7분.",
+ addr:"주소",addr_v:"도치기현 하가군 마시코마치 (가상의 주소입니다)",
+ cta_map:"지도 열기",
+ cta_n:"예약은 전화나 이메일로 받습니다. 이 페이지에서는 신청하실 수 없습니다.",
+ demo:"Demonstration",
+ foot:"영업용 데모 사이트입니다. 가상의 공방이며 실제 도예 교실과는 관계가 없습니다. 요금, 일정, 규칙도 모두 가상입니다."}
+};
+
+const el=(t,c,x)=>{const n=document.createElement(t); if(c)n.className=c; if(x!=null)n.textContent=x; return n;};
+function rich(node,s){
+  node.textContent="";
+  s.split(/(<b>.*?<\/b>)/g).forEach(part=>{
+    if(!part) return;
+    const m=part.match(/^<b>(.*)<\/b>$/);
+    if(m) node.appendChild(el("b",null,m[1]));
+    else node.appendChild(document.createTextNode(part));
+  });
+}
+
+function build(t){
+  const pl=document.getElementById("plans"); pl.textContent="";
+  for(const p of PLANS){
+    const d=el("div","pl");
+    d.appendChild(el("h3","pl-n",t[p.id]));
+    const y=el("p","pl-y","¥"+p.y);
+    y.appendChild(el("span",null,t.unit));
+    d.appendChild(y);
+    d.appendChild(el("p","pl-b",t[p.id+"_b"]));
+    const ul=el("ul","pl-s");
+    for(let i=1;i<=4;i++){
+      const li=el("li");
+      li.appendChild(el("b",null,t[p.id+"_s"+i]));
+      li.appendChild(el("span",null,t[p.id+"_s"+i+"v"]));
+      ul.appendChild(li);
+    }
+    d.appendChild(ul);
+    pl.appendChild(d);
+  }
+
+  const fl=document.getElementById("flow"); fl.textContent="";
+  for(const f of FLOW){
+    const li=el("li");
+    li.appendChild(el("span","mn",f.m));
+    li.appendChild(el("b",null,t[f.k]));
+    li.appendChild(el("p",null,t[f.k+"_n"]));
+    fl.appendChild(li);
+  }
+
+  const br=document.getElementById("bring"); br.textContent="";
+  for(const g of BRING){
+    const li=el("li",null,t[g.k]);
+    if(g.no) li.dataset.no="1";
+    br.appendChild(li);
+  }
+
+  const rw=document.getElementById("rows"); rw.textContent="";
+  for(const k of ROWS){ rw.appendChild(el("dt",null,t[k])); rw.appendChild(el("dd",null,t[k+"_v"])); }
+
+  const h=document.getElementById("hotline");
+  try{ h.style.setProperty("--len", Math.ceil(h.getTotalLength())); }catch(e){}
+}
+
+function apply(code){
+  const t=T[code];
+  for(const n of document.querySelectorAll("[data-k]")){
+    const v=t[n.dataset.k]; if(v==null) continue;
+    if(v.indexOf("<b>")>=0) rich(n,v); else n.textContent=v;
+  }
+  build(t);
+  document.documentElement.lang=code;
+  for(const b of document.querySelectorAll("#lb button")) b.setAttribute("aria-pressed",String(b.dataset.lang===code));
+  document.title=t.name;
+}
+
+const lb=document.getElementById("lb");
+for(const [code,label] of LANGS){
+  const b=el("button",null,label); b.type="button"; b.dataset.lang=code;
+  b.addEventListener("click",()=>apply(code));
+  lb.appendChild(b);
+}
+apply("ja");
+</script>
+</body>
+</html>

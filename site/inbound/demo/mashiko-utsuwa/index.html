@@ -1,0 +1,454 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="yama × yama. が多言語ページの見本として作った、架空の益子焼の器店「土と灰」のデモサイトです。実在の店舗ではありません。">
+<meta name="theme-color" content="#f7f6f3">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>器 土と灰</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<style>
+/* 器の店。写真がないので、器そのものを断面の線で描く。
+   品物を番号で呼ぶ台帳の体裁にして、線画と寸法を主役にする。
+   色は土の灰と墨の二色。釉薬の青磁だけ一点使う。
+   動きは、器の輪郭線が引かれること。要素は浮かせない。 */
+:root{
+  --clay:#f7f6f3;
+  --clay-2:#eceae5;
+  --sumi:#1f1e1c;
+  --sumi-2:#5c5953;
+  --sumi-3:#938f87;
+  --hair:#d8d5ce;
+  --seiji:#5c8a86;     /* 青磁。一点だけ */
+  --f-ser:"Cormorant Garamond",ui-serif,Georgia,serif;
+  --f-jp:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --gl:max(20px,env(safe-area-inset-left,0px));
+  --gr:max(20px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--clay);color:var(--sumi);font-family:var(--f-jp);
+  font-size:15px;line-height:1.9;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+.c{max-width:50rem;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+
+.lang{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;
+  background:var(--clay);border-bottom:1px solid var(--hair)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:21;background:var(--clay)}
+.lang .c{display:flex;justify-content:flex-end;gap:15px;padding-top:11px;padding-bottom:11px;
+  overflow-x:auto;scrollbar-width:none}
+.lang .c::-webkit-scrollbar{display:none}
+.lang button{flex:none;padding:2px 0;background:none;border:0;color:var(--sumi-3);
+  font:400 12.5px/1.6 var(--f-jp);cursor:pointer;white-space:nowrap;transition:color .2s}
+.lang button:hover{color:var(--sumi)}
+.lang button[aria-pressed="true"]{color:var(--seiji)}
+
+/* 扉。欧文のセリフと和文を縦に積む */
+.door{padding:clamp(34px,10vw,70px) 0 clamp(26px,6vw,40px)}
+.kiln{margin:0;font-family:var(--f-ser);font-size:clamp(13px,3.4vw,15px);font-weight:500;
+  letter-spacing:.3em;text-transform:uppercase;color:var(--sumi-3)}
+.title{margin:14px 0 0;font-size:clamp(32px,9vw,50px);font-weight:500;line-height:1.2;
+  letter-spacing:.06em;font-feature-settings:"palt"}
+.intro{margin:20px 0 0;max-width:30em;font-size:14.5px;line-height:2;color:var(--sumi-2)}
+.open-line{margin:22px 0 0;padding-top:16px;border-top:1px solid var(--hair);font-size:14px;color:var(--sumi-2)}
+.open-line b{color:var(--sumi);font-weight:500}
+
+/* 台帳。番号・線画・寸法・値。品物は順番ではないので数字は符号として扱う */
+.ledger{margin:0;padding:0;list-style:none;border-top:1px solid var(--hair)}
+.item{display:grid;grid-template-columns:4.8rem minmax(0,1fr);gap:0 18px;
+  padding:clamp(22px,5vw,30px) 0;border-bottom:1px solid var(--hair)}
+.fig{grid-column:1;grid-row:1 / span 3}
+.fig svg{display:block;width:100%;height:auto;overflow:visible}
+.fig .ln{fill:none;stroke:var(--sumi);stroke-width:1.4;stroke-linejoin:round;stroke-linecap:round}
+.fig .gl{fill:none;stroke:var(--seiji);stroke-width:1.4;stroke-linecap:round}
+.no{grid-column:2;margin:0;font-family:var(--f-ser);font-size:13px;font-weight:500;letter-spacing:.22em;
+  color:var(--sumi-3)}
+.it-n{grid-column:2;margin:3px 0 0;font-size:17px;font-weight:500;line-height:1.55}
+.it-b{grid-column:2;margin:6px 0 0;font-size:13.5px;line-height:1.95;color:var(--sumi-2)}
+.spec{grid-column:2;display:flex;flex-wrap:wrap;gap:3px 18px;margin:10px 0 0;padding:0;list-style:none;
+  font-size:12.5px;line-height:1.85;color:var(--sumi-3)}
+.spec b{font-weight:400;color:var(--sumi-2)}
+.price{grid-column:2;margin:9px 0 0;font-family:var(--f-ser);font-size:21px;font-weight:600;letter-spacing:.02em}
+
+/* 段。この店では見出しを横に寝かせず、短い一行で置く */
+.part{margin-top:clamp(40px,10vw,66px)}
+.part > h2{margin:0 0 clamp(14px,3.4vw,20px);font-size:clamp(18px,4.4vw,22px);font-weight:500;
+  line-height:1.6;letter-spacing:.04em;font-feature-settings:"palt"}
+.part > p{margin:0;max-width:34em;font-size:14px;line-height:2;color:var(--sumi-2)}
+
+/* 送ることと税。土産物で外国の方が必ず聞くところ */
+.ship{margin:clamp(18px,4vw,24px) 0 0;padding:clamp(18px,4.4vw,26px);background:var(--clay-2)}
+.ship h3{margin:0 0 10px;font-size:15px;font-weight:500;line-height:1.6}
+.ship p{margin:0;font-size:13.5px;line-height:1.95;color:var(--sumi-2)}
+.ship p + p{margin-top:9px}
+.ship b{font-weight:500;color:var(--sumi)}
+
+.rows{display:grid;grid-template-columns:5.8rem minmax(0,1fr);margin:0;font-size:14px}
+.rows dt{padding:8px 0;border-top:1px solid var(--hair);color:var(--sumi-3);font-size:12.5px;line-height:1.9}
+.rows dd{margin:0;padding:8px 0;border-top:1px solid var(--hair);line-height:1.9}
+.rows dt:first-of-type,.rows dt:first-of-type + dd{border-top:0}
+@media (max-width:440px){
+  .rows{grid-template-columns:minmax(0,1fr)}
+  .rows dt{padding-bottom:0;border-top:1px solid var(--hair)}
+  .rows dd{padding-top:0;border-top:0}
+  .rows dt:first-of-type{border-top:0}
+}
+.tender{display:flex;flex-wrap:wrap;gap:4px 18px;margin:12px 0 0;padding:0;list-style:none;font-size:14px}
+.tender li{display:flex;align-items:baseline;gap:6px}
+.tender li[data-ok="0"]{color:var(--sumi-3)}
+.tender i{font-style:normal;font-family:var(--f-ser);font-weight:600}
+
+.to-map{display:inline-block;margin-top:20px;padding:11px 20px;border:1px solid var(--sumi);
+  color:var(--sumi);font-size:14px;text-decoration:none;transition:background-color .25s,color .25s}
+.to-map:hover{background:var(--sumi);color:var(--clay)}
+
+.colophon{margin-top:clamp(40px,9vw,64px);padding:clamp(20px,5vw,26px) 0
+  calc(clamp(28px,7vw,44px) + env(safe-area-inset-bottom,0px));border-top:1px solid var(--hair)}
+.colophon b{display:block;font-family:var(--f-ser);font-size:12px;font-weight:600;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--sumi-3)}
+.colophon p{margin:7px 0 0;font-size:12.5px;line-height:1.9;color:var(--sumi-3)}
+
+:focus-visible{outline:2px solid var(--seiji);outline-offset:3px}
+
+/* ── 動き：器の輪郭が引かれる。要素は動かさない ── */
+@media (prefers-reduced-motion:no-preference){
+  .fig .ln,.fig .gl{stroke-dasharray:var(--len,260);stroke-dashoffset:var(--len,260);
+    animation:trace 1.1s cubic-bezier(.3,1,.4,1) forwards}
+  .fig .gl{animation-delay:.35s}
+  @supports (animation-timeline:view()){
+    .item .fig .ln,.item .fig .gl{animation-timeline:view();animation-range:entry 0 entry 260px;
+      animation-duration:1ms;animation-delay:0s}
+  }
+  .title,.intro,.open-line{animation:rise .75s cubic-bezier(.22,1,.36,1) both}
+  .intro{animation-delay:.07s}.open-line{animation-delay:.14s}
+}
+@keyframes trace{to{stroke-dashoffset:0}}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<nav class="lang" aria-label="Language"><div class="c" id="lb"></div></nav>
+
+<div class="c">
+
+  <header class="door">
+    <p class="kiln" data-k="kiln"></p>
+    <h1 class="title" data-k="name"></h1>
+    <p class="intro" data-k="intro"></p>
+    <p class="open-line"><b id="st"></b> <span data-k="hours_s"></span></p>
+  </header>
+
+  <main>
+
+    <section class="part" style="margin-top:0">
+      <h2 data-k="h_items"></h2>
+      <p style="margin-bottom:clamp(20px,4.4vw,28px)" data-k="items_n"></p>
+      <ul class="ledger" id="ledger"></ul>
+    </section>
+
+    <section class="part">
+      <h2 data-k="h_ship"></h2>
+      <p data-k="ship_lede"></p>
+      <div class="ship">
+        <h3 data-k="ship_t1"></h3>
+        <p data-k="ship_b1"></p>
+        <p data-k="ship_b2"></p>
+      </div>
+      <div class="ship" style="margin-top:12px">
+        <h3 data-k="ship_t2"></h3>
+        <p data-k="ship_b3"></p>
+      </div>
+    </section>
+
+    <section class="part">
+      <h2 data-k="h_care"></h2>
+      <p data-k="care_b"></p>
+    </section>
+
+    <section class="part">
+      <h2 data-k="h_visit"></h2>
+      <dl class="rows" id="rows"></dl>
+      <ul class="tender" id="tender"></ul>
+      <a class="to-map" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A0%83%E6%9C%A8%E7%9C%8C%E7%9B%8A%E5%AD%90%E7%94%BA" target="_blank" rel="noopener" data-k="cta_map"></a>
+    </section>
+
+    <footer class="colophon">
+      <b data-k="demo"></b>
+      <p data-k="foot"></p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const LANGS=[["ja","日本語"],["en","English"],["zh-Hant","繁體"],["zh-Hans","简体"],["ko","한국어"]];
+/* 器の断面。線は手で引いた座標。shape ごとに形が違う */
+const SHAPES={
+  meshi:'<svg viewBox="0 0 64 56" role="img" aria-hidden="true"><path class="ln" d="M8 10h48l-6 28a10 10 0 0 1-10 8H24a10 10 0 0 1-10-8z"/><path class="ln" d="M24 46v5h16v-5"/><path class="gl" d="M12 16h40"/></svg>',
+  yunomi:'<svg viewBox="0 0 64 56" role="img" aria-hidden="true"><path class="ln" d="M18 8h28l-3 36a6 6 0 0 1-6 5h-10a6 6 0 0 1-6-5z"/><path class="gl" d="M20 24h24"/></svg>',
+  sara:'<svg viewBox="0 0 64 56" role="img" aria-hidden="true"><path class="ln" d="M4 22h56l-8 16a8 8 0 0 1-7 4H19a8 8 0 0 1-7-4z"/><path class="ln" d="M24 42v4h16v-4"/><path class="gl" d="M16 30h32"/></svg>',
+  kyusu:'<svg viewBox="0 0 64 56" role="img" aria-hidden="true"><path class="ln" d="M14 18h30l4 20a8 8 0 0 1-8 10H18a8 8 0 0 1-8-10z"/><path class="ln" d="M44 22l14-6-12 14"/><path class="ln" d="M18 18V14h22v4"/><path class="gl" d="M14 32h32"/></svg>'
+};
+const ITEMS=[
+  {id:"i1",no:"No. 01",sh:"meshi", p:"2,800"},
+  {id:"i2",no:"No. 02",sh:"yunomi",p:"1,900"},
+  {id:"i3",no:"No. 03",sh:"sara",  p:"4,200"},
+  {id:"i4",no:"No. 04",sh:"kyusu", p:"9,800"}
+];
+const ROWS=["hours","closed","access","park","addr"];
+const PAY=[{id:"cash",ok:1},{id:"card",ok:1},{id:"qr",ok:1},{id:"ic",ok:0}];
+const OPEN_MIN=10*60, CLOSE_MIN=17*60+30, SHUT=[4]; /* 木曜休み */
+
+const T={
+ja:{kiln:"Mashiko · Tochigi",name:"器 土と灰",
+ intro:"益子の登り窯で焼いた器を、作り手から預かって並べています。同じ名前の器でも、一つずつ色と厚みが違います。",
+ s_open:"開いています",s_shut:"閉まっています",s_rest:"本日は定休日",
+ hours_s:"／ 10:00–17:30 ／ 木曜休み",
+ h_items:"並んでいるもの",
+ items_n:"値段は税込です。在庫は日によって変わります。お取り置きは承っていません。",
+ i1:"飯碗",i1_b:"ご飯茶碗。灰釉で、口のところだけ薄く仕上げています。",
+ i1_s1:"径12cm",i1_s2:"高7cm",i1_s3:"電子レンジ可",i1_s4:"食洗機可",
+ i2:"湯呑",i2_b:"お茶用。糠白釉。手に持ったとき熱くなりにくい厚みです。",
+ i2_s1:"径8cm",i2_s2:"高8cm",i2_s3:"電子レンジ可",i2_s4:"食洗機可",
+ i3:"七寸皿",i3_b:"取り分けにも一人前にも。柿釉で、縁に流れがあります。",
+ i3_s1:"径21cm",i3_s2:"高3cm",i3_s3:"電子レンジ可",i3_s4:"食洗機不可",
+ i4:"急須",i4_b:"二人分。茶こしは陶器の一体型で、取り外せません。",
+ i4_s1:"容量300ml",i4_s2:"高11cm",i4_s3:"直火不可",i4_s4:"食洗機不可",
+ h_ship:"持ち帰りと、送ること",
+ ship_lede:"割れものなので、持ち帰り方を先にご相談ください。店で梱包します。",
+ ship_t1:"海外へ送る",
+ ship_b1:"国際便でお送りできます。送料は国と重さで変わるので、その場でお見積りします。<b>急須は航空便で割れやすいため、船便をお勧めしています。</b>",
+ ship_b2:"お送りした荷物に関税がかかるかどうかは、お受け取りになる国の決まりによります。こちらでは判断できません。",
+ ship_t2:"免税について",
+ ship_b3:"<b>当店は免税店の登録をしていません。</b>消費税を含んだ価格でのお支払いになります。空港での払い戻しもできません。あらかじめご了承ください。",
+ h_care:"使い方",
+ care_b:"はじめにお使いになる前、米のとぎ汁で20分ほど煮ていただくと、汚れが染み込みにくくなります。土が水を吸うので、洗ったあとはよく乾かしてからしまってください。貫入（釉薬の細かいひび）は欠陥ではなく、使ううちに色が入ります。",
+ h_visit:"場所と時間",
+ hours:"営業時間",hours_v:"10:00〜17:30",
+ closed:"定休日",closed_v:"木曜日、年末年始",
+ access:"行き方",access_v:"JR宇都宮駅から関東バス「益子行」で約1時間、「益子参考館入口」下車、徒歩3分。",
+ park:"駐車場",park_v:"5台、無料。",
+ addr:"所在地",addr_v:"栃木県芳賀郡益子町（架空の住所です）",
+ cash:"現金",card:"カード",qr:"QR決済",ic:"交通系IC",
+ cta_map:"地図を開く",
+ demo:"Demonstration",
+ foot:"これは営業用のデモサイトです。架空の店舗で、実在の器店とは関係ありません。価格・在庫・営業時間もすべて架空のものです。"},
+
+en:{kiln:"Mashiko · Tochigi",name:"Tsuchi to Hai",
+ intro:"Pots fired in the Mashiko climbing kilns, left with us by their makers. Even two pots of the same name differ in colour and thickness.",
+ s_open:"Open",s_shut:"Closed",s_rest:"Closed today",
+ hours_s:"/ 10:00–17:30 / closed Thursdays",
+ h_items:"On the shelves",
+ items_n:"Prices include tax. What is in stock changes day to day. We cannot hold items.",
+ i1:"Rice bowl",i1_b:"Ash glaze, thinned at the rim so it sits lightly on the lip.",
+ i1_s1:"⌀12cm",i1_s2:"H7cm",i1_s3:"Microwave safe",i1_s4:"Dishwasher safe",
+ i2:"Tea cup",i2_b:"Nuka white glaze. Thick enough that it does not burn the hand.",
+ i2_s1:"⌀8cm",i2_s2:"H8cm",i2_s3:"Microwave safe",i2_s4:"Dishwasher safe",
+ i3:"Plate, 21cm",i3_b:"For sharing or for one. Kaki glaze, running at the rim.",
+ i3_s1:"⌀21cm",i3_s2:"H3cm",i3_s3:"Microwave safe",i3_s4:"Not dishwasher safe",
+ i4:"Teapot",i4_b:"For two. The strainer is part of the clay body and cannot be removed.",
+ i4_s1:"300ml",i4_s2:"H11cm",i4_s3:"Not for direct heat",i4_s4:"Not dishwasher safe",
+ h_ship:"Carrying it home, and shipping",
+ ship_lede:"These break. Please talk to us about how you are getting them home; we pack them here.",
+ ship_t1:"Shipping abroad",
+ ship_b1:"We can send internationally. The cost depends on country and weight, so we quote it at the counter. <b>Teapots break easily in air freight, so we recommend sea freight for those.</b>",
+ ship_b2:"Whether customs duty applies on arrival is decided by the rules of the country receiving it. We cannot judge that for you.",
+ ship_t2:"About tax-free shopping",
+ ship_b3:"<b>We are not a registered tax-free shop.</b> You pay the price with consumption tax included, and no refund is possible at the airport. Please take this into account.",
+ h_care:"Using them",
+ care_b:"Before the first use, simmer the pot for about twenty minutes in the cloudy water left from rinsing rice; it keeps stains from soaking in. The clay drinks water, so dry pieces thoroughly before putting them away. The fine crazing in the glaze is not a fault — it darkens as you use the piece.",
+ h_visit:"Where and when",
+ hours:"Hours",hours_v:"10:00–17:30",
+ closed:"Closed",closed_v:"Thursdays and the New Year period",
+ access:"Getting here",access_v:"About one hour by Kanto bus bound for Mashiko from JR Utsunomiya Station. Get off at Mashiko Sankokan Iriguchi, then 3 minutes on foot.",
+ park:"Parking",park_v:"5 spaces, free of charge.",
+ addr:"Address",addr_v:"Mashiko, Haga, Tochigi (this address is fictional)",
+ cash:"Cash",card:"Card",qr:"QR payment",ic:"Transit IC",
+ cta_map:"Open in Maps",
+ demo:"Demonstration",
+ foot:"This is a demonstration site. The shop is fictional and bears no relation to any real pottery shop. The prices, stock and hours are fictional too."},
+
+"zh-Hant":{kiln:"Mashiko · Tochigi",name:"器 土與灰",
+ intro:"陳列的是益子登窯燒製的器皿，由作者寄放於此。即使名稱相同，每一件的顏色與厚度也不一樣。",
+ s_open:"營業中",s_shut:"已打烊",s_rest:"本日公休",
+ hours_s:"／ 10:00–17:30 ／ 週四公休",
+ h_items:"店內陳列",
+ items_n:"價格含稅。庫存每日不同，恕不提供預留。",
+ i1:"飯碗",i1_b:"灰釉。碗口處修得較薄。",
+ i1_s1:"直徑12cm",i1_s2:"高7cm",i1_s3:"可微波",i1_s4:"可洗碗機",
+ i2:"茶杯",i2_b:"糠白釉。厚度適中，手持時不易燙。",
+ i2_s1:"直徑8cm",i2_s2:"高8cm",i2_s3:"可微波",i2_s4:"可洗碗機",
+ i3:"七寸盤",i3_b:"分食或單人份皆宜。柿釉，邊緣有流釉。",
+ i3_s1:"直徑21cm",i3_s2:"高3cm",i3_s3:"可微波",i3_s4:"不可洗碗機",
+ i4:"急須（茶壺）",i4_b:"兩人份。濾網與壺身一體成形，無法拆卸。",
+ i4_s1:"容量300ml",i4_s2:"高11cm",i4_s3:"不可直火",i4_s4:"不可洗碗機",
+ h_ship:"帶回與寄送",
+ ship_lede:"器皿易碎，請先與我們討論帶回的方式，由店內負責包裝。",
+ ship_t1:"寄送海外",
+ ship_b1:"可寄送國際件。運費依國家與重量而定，將於現場報價。<b>急須以空運易破損，建議改用海運。</b>",
+ ship_b2:"寄達後是否課徵關稅，取決於收件國家的規定，本店無法代為判斷。",
+ ship_t2:"關於免稅",
+ ship_b3:"<b>本店未登記為免稅店。</b>結帳金額含消費稅，且無法於機場退稅，敬請見諒。",
+ h_care:"使用方式",
+ care_b:"初次使用前，以洗米水煮約20分鐘，可減少污漬滲入。陶土會吸水，清洗後請充分晾乾再收納。釉面的細小裂紋（貫入）並非瑕疵，隨著使用會逐漸上色。",
+ h_visit:"地點與時間",
+ hours:"營業時間",hours_v:"10:00〜17:30",
+ closed:"公休日",closed_v:"星期四、年末年初",
+ access:"交通",access_v:"從JR宇都宮站搭關東巴士「往益子」約1小時，於「益子參考館入口」下車步行3分鐘。",
+ park:"停車場",park_v:"5個車位，免費。",
+ addr:"地址",addr_v:"栃木縣芳賀郡益子町（此為虛構地址）",
+ cash:"現金",card:"信用卡",qr:"QR支付",ic:"交通IC卡",
+ cta_map:"開啟地圖",
+ demo:"Demonstration",
+ foot:"這是示範網站。店家為虛構，與任何實際器皿店無關。價格、庫存與營業時間亦為虛構。"},
+
+"zh-Hans":{kiln:"Mashiko · Tochigi",name:"器 土与灰",
+ intro:"陈列的是益子登窑烧制的器皿，由作者寄放于此。即使名称相同，每一件的颜色与厚度也不一样。",
+ s_open:"营业中",s_shut:"已打烊",s_rest:"今日休息",
+ hours_s:"／ 10:00–17:30 ／ 周四休息",
+ h_items:"店内陈列",
+ items_n:"价格含税。库存每日不同，恕不提供预留。",
+ i1:"饭碗",i1_b:"灰釉。碗口处修得较薄。",
+ i1_s1:"直径12cm",i1_s2:"高7cm",i1_s3:"可微波",i1_s4:"可洗碗机",
+ i2:"茶杯",i2_b:"糠白釉。厚度适中，手持时不易烫。",
+ i2_s1:"直径8cm",i2_s2:"高8cm",i2_s3:"可微波",i2_s4:"可洗碗机",
+ i3:"七寸盘",i3_b:"分食或单人份皆宜。柿釉，边缘有流釉。",
+ i3_s1:"直径21cm",i3_s2:"高3cm",i3_s3:"可微波",i3_s4:"不可洗碗机",
+ i4:"急须（茶壶）",i4_b:"两人份。滤网与壶身一体成形，无法拆卸。",
+ i4_s1:"容量300ml",i4_s2:"高11cm",i4_s3:"不可直火",i4_s4:"不可洗碗机",
+ h_ship:"带回与寄送",
+ ship_lede:"器皿易碎，请先与我们讨论带回的方式，由店内负责包装。",
+ ship_t1:"寄送海外",
+ ship_b1:"可寄送国际件。运费依国家与重量而定，将于现场报价。<b>急须以空运易破损，建议改用海运。</b>",
+ ship_b2:"寄达后是否征收关税，取决于收件国家的规定，本店无法代为判断。",
+ ship_t2:"关于免税",
+ ship_b3:"<b>本店未登记为免税店。</b>结账金额含消费税，且无法于机场退税，敬请谅解。",
+ h_care:"使用方式",
+ care_b:"初次使用前，以洗米水煮约20分钟，可减少污渍渗入。陶土会吸水，清洗后请充分晾干再收纳。釉面的细小裂纹（贯入）并非瑕疵，随着使用会逐渐上色。",
+ h_visit:"地点与时间",
+ hours:"营业时间",hours_v:"10:00〜17:30",
+ closed:"休息日",closed_v:"星期四、年末年初",
+ access:"交通",access_v:"从JR宇都宫站搭关东巴士「往益子」约1小时，在「益子参考馆入口」下车步行3分钟。",
+ park:"停车场",park_v:"5个车位，免费。",
+ addr:"地址",addr_v:"栃木县芳贺郡益子町（此为虚构地址）",
+ cash:"现金",card:"信用卡",qr:"QR支付",ic:"交通IC卡",
+ cta_map:"打开地图",
+ demo:"Demonstration",
+ foot:"这是演示网站。店家为虚构，与任何实际器皿店无关。价格、库存与营业时间也均为虚构。"},
+
+ko:{kiln:"Mashiko · Tochigi",name:"器 흙과 재",
+ intro:"마시코의 오름가마에서 구운 그릇을 만든 이에게 맡아 진열하고 있습니다. 같은 이름의 그릇이라도 하나하나 색과 두께가 다릅니다.",
+ s_open:"열려 있습니다",s_shut:"닫혀 있습니다",s_rest:"오늘은 휴무",
+ hours_s:"/ 10:00–17:30 / 목요일 휴무",
+ h_items:"진열된 것",
+ items_n:"가격은 세금 포함입니다. 재고는 날마다 달라지며, 따로 맡아 두지는 않습니다.",
+ i1:"밥그릇",i1_b:"재유. 입이 닿는 부분만 얇게 마무리했습니다.",
+ i1_s1:"지름 12cm",i1_s2:"높이 7cm",i1_s3:"전자레인지 가능",i1_s4:"식기세척기 가능",
+ i2:"찻잔",i2_b:"누카백유. 손에 들었을 때 뜨겁지 않은 두께입니다.",
+ i2_s1:"지름 8cm",i2_s2:"높이 8cm",i2_s3:"전자레인지 가능",i2_s4:"식기세척기 가능",
+ i3:"21cm 접시",i3_b:"나눠 담기에도 일인분에도. 감유로, 가장자리에 흐름이 있습니다.",
+ i3_s1:"지름 21cm",i3_s2:"높이 3cm",i3_s3:"전자레인지 가능",i3_s4:"식기세척기 불가",
+ i4:"차주전자",i4_b:"두 사람분. 거름망이 흙과 한 몸이라 분리되지 않습니다.",
+ i4_s1:"용량 300ml",i4_s2:"높이 11cm",i4_s3:"직화 불가",i4_s4:"식기세척기 불가",
+ h_ship:"가져가기와 보내기",
+ ship_lede:"깨지는 물건입니다. 어떻게 가져가실지 먼저 상의해 주세요. 포장은 가게에서 합니다.",
+ ship_t1:"해외로 보내기",
+ ship_b1:"국제 배송이 가능합니다. 요금은 나라와 무게에 따라 달라지므로 그 자리에서 알려 드립니다. <b>차주전자는 항공편에서 잘 깨지므로 선편을 권합니다.</b>",
+ ship_b2:"도착한 짐에 관세가 붙는지는 받으시는 나라의 규정에 따릅니다. 저희가 판단할 수 없습니다.",
+ ship_t2:"면세에 대하여",
+ ship_b3:"<b>저희는 면세점으로 등록되어 있지 않습니다.</b> 소비세가 포함된 금액으로 결제하시게 되며, 공항에서의 환급도 불가능합니다. 미리 양해 부탁드립니다.",
+ h_care:"쓰는 법",
+ care_b:"처음 쓰시기 전에 쌀뜨물에 20분쯤 끓이면 얼룩이 잘 배지 않습니다. 흙이 물을 머금으므로 씻은 뒤에는 충분히 말려서 보관해 주세요. 유약의 잔금(관입)은 흠이 아니라, 쓰는 동안 색이 들어갑니다.",
+ h_visit:"장소와 시간",
+ hours:"영업시간",hours_v:"10:00〜17:30",
+ closed:"휴무일",closed_v:"목요일, 연말연시",
+ access:"오시는 길",access_v:"JR 우쓰노미야역에서 간토버스 「마시코행」으로 약 1시간, 「마시코산코칸 이리구치」 하차 후 도보 3분.",
+ park:"주차장",park_v:"5대, 무료.",
+ addr:"주소",addr_v:"도치기현 하가군 마시코마치 (가상의 주소입니다)",
+ cash:"현금",card:"카드",qr:"QR 결제",ic:"교통 IC",
+ cta_map:"지도 열기",
+ demo:"Demonstration",
+ foot:"영업용 데모 사이트입니다. 가상의 가게이며 실제 그릇 가게와는 관계가 없습니다. 가격, 재고, 영업시간도 모두 가상입니다."}
+};
+
+const el=(t,c,x)=>{const n=document.createElement(t); if(c)n.className=c; if(x!=null)n.textContent=x; return n;};
+/* <b> だけを許す簡単な差し込み。属性は一切通さない */
+function rich(node,s){
+  node.textContent="";
+  s.split(/(<b>.*?<\/b>)/g).forEach(part=>{
+    if(!part) return;
+    const m=part.match(/^<b>(.*)<\/b>$/);
+    if(m) node.appendChild(el("b",null,m[1]));
+    else node.appendChild(document.createTextNode(part));
+  });
+}
+
+function state(){
+  const d=new Date(), w=d.getDay();
+  if(SHUT.indexOf(w)>=0) return "rest";
+  const m=d.getHours()*60+d.getMinutes();
+  return (m>=OPEN_MIN && m<CLOSE_MIN) ? "open" : "shut";
+}
+
+function build(t){
+  const lg=document.getElementById("ledger"); lg.textContent="";
+  for(const it of ITEMS){
+    const li=el("li","item");
+    const fig=el("div","fig"); fig.innerHTML=SHAPES[it.sh];
+    li.appendChild(fig);
+    li.appendChild(el("p","no",it.no));
+    li.appendChild(el("p","it-n",t[it.id]));
+    li.appendChild(el("p","it-b",t[it.id+"_b"]));
+    const sp=el("ul","spec");
+    for(let i=1;i<=4;i++){ const v=t[it.id+"_s"+i]; if(v) sp.appendChild(el("li",null,v)); }
+    li.appendChild(sp);
+    li.appendChild(el("p","price","¥"+it.p));
+    lg.appendChild(li);
+  }
+  /* 線の長さを測って、引く動きの距離にする */
+  for(const p of document.querySelectorAll(".fig path")){
+    try{ p.style.setProperty("--len", Math.ceil(p.getTotalLength())); }catch(e){}
+  }
+
+  const rw=document.getElementById("rows"); rw.textContent="";
+  for(const k of ROWS){ rw.appendChild(el("dt",null,t[k])); rw.appendChild(el("dd",null,t[k+"_v"])); }
+
+  const tn=document.getElementById("tender"); tn.textContent="";
+  for(const p of PAY){
+    const li=el("li"); li.dataset.ok=String(p.ok);
+    li.appendChild(el("i",null,p.ok?"○":"×"));
+    li.appendChild(el("span",null,t[p.id]));
+    tn.appendChild(li);
+  }
+}
+
+function apply(code){
+  const t=T[code];
+  for(const n of document.querySelectorAll("[data-k]")){
+    const v=t[n.dataset.k]; if(v==null) continue;
+    if(v.indexOf("<b>")>=0) rich(n,v); else n.textContent=v;
+  }
+  build(t);
+  const st=state();
+  document.getElementById("st").textContent = st==="open"?t.s_open:(st==="rest"?t.s_rest:t.s_shut);
+  document.documentElement.lang=code;
+  for(const b of document.querySelectorAll("#lb button")) b.setAttribute("aria-pressed",String(b.dataset.lang===code));
+  document.title=t.name;
+}
+
+const lb=document.getElementById("lb");
+for(const [code,label] of LANGS){
+  const b=el("button",null,label); b.type="button"; b.dataset.lang=code;
+  b.addEventListener("click",()=>apply(code));
+  lb.appendChild(b);
+}
+apply("ja");
+</script>
+</body>
+</html>

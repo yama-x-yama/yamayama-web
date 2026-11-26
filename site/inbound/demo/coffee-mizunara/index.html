@@ -1,0 +1,475 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="yama × yama. が多言語ページの見本として作った、架空の焙煎所「みずなら」のデモサイトです。実在の店舗ではありません。">
+<meta name="theme-color" content="#fbfaf7">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>焙煎所 みずなら</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<style>
+/* 焙煎の表を組むつもりで作る。罫線は引かず、左の軸をそろえた余白だけで段を切る。
+   色は紙と墨の二色。焙煎度の目盛りだけ一段濃い色を使う。
+   動きは要素を浮かせず、軸線が引かれることと、文字の濃度が上がることだけ。 */
+:root{
+  --paper:#fbfaf7;
+  --ink:#141414;
+  --ink-2:#55524c;
+  --ink-3:#8c877f;
+  --hair:#ddd9d2;
+  --roast:#6b4a2f;       /* 焙煎度の目盛りにだけ使う */
+  --f-grot:"Archivo",ui-sans-serif,system-ui,sans-serif;
+  --f-jp:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --gl:max(20px,env(safe-area-inset-left,0px));
+  --gr:max(20px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-jp);
+  font-size:15px;line-height:1.9;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+.c{max-width:54rem;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+
+/* 言語：左の軸にそろえた、ただの行 */
+.lg{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:21;background:var(--paper)}
+.lg .c{display:flex;gap:16px;padding-top:12px;padding-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.lg .c::-webkit-scrollbar{display:none}
+.lg button{flex:none;padding:3px 0;background:none;border:0;border-bottom:1.5px solid transparent;
+  color:var(--ink-3);font:500 12px/1.6 var(--f-grot);letter-spacing:.04em;cursor:pointer;white-space:nowrap;
+  transition:color .2s}
+.lg button:hover{color:var(--ink)}
+.lg button[aria-pressed="true"]{color:var(--ink);border-bottom-color:var(--ink)}
+
+/* 見出し：左の軸に突き当てる。中央寄せはしない */
+.head{padding-top:clamp(28px,8vw,56px)}
+.loc{margin:0;font:500 11.5px/1.6 var(--f-grot);letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.nm{margin:10px 0 0;font-size:clamp(30px,8.4vw,46px);font-weight:500;line-height:1.22;letter-spacing:-.015em;
+  font-feature-settings:"palt"}
+.nm em{display:block;font-family:var(--f-grot);font-style:normal;font-weight:500;
+  font-size:.42em;letter-spacing:.02em;color:var(--ink-2);margin-top:.5em}
+.tag{margin:18px 0 0;max-width:30em;font-size:14.5px;line-height:1.95;color:var(--ink-2)}
+
+/* 軸線。スクロールで引かれる */
+.axis{height:1px;background:var(--hair);margin:clamp(26px,6vw,40px) 0 0;transform-origin:left center}
+
+/* 営業の状態：記号を使わず、文の形で置く */
+.now{margin:clamp(22px,5vw,30px) 0 0;font-size:14.5px;line-height:1.9}
+.now b{font-weight:500}
+.now span{color:var(--ink-2)}
+
+/* 段。見出しの扱いは段ごとに変える */
+.blk{margin-top:clamp(40px,10vw,72px)}
+.k-side{display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:0 20px;align-items:start}
+/* 狭い画面では軸のラベルを出さない。見出しの上に小さな英語が並ぶ形にしたくない */
+@media (max-width:560px){.k-side{grid-template-columns:minmax(0,1fr)} .k{display:none}}
+.k{margin:0;font:500 11.5px/1.9 var(--f-grot);letter-spacing:.13em;text-transform:uppercase;color:var(--ink-3)}
+.big{margin:0 0 clamp(14px,3vw,20px);font-size:clamp(19px,4.6vw,24px);font-weight:500;line-height:1.6;
+  letter-spacing:-.01em;font-feature-settings:"palt"}
+.note{margin:0;max-width:34em;font-size:14px;line-height:1.95;color:var(--ink-2)}
+
+/* 豆：焙煎度を目盛りで見せる。表組みの罫線は引かない */
+.beans{margin:0;padding:0;list-style:none}
+.beans li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 18px;
+  padding:clamp(15px,3.4vw,19px) 0;border-bottom:1px solid var(--hair)}
+.beans li:first-child{padding-top:0}
+.bn{grid-column:1;font-size:16px;font-weight:500;line-height:1.5}
+.bo{grid-column:1;font-size:13px;line-height:1.8;color:var(--ink-2)}
+.bp{grid-column:2;grid-row:1;font:500 15px/1.5 var(--f-grot);letter-spacing:.01em;white-space:nowrap}
+.bq{grid-column:2;grid-row:2;font-size:11.5px;line-height:1.8;color:var(--ink-3);text-align:right;white-space:nowrap}
+.scale{grid-column:1 / -1;display:flex;align-items:center;gap:7px;margin-top:8px}
+.scale i{width:15px;height:3px;background:var(--hair);transition:background-color .45s ease}
+.scale i.on{background:var(--roast)}
+.scale span{font:500 10.5px/1 var(--f-grot);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3);
+  margin-left:3px}
+
+/* 飲みもの：2列に詰める */
+.drinks{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));gap:0 28px;margin:0;padding:0;
+  list-style:none}
+.drinks li{display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding:10px 0;border-bottom:1px solid var(--hair);font-size:14.5px}
+.drinks b{font-weight:400}
+.drinks span{font:500 14px/1 var(--f-grot);color:var(--ink-2);white-space:nowrap}
+.drinks small{display:block;font-size:12px;line-height:1.7;color:var(--ink-3)}
+
+/* 滞在のきまり：番号なしの短い行。手順ではないので番号を振らない */
+.stay{margin:0;padding:0;list-style:none}
+.stay li{padding:clamp(13px,3vw,17px) 0;border-bottom:1px solid var(--hair)}
+.stay b{display:block;font-size:15px;font-weight:500;line-height:1.6}
+.stay p{margin:2px 0 0;font-size:13.5px;line-height:1.9;color:var(--ink-2)}
+
+/* 事実の並び */
+.facts{display:grid;grid-template-columns:5.5rem minmax(0,1fr);margin:0;font-size:14px}
+.facts dt{padding:8px 0;color:var(--ink-3);font-size:12.5px;line-height:1.9}
+.facts dd{margin:0;padding:8px 0;line-height:1.9}
+@media (max-width:440px){
+  .facts{grid-template-columns:minmax(0,1fr)}
+  .facts dt{padding-bottom:0}
+  .facts dd{padding-top:0}
+}
+.pays{display:flex;flex-wrap:wrap;gap:6px 20px;margin:10px 0 0;padding:0;list-style:none;font-size:14px}
+.pays li{display:flex;align-items:baseline;gap:6px}
+.pays li[data-ok="0"]{color:var(--ink-3)}
+.pays em{font-family:var(--f-grot);font-style:normal;font-weight:500}
+
+.map{display:inline-block;margin-top:18px;padding-bottom:2px;border-bottom:1.5px solid var(--ink);
+  color:var(--ink);font-size:14.5px;text-decoration:none}
+.map:hover{color:var(--ink-2);border-bottom-color:var(--ink-2)}
+
+.end{margin-top:clamp(44px,10vw,72px);padding:clamp(20px,5vw,26px) 0
+  calc(clamp(30px,7vw,46px) + env(safe-area-inset-bottom,0px));border-top:1px solid var(--hair)}
+.end b{display:block;font:500 11px/1.9 var(--f-grot);letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-3)}
+.end p{margin:6px 0 0;font-size:12.5px;line-height:1.9;color:var(--ink-3)}
+
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+/* ── 動き：浮かせない。軸線が引かれ、文字の濃度が上がるだけ ── */
+@media (prefers-reduced-motion:no-preference){
+  .axis{animation:draw .9s cubic-bezier(.22,1,.36,1) both}
+  .nm,.tag,.now{animation:ink .8s ease both}
+  .tag{animation-delay:.1s}.now{animation-delay:.18s}
+  @supports (animation-timeline:view()){
+    .blk{animation:ink .01s linear both;animation-timeline:view();animation-range:entry 0 entry 180px}
+    .beans li,.stay li{animation:ink .01s linear both;animation-timeline:view();
+      animation-range:entry 20px entry 190px}
+  }
+}
+@keyframes draw{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@keyframes ink{from{opacity:.18}to{opacity:1}}
+</style>
+</head>
+<body>
+
+<nav class="lg" aria-label="Language"><div class="c" id="lb"></div></nav>
+
+<div class="c">
+
+  <header class="head">
+    <p class="loc" data-k="loc"></p>
+    <h1 class="nm"><span data-k="name"></span><em data-k="name_r"></em></h1>
+    <p class="tag" data-k="tag"></p>
+    <div class="axis" aria-hidden="true"></div>
+    <p class="now"><b id="now-t"></b> <span data-k="hours_s"></span></p>
+  </header>
+
+  <main>
+
+    <section class="blk">
+      <div class="k-side">
+        <p class="k">Beans</p>
+        <div>
+          <h2 class="big" data-k="h_beans"></h2>
+          <p class="note" style="margin-bottom:clamp(18px,4vw,26px)" data-k="beans_n"></p>
+          <ul class="beans" id="beans"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="blk">
+      <div class="k-side">
+        <p class="k">Drinks</p>
+        <div>
+          <h2 class="big" data-k="h_drinks"></h2>
+          <ul class="drinks" id="drinks"></ul>
+          <p class="note" style="margin-top:clamp(16px,3.4vw,22px)" data-k="milk_n"></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="blk">
+      <div class="k-side">
+        <p class="k">In the shop</p>
+        <div>
+          <h2 class="big" data-k="h_stay"></h2>
+          <ul class="stay" id="stay"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="blk">
+      <div class="k-side">
+        <p class="k">Visit</p>
+        <div>
+          <dl class="facts" id="facts"></dl>
+          <ul class="pays" id="pays"></ul>
+          <a class="map" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A0%83%E6%9C%A8%E7%9C%8C%E9%82%A3%E9%A0%88%E5%A1%A9%E5%8E%9F%E5%B8%82%E9%BB%92%E7%A3%AF" target="_blank" rel="noopener" data-k="cta_map"></a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="end">
+      <b data-k="demo"></b>
+      <p data-k="foot"></p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const LANGS=[["ja","日本語"],["en","English"],["zh-Hant","繁體中文"],["zh-Hans","简体中文"],["ko","한국어"]];
+const BEANS=[{id:"b1",p:"1,400",g:"200",r:2},{id:"b2",p:"1,250",g:"200",r:3},{id:"b3",p:"1,600",g:"200",r:1},{id:"b4",p:"1,100",g:"200",r:4}];
+const DRINKS=["d1","d2","d3","d4","d5","d6"];
+const STAY=["s1","s2","s3","s4"];
+const FACTS=["hours","closed","seats","access","addr"];
+const PAYS=[{id:"cash",ok:1},{id:"card",ok:1},{id:"qr",ok:1},{id:"ic",ok:1}];
+const OPEN_MIN=9*60, CLOSE_MIN=18*60, SHUT=[1,2]; /* 月火定休 */
+
+const T={
+ja:{loc:"栃木県 那須塩原市 黒磯",name:"焙煎所 みずなら",name_r:"Mizunara Coffee Roastery",
+ tag:"黒磯の川沿いで、週に三度焙煎しています。豆の販売が主で、店内の席は8つだけです。",
+ s_open:"あいています。",s_shut:"いまは閉まっています。",s_rest:"本日は定休日です。",
+ hours_s:"9:00–18:00 ／ 月・火 休み",
+ h_beans:"豆",beans_n:"200gの袋でお売りします。その場で挽くこともできます。焙煎した日を袋に書いています。",
+ b1:"エチオピア イルガチェフェ",b1_o:"洗い。レモンと紅茶のような香り。",
+ b2:"グアテマラ アンティグア",b2_o:"洗い。チョコレートのような甘み。",
+ b3:"ケニア ニエリ",b3_o:"洗い。黒すぐりのような酸味。",
+ b4:"ブラジル セラード",b4_o:"自然乾燥。ナッツのような香ばしさ。",
+ g_unit:"200gあたり",
+ roast:"焙煎",
+ h_drinks:"飲みもの",
+ d1:"ドリップコーヒー",d1_p:"¥550",d1_s:"豆はその日の3種から選べます",
+ d2:"エスプレッソ",d2_p:"¥450",d2_s:"",
+ d3:"ラテ",d3_p:"¥600",d3_s:"",
+ d4:"水出しコーヒー",d4_p:"¥600",d4_s:"夏のみ",
+ d5:"ほうじ茶",d5_p:"¥450",d5_s:"カフェインは少なめです",
+ d6:"カフェインレスコーヒー",d6_p:"¥600",d6_s:"水で抜いた豆を使っています",
+ milk_n:"ミルクは牛乳のほか、オーツミルクと豆乳に替えられます。替えても値段は変わりません。食べものは置いていません。持ち込みはご遠慮ください。",
+ h_stay:"店内のこと",
+ s1:"先に注文して、先にお支払いです",s1_n:"カウンターで注文し、その場でお支払いください。席でのご注文は受けていません。",
+ s2:"席は8つ。相席はお願いしていません",s2_n:"満席のときは、豆だけお買い求めいただくこともできます。予約は受けていません。",
+ s3:"Wi-Fiと電源はありません",s3_n:"置いていないので、ご了承ください。混む時間は、1時間ほどでお譲りいただけると助かります。",
+ s4:"写真は、ほかのお客さまが写らない範囲でどうぞ",s4_n:"焙煎機や豆の棚は撮っていただいて構いません。",
+ h_visit:"行き方",
+ hours:"営業時間",hours_v:"9:00〜18:00",
+ closed:"定休日",closed_v:"月曜日・火曜日",
+ seats:"席数",seats_v:"8席（カウンター4・テーブル4）",
+ access:"行き方",access_v:"JR黒磯駅から徒歩9分。駐車場は店の裏に3台。",
+ addr:"所在地",addr_v:"栃木県那須塩原市（架空の住所です）",
+ cash:"現金",card:"カード",qr:"QR決済",ic:"交通系IC",
+ cta_map:"地図を開く",
+ demo:"Demonstration",
+ foot:"これは営業用のデモサイトです。架空の店舗で、実在の焙煎所とは関係ありません。価格・営業時間もすべて架空のものです。"},
+
+en:{loc:"Kuroiso, Nasushiobara, Tochigi",name:"Mizunara Coffee Roastery",name_r:"焙煎所 みずなら",
+ tag:"We roast three times a week by the river in Kuroiso. Mostly we sell beans; there are only eight seats.",
+ s_open:"Open now.",s_shut:"Closed at the moment.",s_rest:"Closed today.",
+ hours_s:"9:00–18:00 / closed Mon & Tue",
+ h_beans:"Beans",beans_n:"Sold in 200g bags. We can grind them for you. The roast date is written on the bag.",
+ b1:"Ethiopia Yirgacheffe",b1_o:"Washed. Lemon and black tea.",
+ b2:"Guatemala Antigua",b2_o:"Washed. Chocolate sweetness.",
+ b3:"Kenya Nyeri",b3_o:"Washed. Blackcurrant acidity.",
+ b4:"Brazil Cerrado",b4_o:"Natural. Nutty and round.",
+ g_unit:"per 200g",
+ roast:"Roast",
+ h_drinks:"Drinks",
+ d1:"Filter coffee",d1_p:"¥550",d1_s:"Choose from the three beans of the day",
+ d2:"Espresso",d2_p:"¥450",d2_s:"",
+ d3:"Latte",d3_p:"¥600",d3_s:"",
+ d4:"Cold brew",d4_p:"¥600",d4_s:"Summer only",
+ d5:"Hojicha",d5_p:"¥450",d5_s:"Low in caffeine",
+ d6:"Decaf coffee",d6_p:"¥600",d6_s:"Water-process beans",
+ milk_n:"Milk can be changed to oat or soy at no extra charge. We do not serve food, and please do not bring your own.",
+ h_stay:"In the shop",
+ s1:"Order and pay at the counter first",s1_n:"Order at the counter and pay there. We do not take orders at the table.",
+ s2:"Eight seats. We do not seat strangers together",s2_n:"If every seat is taken, you are welcome to buy beans only. We do not take reservations.",
+ s3:"No Wi-Fi and no power sockets",s3_n:"We simply do not have them. At busy times, about an hour at a table is a kindness to the next person.",
+ s4:"Photos are fine if other customers are not in the frame",s4_n:"The roaster and the bean shelves are welcome subjects.",
+ h_visit:"Getting here",
+ hours:"Hours",hours_v:"9:00–18:00",
+ closed:"Closed",closed_v:"Monday and Tuesday",
+ seats:"Seats",seats_v:"8 (4 counter, 4 table)",
+ access:"Getting here",access_v:"9 minutes on foot from JR Kuroiso Station. Three parking spaces behind the shop.",
+ addr:"Address",addr_v:"Nasushiobara, Tochigi (this address is fictional)",
+ cash:"Cash",card:"Card",qr:"QR payment",ic:"Transit IC",
+ cta_map:"Open in Maps",
+ demo:"Demonstration",
+ foot:"This is a demonstration site. The shop is fictional and bears no relation to any real roastery. The prices and hours are fictional too."},
+
+"zh-Hant":{loc:"栃木縣 那須鹽原市 黑磯",name:"焙煎所 水楢",name_r:"Mizunara Coffee Roastery",
+ tag:"在黑磯的河邊，每週烘豆三次。以賣豆為主，店內只有八個座位。",
+ s_open:"營業中。",s_shut:"目前已打烊。",s_rest:"本日公休。",
+ hours_s:"9:00–18:00 ／ 週一、週二公休",
+ h_beans:"咖啡豆",beans_n:"以200公克袋裝販售，可代為研磨。袋上會寫烘焙日期。",
+ b1:"衣索比亞 耶加雪菲",b1_o:"水洗。檸檬與紅茶般的香氣。",
+ b2:"瓜地馬拉 安提瓜",b2_o:"水洗。巧克力般的甜感。",
+ b3:"肯亞 涅里",b3_o:"水洗。黑醋栗般的酸質。",
+ b4:"巴西 喜拉朵",b4_o:"日曬。堅果般的香氣。",
+ g_unit:"每200公克",
+ roast:"烘焙度",
+ h_drinks:"飲品",
+ d1:"手沖咖啡",d1_p:"¥550",d1_s:"可從當日三款豆中選擇",
+ d2:"濃縮咖啡",d2_p:"¥450",d2_s:"",
+ d3:"拿鐵",d3_p:"¥600",d3_s:"",
+ d4:"冷萃咖啡",d4_p:"¥600",d4_s:"僅夏季供應",
+ d5:"焙茶",d5_p:"¥450",d5_s:"咖啡因較少",
+ d6:"低咖啡因咖啡",d6_p:"¥600",d6_s:"使用水處理法的豆子",
+ milk_n:"牛奶可免費更換為燕麥奶或豆漿。本店不供餐，也請勿攜帶外食。",
+ h_stay:"店內須知",
+ s1:"先點餐、先付款",s1_n:"請在櫃檯點餐並當場付款。座位上不提供點餐服務。",
+ s2:"共八個座位，不安排併桌",s2_n:"客滿時也歡迎只購買咖啡豆。本店不接受預約。",
+ s3:"沒有Wi-Fi與插座",s3_n:"店內並未設置，敬請見諒。尖峰時段若能在一小時左右讓座，將十分感謝。",
+ s4:"拍照請避免拍到其他客人",s4_n:"烘豆機與豆架歡迎拍攝。",
+ h_visit:"交通方式",
+ hours:"營業時間",hours_v:"9:00〜18:00",
+ closed:"公休日",closed_v:"星期一、星期二",
+ seats:"座位",seats_v:"8席（吧台4、桌位4）",
+ access:"交通",access_v:"JR黑磯站步行9分鐘。店後方有3個停車位。",
+ addr:"地址",addr_v:"栃木縣那須鹽原市（此為虛構地址）",
+ cash:"現金",card:"信用卡",qr:"QR支付",ic:"交通IC卡",
+ cta_map:"開啟地圖",
+ demo:"Demonstration",
+ foot:"這是示範網站。店家為虛構，與任何實際烘豆店無關。價格與營業時間亦為虛構。"},
+
+"zh-Hans":{loc:"栃木县 那须盐原市 黑矶",name:"焙煎所 水楢",name_r:"Mizunara Coffee Roastery",
+ tag:"在黑矶的河边，每周烘豆三次。以卖豆为主，店内只有八个座位。",
+ s_open:"营业中。",s_shut:"目前已打烊。",s_rest:"今日休息。",
+ hours_s:"9:00–18:00 ／ 周一、周二休息",
+ h_beans:"咖啡豆",beans_n:"以200克袋装销售，可代为研磨。袋上会写烘焙日期。",
+ b1:"埃塞俄比亚 耶加雪菲",b1_o:"水洗。柠檬与红茶般的香气。",
+ b2:"危地马拉 安提瓜",b2_o:"水洗。巧克力般的甜感。",
+ b3:"肯尼亚 涅里",b3_o:"水洗。黑加仑般的酸质。",
+ b4:"巴西 喜拉多",b4_o:"日晒。坚果般的香气。",
+ g_unit:"每200克",
+ roast:"烘焙度",
+ h_drinks:"饮品",
+ d1:"手冲咖啡",d1_p:"¥550",d1_s:"可从当日三款豆中选择",
+ d2:"浓缩咖啡",d2_p:"¥450",d2_s:"",
+ d3:"拿铁",d3_p:"¥600",d3_s:"",
+ d4:"冷萃咖啡",d4_p:"¥600",d4_s:"仅夏季供应",
+ d5:"焙茶",d5_p:"¥450",d5_s:"咖啡因较少",
+ d6:"低因咖啡",d6_p:"¥600",d6_s:"使用水处理法的豆子",
+ milk_n:"牛奶可免费更换为燕麦奶或豆浆。本店不供餐，也请勿携带外食。",
+ h_stay:"店内须知",
+ s1:"先点单、先付款",s1_n:"请在柜台点单并当场付款。座位上不提供点单服务。",
+ s2:"共八个座位，不安排拼桌",s2_n:"满座时也欢迎只购买咖啡豆。本店不接受预约。",
+ s3:"没有Wi-Fi与插座",s3_n:"店内并未设置，敬请谅解。高峰时段若能在一小时左右让座，将十分感谢。",
+ s4:"拍照请避免拍到其他客人",s4_n:"烘豆机与豆架欢迎拍摄。",
+ h_visit:"交通方式",
+ hours:"营业时间",hours_v:"9:00〜18:00",
+ closed:"休息日",closed_v:"星期一、星期二",
+ seats:"座位",seats_v:"8席（吧台4、桌位4）",
+ access:"交通",access_v:"JR黑矶站步行9分钟。店后方有3个停车位。",
+ addr:"地址",addr_v:"栃木县那须盐原市（此为虚构地址）",
+ cash:"现金",card:"信用卡",qr:"QR支付",ic:"交通IC卡",
+ cta_map:"打开地图",
+ demo:"Demonstration",
+ foot:"这是演示网站。店家为虚构，与任何实际烘豆店无关。价格与营业时间也均为虚构。"},
+
+ko:{loc:"도치기현 나스시오바라시 구로이소",name:"바이센조 미즈나라",name_r:"Mizunara Coffee Roastery",
+ tag:"구로이소 강가에서 일주일에 세 번 로스팅합니다. 원두 판매가 중심이고, 좌석은 여덟 개뿐입니다.",
+ s_open:"영업 중입니다.",s_shut:"지금은 닫혀 있습니다.",s_rest:"오늘은 휴무입니다.",
+ hours_s:"9:00–18:00 / 월·화 휴무",
+ h_beans:"원두",beans_n:"200g 봉지로 판매합니다. 즉석에서 갈아 드릴 수 있습니다. 봉지에 로스팅한 날짜를 적어 둡니다.",
+ b1:"에티오피아 예가체프",b1_o:"워시드. 레몬과 홍차 같은 향.",
+ b2:"과테말라 안티구아",b2_o:"워시드. 초콜릿 같은 단맛.",
+ b3:"케냐 니에리",b3_o:"워시드. 블랙커런트 같은 산미.",
+ b4:"브라질 세라도",b4_o:"내추럴. 견과류 같은 고소함.",
+ g_unit:"200g당",
+ roast:"로스팅",
+ h_drinks:"음료",
+ d1:"드립 커피",d1_p:"¥550",d1_s:"그날의 원두 세 가지 중에서 고르실 수 있습니다",
+ d2:"에스프레소",d2_p:"¥450",d2_s:"",
+ d3:"라떼",d3_p:"¥600",d3_s:"",
+ d4:"콜드브루",d4_p:"¥600",d4_s:"여름에만",
+ d5:"호지차",d5_p:"¥450",d5_s:"카페인이 적습니다",
+ d6:"디카페인 커피",d6_p:"¥600",d6_s:"물로 처리한 원두를 씁니다",
+ milk_n:"우유는 귀리 음료나 두유로 바꾸실 수 있으며, 추가 요금은 없습니다. 음식은 팔지 않으며, 외부 음식 반입은 삼가 주세요.",
+ h_stay:"가게 안에서",
+ s1:"먼저 주문하고 먼저 결제합니다",s1_n:"카운터에서 주문하고 그 자리에서 결제해 주세요. 자리에서는 주문을 받지 않습니다.",
+ s2:"좌석은 여덟 개. 합석은 권하지 않습니다",s2_n:"자리가 다 찼을 때는 원두만 사 가셔도 됩니다. 예약은 받지 않습니다.",
+ s3:"와이파이와 콘센트가 없습니다",s3_n:"갖추고 있지 않으니 양해 부탁드립니다. 붐비는 시간에는 한 시간 정도로 자리를 비워 주시면 감사하겠습니다.",
+ s4:"사진은 다른 손님이 나오지 않는 범위에서",s4_n:"로스터기와 원두 선반은 찍으셔도 괜찮습니다.",
+ h_visit:"오시는 길",
+ hours:"영업시간",hours_v:"9:00〜18:00",
+ closed:"휴무일",closed_v:"월요일·화요일",
+ seats:"좌석",seats_v:"8석 (카운터 4, 테이블 4)",
+ access:"오시는 길",access_v:"JR 구로이소역에서 도보 9분. 가게 뒤에 주차 3대.",
+ addr:"주소",addr_v:"도치기현 나스시오바라시 (가상의 주소입니다)",
+ cash:"현금",card:"카드",qr:"QR 결제",ic:"교통 IC",
+ cta_map:"지도 열기",
+ demo:"Demonstration",
+ foot:"영업용 데모 사이트입니다. 가상의 가게이며 실제 로스터리와는 관계가 없습니다. 가격과 영업시간도 모두 가상입니다."}
+};
+
+const el=(t,c,x)=>{const n=document.createElement(t); if(c)n.className=c; if(x!=null)n.textContent=x; return n;};
+
+function state(){
+  const d=new Date(), w=d.getDay();
+  if(SHUT.indexOf(w)>=0) return "rest";
+  const m=d.getHours()*60+d.getMinutes();
+  return (m>=OPEN_MIN && m<CLOSE_MIN) ? "open" : "shut";
+}
+
+function build(t){
+  const bl=document.getElementById("beans"); bl.textContent="";
+  for(const b of BEANS){
+    const li=el("li");
+    li.appendChild(el("span","bn",t[b.id]));
+    li.appendChild(el("span","bp","¥"+b.p));
+    li.appendChild(el("span","bo",t[b.id+"_o"]));
+    li.appendChild(el("span","bq",t.g_unit));
+    const sc=el("div","scale");
+    for(let i=1;i<=5;i++){ const bar=el("i"); if(i<=b.r) bar.className="on"; sc.appendChild(bar); }
+    sc.appendChild(el("span",null,t.roast));
+    li.appendChild(sc);
+    bl.appendChild(li);
+  }
+
+  const dl=document.getElementById("drinks"); dl.textContent="";
+  for(const d of DRINKS){
+    const li=el("li");
+    const left=el("div");
+    left.appendChild(el("b",null,t[d]));
+    if(t[d+"_s"]) left.appendChild(el("small",null,t[d+"_s"]));
+    li.appendChild(left);
+    li.appendChild(el("span",null,t[d+"_p"]));
+    dl.appendChild(li);
+  }
+
+  const sl=document.getElementById("stay"); sl.textContent="";
+  for(const s of STAY){
+    const li=el("li");
+    li.appendChild(el("b",null,t[s]));
+    li.appendChild(el("p",null,t[s+"_n"]));
+    sl.appendChild(li);
+  }
+
+  const fl=document.getElementById("facts"); fl.textContent="";
+  for(const f of FACTS){ fl.appendChild(el("dt",null,t[f])); fl.appendChild(el("dd",null,t[f+"_v"])); }
+
+  const pl=document.getElementById("pays"); pl.textContent="";
+  for(const p of PAYS){
+    const li=el("li"); li.dataset.ok=String(p.ok);
+    li.appendChild(el("em",null,p.ok?"○":"×"));
+    li.appendChild(el("span",null,t[p.id]));
+    pl.appendChild(li);
+  }
+}
+
+function apply(code){
+  const t=T[code];
+  for(const n of document.querySelectorAll("[data-k]")){ const v=t[n.dataset.k]; if(v!=null) n.textContent=v; }
+  build(t);
+  const st=state();
+  document.getElementById("now-t").textContent = st==="open"?t.s_open:(st==="rest"?t.s_rest:t.s_shut);
+  document.documentElement.lang=code;
+  for(const b of document.querySelectorAll("#lb button")) b.setAttribute("aria-pressed",String(b.dataset.lang===code));
+  document.title=t.name;
+}
+
+const lb=document.getElementById("lb");
+for(const [code,label] of LANGS){
+  const b=el("button",null,label); b.type="button"; b.dataset.lang=code;
+  b.addEventListener("click",()=>apply(code));
+  lb.appendChild(b);
+}
+apply("ja");
+</script>
+</body>
+</html>
