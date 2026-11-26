@@ -1,0 +1,548 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="yama × yama. が多言語ページの見本として作った、架空のお店「湯波茶屋 すぎもと」のデモサイトです。実在の店舗ではありません。">
+<meta name="theme-color" content="#f4f1e9">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>湯波茶屋すぎもと</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@500;600;800&family=Noto+Sans+JP:wght@400;500;700&display=swap">
+<style>
+/* スマホ前提の一本スクロール。杉の黒・和紙の生成り・苔色。写真で食欲を、文字は静かに、操作は親指の届く下端に。 */
+:root{
+  --paper:#f4f1e9; --card:#fffdf8; --ink:#1b1915; --sub:#625b4f; --faint:#8a8274;
+  --line:#e2dacb; --moss:#3f6238; --moss-ink:#2d4728; --moss-wash:#e9efe4;
+  --lacquer:#9a3a2b; --lacquer-wash:#f6e7e2; --gold:#9a7a3e;
+  --shadow:0 1px 2px rgba(27,25,21,.05),0 10px 28px -16px rgba(27,25,21,.22);
+  --font-display:"Shippori Mincho",ui-serif,Georgia,"Times New Roman",serif;
+  --font-body:"Noto Sans JP",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --gutter-l:max(18px,env(safe-area-inset-left,0px));
+  --gutter-r:max(18px,env(safe-area-inset-right,0px));
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#141318; --card:#1d1c23; --ink:#efeae0; --sub:#b0a898; --faint:#857e70;
+  --line:#2f2d36; --moss:#9fc490; --moss-ink:#c6dcba; --moss-wash:#1e281c;
+  --lacquer:#e39a8d; --lacquer-wash:#2e1f1c; --gold:#d0b07a;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 12px 30px -16px rgba(0,0,0,.75); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --paper:#141318; --card:#1d1c23; --ink:#efeae0; --sub:#b0a898; --faint:#857e70;
+  --line:#2f2d36; --moss:#9fc490; --moss-ink:#c6dcba; --moss-wash:#1e281c;
+  --lacquer:#e39a8d; --lacquer-wash:#2e1f1c; --gold:#d0b07a;
+  --shadow:0 1px 2px rgba(0,0,0,.45),0 12px 30px -16px rgba(0,0,0,.75); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--font-body);font-size:16px;
+  line-height:1.8;margin:0;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+img{display:block;max-width:100%;height:auto}
+.wrap{max-width:44rem;margin:0 auto;padding-left:var(--gutter-l);padding-right:var(--gutter-r)}
+
+/* ── 言語バー ─────────────────────────── */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:41;background:var(--paper)}
+.langbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;
+  background:color-mix(in srgb,var(--paper) 90%,transparent);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.langbar .wrap{display:flex;align-items:center;gap:.75rem;padding-block:.45rem}
+.mark{display:none;font-family:var(--font-display);font-weight:800;font-size:.95rem;
+  letter-spacing:.06em;white-space:nowrap}
+@media (min-width:560px){.mark{display:block}}
+.langs{display:flex;gap:.25rem;margin-left:auto;margin-right:auto;flex-wrap:nowrap}
+@media (min-width:560px){.langs{margin-right:0}}
+.langs button{font:500 .82rem/1 var(--font-body);color:var(--sub);background:none;
+  border:1px solid transparent;border-radius:999px;padding:.55rem .7rem;min-height:2.25rem;cursor:pointer}
+.langs button[aria-pressed="true"]{color:var(--card);background:var(--moss);border-color:var(--moss)}
+.langs button:focus-visible{outline:2px solid var(--moss);outline-offset:2px}
+
+/* ── ヒーロー（写真が埋めるのでセーフエリアの食い込みはしない） ── */
+.hero{position:relative;isolation:isolate;height:min(64svh,520px);min-height:22rem;overflow:hidden}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% 55%}
+.hero::after{content:"";position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:linear-gradient(to top,rgba(12,10,8,.9) 0%,rgba(12,10,8,.6) 34%,rgba(12,10,8,.12) 64%,rgba(12,10,8,0) 100%)}
+.hero-body{position:absolute;inset:auto 0 0 0;z-index:2;padding-block:0 1.5rem}
+.kicker{font:500 .7rem/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;
+  color:#e2d8bd;margin:0 0 .6rem}
+.hero h1{font-family:var(--font-display);font-weight:800;color:#fcfaf4;
+  font-size:clamp(2.1rem,10vw,3.3rem);line-height:1.15;margin:0 0 .5rem;text-wrap:balance;
+  text-shadow:0 2px 18px rgba(0,0,0,.45)}
+.hero-tag{color:#ebe4d4;margin:0;font-size:.92rem;line-height:1.7;max-width:30rem}
+.status{display:inline-flex;align-items:center;gap:.45rem;font:700 .76rem/1 var(--font-body);
+  border-radius:999px;padding:.45rem .75rem;margin:0 0 .75rem;
+  background:rgba(252,250,244,.16);color:#fcfaf4;border:1px solid rgba(252,250,244,.32);
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.status .dot{width:.5rem;height:.5rem;border-radius:50%;background:#8fd07c;box-shadow:0 0 0 3px rgba(143,208,124,.25)}
+.status[data-open="false"] .dot{background:#e8a596;box-shadow:0 0 0 3px rgba(232,165,150,.22)}
+
+/* 早見の帯 */
+.quick{background:var(--card);border-bottom:1px solid var(--line)}
+.quick .wrap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding-block:.85rem}
+.q{padding-inline:.25rem;text-align:center;min-width:0}
+.q + .q{border-left:1px solid var(--line)}
+.q b{display:block;font-family:var(--font-display);font-weight:600;font-size:1rem;line-height:1.35;
+  font-variant-numeric:tabular-nums}
+.q span{display:block;font-size:.7rem;color:var(--faint);letter-spacing:.04em;line-height:1.5;margin-top:.15rem}
+
+/* ── 共通 ─────────────────────────────── */
+section{padding-block:2.75rem}
+section + section{border-top:1px solid var(--line)}
+.eyebrow{font:500 .68rem/1 var(--font-body);letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);margin:0 0 .55rem}
+h2{font-family:var(--font-display);font-weight:600;font-size:1.6rem;line-height:1.35;margin:0 0 .5rem}
+.lede{color:var(--sub);margin:0 0 1.5rem;font-size:.95rem}
+
+/* ── 写真の帯 ─────────────────────────── */
+.strip{display:grid;grid-auto-flow:column;grid-auto-columns:82%;gap:.7rem;overflow-x:auto;
+  scroll-snap-type:x mandatory;scrollbar-width:none;margin-top:1.5rem;
+  margin-inline:calc(-1 * var(--gutter-l)) calc(-1 * var(--gutter-r));
+  padding-inline:var(--gutter-l) var(--gutter-r);scroll-padding-inline:var(--gutter-l)}
+.strip::-webkit-scrollbar{display:none}
+.strip figure{margin:0;scroll-snap-align:start;min-width:0}
+.strip img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:.6rem;box-shadow:var(--shadow)}
+.strip figcaption{font-size:.76rem;color:var(--faint);margin-top:.45rem}
+@media (min-width:640px){.strip{grid-auto-columns:1fr;overflow:visible;margin-inline:0;padding-inline:0}}
+
+/* ── 品書き ───────────────────────────── */
+.menu{display:grid;gap:1rem}
+@media (min-width:640px){.menu{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dish{background:var(--card);border:1px solid var(--line);border-radius:.7rem;overflow:hidden;
+  box-shadow:var(--shadow);min-width:0}
+.dish img{width:100%;aspect-ratio:3/2;object-fit:cover}
+.dish-body{padding:.95rem 1rem 1.05rem}
+.dish-top{display:flex;gap:.75rem;align-items:baseline}
+.dish-name{font-family:var(--font-display);font-weight:600;font-size:1.15rem;line-height:1.4;flex:1;min-width:0}
+.price{font-variant-numeric:tabular-nums;white-space:nowrap;font-weight:700;font-size:1.02rem;color:var(--moss-ink)}
+.dish-note{color:var(--sub);font-size:.88rem;line-height:1.7;margin:.3rem 0 0}
+.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.65rem}
+.tag{font:500 .72rem/1 var(--font-body);border-radius:999px;padding:.32rem .6rem}
+.tag.veg{color:var(--moss-ink);background:var(--moss-wash)}
+.tag.raw{color:var(--lacquer);background:var(--lacquer-wash)}
+
+/* ── アレルギー（スマホでは表より札の方が読める） ── */
+.allergens{display:grid;gap:.6rem}
+.al{display:flex;gap:.9rem;align-items:center;background:var(--card);border:1px solid var(--line);
+  border-radius:.6rem;padding:.75rem .85rem;min-width:0}
+.al img{width:3.25rem;height:3.25rem;object-fit:cover;border-radius:.4rem;flex:0 0 3.25rem}
+.al-main{flex:1;min-width:0}
+.al-name{font-weight:700;font-size:.95rem;line-height:1.4}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:.35rem}
+.chip{font:700 .74rem/1 var(--font-body);color:var(--lacquer);background:var(--lacquer-wash);
+  border-radius:.3rem;padding:.3rem .5rem}
+.chip.none{color:var(--moss-ink);background:var(--moss-wash);font-weight:500}
+.al-key{font-size:.78rem;color:var(--faint);margin-top:.8rem}
+
+.note{background:var(--moss-wash);border-radius:.65rem;padding:1.05rem 1.1rem;font-size:.92rem;
+  line-height:1.85;margin-top:1.25rem;border:1px solid color-mix(in srgb,var(--moss) 20%,transparent)}
+.note strong{display:block;font-family:var(--font-display);font-size:1.05rem;color:var(--moss-ink);margin-bottom:.3rem}
+
+/* ── 支払い ───────────────────────────── */
+.pay{display:grid;gap:.5rem;grid-template-columns:repeat(2,minmax(0,1fr))}
+.pay-item{background:var(--card);border:1px solid var(--line);border-radius:.6rem;padding:.8rem .85rem;min-width:0}
+.pay-item b{display:block;font-size:.88rem;line-height:1.45}
+.pay-item small{display:block;color:var(--faint);font-size:.74rem;line-height:1.45;margin-top:.15rem}
+.pay-state{display:inline-block;font:700 .72rem/1 var(--font-body);border-radius:999px;padding:.3rem .55rem;margin-top:.55rem}
+.pay-state.ok{color:var(--moss-ink);background:var(--moss-wash)}
+.pay-state.ng{color:var(--lacquer);background:var(--lacquer-wash)}
+
+/* ── 来店情報 ─────────────────────────── */
+.visit{background:var(--card);border:1px solid var(--line);border-radius:.7rem;box-shadow:var(--shadow);margin:0}
+.row{padding:.85rem 1rem;border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row dt{color:var(--faint);font-size:.74rem;letter-spacing:.06em;margin:0 0 .15rem}
+.row dd{margin:0;font-size:.95rem;line-height:1.7}
+@media (min-width:560px){.row{display:flex;gap:1rem}.row dt{flex:0 0 7rem;margin:0;padding-top:.2rem}.row dd{flex:1;min-width:0}}
+.tel{font-variant-numeric:tabular-nums;font-weight:700;font-size:1.1rem;letter-spacing:.04em;-webkit-user-select:all;user-select:all}
+
+footer{padding-block:2.25rem 2.5rem;color:var(--faint);font-size:.8rem;border-top:1px solid var(--line)}
+.demo-badge{background:var(--lacquer);color:var(--card);font:700 .7rem/1 var(--font-body);letter-spacing:.06em;
+  border-radius:.25rem;padding:.32rem .55rem;display:inline-block;margin-bottom:.7rem}
+
+/* ── 下端の操作バー（スマホのみ） ─────── */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:40;background:color-mix(in srgb,var(--card) 94%,transparent);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-top:1px solid var(--line);
+  padding:.6rem var(--gutter-r) calc(.6rem + env(safe-area-inset-bottom,0px)) var(--gutter-l);
+  display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.btn{display:flex;align-items:center;justify-content:center;gap:.4rem;text-align:center;white-space:nowrap;overflow:hidden;
+  font:700 .92rem/1.2 var(--font-body);border-radius:.55rem;min-height:3rem;padding:.6rem .8rem;
+  cursor:pointer;border:1px solid var(--moss);text-decoration:none}
+.btn-fill{background:var(--moss);color:var(--card)}
+.btn-line{background:var(--card);color:var(--moss-ink)}
+.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.btn svg{width:1.05rem;height:1.05rem;flex:0 0 auto}
+body{padding-bottom:calc(4.5rem + env(safe-area-inset-bottom,0px))}
+@media (min-width:760px){
+  .dock{position:static;background:none;backdrop-filter:none;-webkit-backdrop-filter:none;border:0;
+    padding:1rem 0 0;max-width:44rem;margin:0 auto}
+  body{padding-bottom:0}
+}
+@media (prefers-reduced-motion:no-preference){
+  .langs button{transition:background .18s,color .18s}
+  .btn{transition:transform .12s}
+  .btn:active{transform:scale(.98)}
+}
+</style>
+</head>
+<body>
+
+<nav class="langbar" aria-label="Language">
+  <div class="wrap">
+    <span class="mark" data-k="name"></span>
+    <div class="langs" id="langbar"></div>
+  </div>
+</nav>
+
+<header class="hero">
+  <img src="img/07-exterior-front.webp" alt="" width="1536" height="1024" fetchpriority="high" decoding="async">
+  <div class="hero-body">
+    <div class="wrap">
+      <p class="kicker" data-k="kicker"></p>
+      <p class="status" id="status" data-open="true"><span class="dot"></span><span id="status-text"></span></p>
+      <h1 data-k="name"></h1>
+      <p class="hero-tag" data-k="tagline"></p>
+    </div>
+  </div>
+</header>
+
+<div class="quick">
+  <div class="wrap">
+    <div class="q"><b>11:00–15:00</b><span data-k="q_hours"></span></div>
+    <div class="q"><b data-k="q_closed_v"></b><span data-k="q_closed"></span></div>
+    <div class="q"><b data-k="q_walk_v"></b><span data-k="q_walk"></span></div>
+  </div>
+</div>
+
+<main>
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">What is yuba</p>
+      <h2 data-k="h_about"></h2>
+      <p class="lede" data-k="about"></p>
+      <div class="strip">
+        <figure><img src="img/02-interior.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async"><figcaption data-k="cap_in"></figcaption></figure>
+        <figure><img src="img/01-exterior.webp" alt="" width="1672" height="941" loading="lazy" decoding="async"><figcaption data-k="cap_out"></figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Menu</p>
+      <h2 data-k="h_menu"></h2>
+      <p class="lede" data-k="menu_lede"></p>
+      <div class="menu" id="menu"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Allergens &amp; diet</p>
+      <h2 data-k="h_diet"></h2>
+      <p class="lede" data-k="diet_lede"></p>
+      <div class="allergens" id="allergen"></div>
+      <p class="al-key" data-k="al_key"></p>
+      <div class="note">
+        <strong data-k="diet_note_t"></strong>
+        <span data-k="diet_note_b"></span>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Payment</p>
+      <h2 data-k="h_pay"></h2>
+      <p class="lede" data-k="pay_lede"></p>
+      <div class="pay" id="pay"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <p class="eyebrow">Visit</p>
+      <h2 data-k="h_visit"></h2>
+      <dl class="visit">
+        <div class="row"><dt data-k="l_hours"></dt><dd data-k="v_hours"></dd></div>
+        <div class="row"><dt data-k="l_closed"></dt><dd data-k="v_closed"></dd></div>
+        <div class="row"><dt data-k="l_access"></dt><dd data-k="v_access"></dd></div>
+        <div class="row"><dt data-k="l_seats"></dt><dd data-k="v_seats"></dd></div>
+        <div class="row"><dt data-k="l_resv"></dt><dd data-k="v_resv"></dd></div>
+        <div class="row"><dt data-k="l_addr"></dt><dd data-k="v_addr"></dd></div>
+        <div class="row"><dt data-k="l_tel"></dt><dd><span class="tel">0288-00-0000</span></dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+
+<div class="dock">
+  <a class="btn btn-fill" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%97%A5%E5%85%89%E6%9D%B1%E7%85%A7%E5%AE%AE" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+    <span data-k="cta_map"></span>
+  </a>
+  <button class="btn btn-line" id="copy" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg>
+    <span id="copy-label" data-k="cta_copy"></span>
+  </button>
+</div>
+
+<footer>
+  <div class="wrap">
+    <span class="demo-badge" data-k="demo"></span>
+    <p style="margin:0" data-k="foot"></p>
+  </div>
+</footer>
+
+<script>
+const LANGS = [["ja","日本語"],["en","EN"],["zh-Hant","繁體"],["zh-Hans","简体"],["ko","한국어"]];
+const MENU = [
+  {id:"soba", price:"¥1,400", tags:["veg"],       img:"img/03-yuba-soba.webp"},
+  {id:"don",  price:"¥1,600", tags:["veg"],       img:"img/06-yuba-don.webp"},
+  {id:"sashi",price:"¥900",   tags:["veg","raw"], img:"img/04-raw-yuba.webp"},
+  {id:"kori", price:"¥1,200", tags:["veg"],       img:"img/05-kakigori.webp"}
+];
+const ALLERGEN = {soba:["soy","wheat","buck"], don:["soy","egg"], sashi:["soy"], kori:["dairy"]};
+const PAY = [{id:"cash",ok:1},{id:"card",ok:1},{id:"qr",ok:1},{id:"ic",ok:0}];
+
+const T = {
+ja:{kicker:"日光・東照宮前",name:"湯波茶屋 すぎもと",
+ tagline:"日光の湯波を、朝に引いて昼に出す。昭和二十八年から続く小さな茶屋です。",
+ s_open:"営業中",s_closed:"営業時間外",s_closedday:"本日は定休日",
+ q_hours:"営業時間",q_closed_v:"水曜",q_closed:"定休日",q_walk_v:"徒歩8分",q_walk:"東照宮から",
+ h_about:"湯波について",about:"湯波は豆乳を温めたときに表面にできる膜です。日光では何枚も巻いて厚みを出すのが特徴で、京都の湯葉より食べごたえがあります。大豆だけで作るので、肉や魚は使いません。",
+ cap_in:"店内。テーブル16席と座敷8席",cap_out:"表参道に面した入口",
+ h_menu:"お品書き",menu_lede:"税込価格です。食材はその日の仕入れで変わることがあります。",
+ soba:"湯波そば",soba_n:"自家製そばに、巻き湯波を二本。",
+ don:"湯波丼",don_n:"甘辛く煮た湯波を、ご飯にたっぷりのせて。",
+ sashi:"湯波刺し",sashi_n:"引きたての生湯波。わさび醤油で。",
+ kori:"天然氷のかき氷",kori_n:"日光の蔵元の天然氷に、抹茶蜜と小豆。",
+ t_veg:"ベジタリアン可",t_raw:"生もの",
+ h_diet:"アレルギーと食の制限",diet_lede:"品ごとに含まれる特定原材料です。ご注文のときに口頭でもお伝えください。",
+ soy:"大豆",wheat:"小麦",buck:"そば",egg:"卵",dairy:"乳",none:"特定原材料なし",
+ al_key:"表示は大豆・小麦・そば・卵・乳の5品目について。",
+ diet_note_t:"宗教上の制限について",
+ diet_note_b:"豚肉・牛肉・鶏肉は一切使いません。酒類（みりんを含む）は湯波丼の煮汁に使用します。ハラール認証は受けていません。",
+ h_pay:"お支払い",pay_lede:"両替はできません。",
+ cash:"現金",cash_s:"日本円",card:"クレジットカード",card_s:"VISA・Mastercard・JCB",qr:"QRコード決済",qr_s:"PayPay",ic:"交通系ICカード",ic_s:"Suica・PASMO など",
+ ok:"使えます",ng:"使えません",
+ h_visit:"お越しになる前に",
+ l_hours:"営業時間",v_hours:"11:00–15:00（麺がなくなり次第終了）",
+ l_closed:"定休日",v_closed:"水曜日、年末年始",
+ l_access:"行き方",v_access:"東武日光駅から世界遺産めぐりバスで7分、「表参道」下車すぐ。東照宮から徒歩8分。",
+ l_seats:"席数",v_seats:"24席（テーブル16・座敷8）。お子様連れも歓迎します。",
+ l_resv:"予約",v_resv:"4名以上は電話で承ります。1〜3名は予約なしでどうぞ。",
+ l_addr:"所在地",v_addr:"栃木県日光市山内（架空の住所です）",l_tel:"電話",
+ cta_copy:"番号をコピー",cta_map:"地図を開く",copied:"コピーしました",
+ demo:"デモンストレーション",foot:"これは営業用のデモサイトです。架空の店舗で、実在の店とは関係ありません。"},
+
+en:{kicker:"Nikko · by Toshogu Shrine",name:"Yuba Chaya Sugimoto",
+ tagline:"Nikko yuba, lifted in the morning and served at noon. A small tea house, open since 1953.",
+ s_open:"Open now",s_closed:"Closed now",s_closedday:"Closed today",
+ q_hours:"Hours",q_closed_v:"Wed",q_closed:"Closed",q_walk_v:"8 min",q_walk:"walk from Toshogu",
+ h_about:"What is yuba?",about:"Yuba is the skin that forms on soy milk as it heats. Nikko yuba is rolled in several layers, so it is thicker and chewier than the Kyoto style. It is made from soybeans only — no meat, no fish.",
+ cap_in:"Inside: 16 seats at tables, 8 on tatami",cap_out:"The entrance on Omotesando",
+ h_menu:"Menu",menu_lede:"Prices include tax. Ingredients may change with the day's delivery.",
+ soba:"Yuba soba",soba_n:"House-made buckwheat noodles with two rolls of yuba.",
+ don:"Yuba donburi",don_n:"Yuba simmered in a sweet soy broth, piled generously over rice.",
+ sashi:"Raw yuba sashimi",sashi_n:"Freshly lifted, served uncooked with wasabi and soy sauce.",
+ kori:"Natural ice kakigori",kori_n:"Shaved natural ice from a Nikko ice house, with matcha syrup and sweet azuki beans.",
+ t_veg:"Vegetarian",t_raw:"Served raw",
+ h_diet:"Allergens and dietary needs",diet_lede:"Major allergens in each dish. Please also tell us when you order.",
+ soy:"Soy",wheat:"Wheat",buck:"Buckwheat",egg:"Egg",dairy:"Dairy",none:"None of the five",
+ al_key:"Covers soy, wheat, buckwheat, egg and dairy.",
+ diet_note_t:"Religious dietary restrictions",
+ diet_note_b:"We never use pork, beef or chicken. Alcohol (including mirin) is used in the broth of the yuba donburi. We are not halal certified.",
+ h_pay:"Payment",pay_lede:"We cannot exchange foreign currency.",
+ cash:"Cash",cash_s:"Japanese yen",card:"Credit card",card_s:"VISA · Mastercard · JCB",qr:"QR payment",qr_s:"PayPay",ic:"IC transit card",ic_s:"Suica, PASMO, etc.",
+ ok:"Accepted",ng:"Not accepted",
+ h_visit:"Before you come",
+ l_hours:"Hours",v_hours:"11:00–15:00, or until the noodles run out",
+ l_closed:"Closed",v_closed:"Wednesdays, and over the New Year holiday",
+ l_access:"Getting here",v_access:"7 minutes by World Heritage Loop Bus from Tobu Nikko Station; get off at Omotesando. 8 minutes on foot from Toshogu.",
+ l_seats:"Seating",v_seats:"24 seats (16 at tables, 8 on tatami). Children welcome.",
+ l_resv:"Reservations",v_resv:"Groups of 4 or more, please call. Parties of 1–3 may walk in.",
+ l_addr:"Address",v_addr:"Sannai, Nikko, Tochigi (fictional address)",l_tel:"Phone",
+ cta_copy:"Copy number",cta_map:"Open map",copied:"Copied",
+ demo:"Demonstration",foot:"This is a demonstration site. The restaurant is fictional and bears no relation to any real business."},
+
+"zh-Hant":{kicker:"日光・東照宮前",name:"湯波茶屋 杉本",
+ tagline:"清晨撈起的日光湯波，中午端上桌。自昭和二十八年開業的小茶屋。",
+ s_open:"營業中",s_closed:"非營業時間",s_closedday:"本日公休",
+ q_hours:"營業時間",q_closed_v:"週三",q_closed:"公休",q_walk_v:"步行8分",q_walk:"距東照宮",
+ h_about:"什麼是湯波",about:"湯波是豆漿加熱時表面結成的薄膜。日光的作法是捲上好幾層，因此比京都的湯葉更厚、更有嚼勁。只用黃豆製作，不含肉類與魚類。",
+ cap_in:"店內：桌位16席、和室8席",cap_out:"面向表參道的入口",
+ h_menu:"菜單",menu_lede:"價格含稅。食材可能依當日進貨而異。",
+ soba:"湯波蕎麥麵",soba_n:"自製蕎麥麵，附兩捲湯波。",
+ don:"湯波蓋飯",don_n:"甜鹹醬汁煮的湯波，滿滿鋪在白飯上。",
+ sashi:"生湯波刺身",sashi_n:"現撈的生湯波，佐山葵醬油。",
+ kori:"天然冰刨冰",kori_n:"日光冰室的天然冰，淋上抹茶蜜與紅豆。",
+ t_veg:"素食可",t_raw:"生食",
+ h_diet:"過敏原與飲食限制",diet_lede:"各餐點所含的主要過敏原。點餐時也請告知我們。",
+ soy:"大豆",wheat:"小麥",buck:"蕎麥",egg:"蛋",dairy:"乳製品",none:"不含以上五項",
+ al_key:"標示範圍為大豆、小麥、蕎麥、蛋、乳製品五項。",
+ diet_note_t:"關於宗教飲食限制",
+ diet_note_b:"本店完全不使用豬肉、牛肉與雞肉。湯波蓋飯的湯汁含有酒類（包含味醂）。本店未取得清真認證。",
+ h_pay:"付款方式",pay_lede:"本店無法兌換外幣。",
+ cash:"現金",cash_s:"日圓",card:"信用卡",card_s:"VISA・Mastercard・JCB",qr:"QR碼支付",qr_s:"PayPay",ic:"交通IC卡",ic_s:"Suica・PASMO 等",
+ ok:"可使用",ng:"不可使用",
+ h_visit:"來店前須知",
+ l_hours:"營業時間",v_hours:"11:00–15:00（麵售完即止）",
+ l_closed:"公休日",v_closed:"週三、年末年初",
+ l_access:"交通方式",v_access:"從東武日光站搭世界遺產巡迴巴士7分鐘，「表參道」下車即到。從東照宮步行8分鐘。",
+ l_seats:"座位",v_seats:"24席（桌位16、和室8）。歡迎攜帶孩童。",
+ l_resv:"訂位",v_resv:"4人以上請來電預約。1至3人可直接前來。",
+ l_addr:"地址",v_addr:"栃木縣日光市山內（虛構地址）",l_tel:"電話",
+ cta_copy:"複製號碼",cta_map:"開啟地圖",copied:"已複製",
+ demo:"示範用",foot:"這是示範網站。店家為虛構，與任何實際商家無關。"},
+
+"zh-Hans":{kicker:"日光・东照宫前",name:"汤波茶屋 杉本",
+ tagline:"清晨捞起的日光汤波，中午端上桌。自昭和二十八年开业的小茶屋。",
+ s_open:"营业中",s_closed:"非营业时间",s_closedday:"本日休息",
+ q_hours:"营业时间",q_closed_v:"周三",q_closed:"休息日",q_walk_v:"步行8分",q_walk:"距东照宫",
+ h_about:"什么是汤波",about:"汤波是豆浆加热时表面结成的薄膜。日光的做法是卷上好几层，因此比京都的汤叶更厚、更有嚼劲。只用黄豆制作，不含肉类与鱼类。",
+ cap_in:"店内：桌位16席、和室8席",cap_out:"面向表参道的入口",
+ h_menu:"菜单",menu_lede:"价格含税。食材可能随当日进货而变化。",
+ soba:"汤波荞麦面",soba_n:"自制荞麦面，配两卷汤波。",
+ don:"汤波盖饭",don_n:"甜咸酱汁煮的汤波，满满铺在米饭上。",
+ sashi:"生汤波刺身",sashi_n:"现捞的生汤波，配芥末酱油。",
+ kori:"天然冰刨冰",kori_n:"日光冰室的天然冰，淋上抹茶蜜与红豆。",
+ t_veg:"素食可",t_raw:"生食",
+ h_diet:"过敏原与饮食限制",diet_lede:"各餐点所含的主要过敏原。点餐时也请告知我们。",
+ soy:"大豆",wheat:"小麦",buck:"荞麦",egg:"蛋",dairy:"乳制品",none:"不含以上五项",
+ al_key:"标示范围为大豆、小麦、荞麦、蛋、乳制品五项。",
+ diet_note_t:"关于宗教饮食限制",
+ diet_note_b:"本店完全不使用猪肉、牛肉与鸡肉。汤波盖饭的汤汁含有酒类（包含味醂）。本店未取得清真认证。",
+ h_pay:"支付方式",pay_lede:"本店无法兑换外币。",
+ cash:"现金",cash_s:"日元",card:"信用卡",card_s:"VISA・Mastercard・JCB",qr:"二维码支付",qr_s:"PayPay",ic:"交通IC卡",ic_s:"Suica・PASMO 等",
+ ok:"可使用",ng:"不可使用",
+ h_visit:"来店前须知",
+ l_hours:"营业时间",v_hours:"11:00–15:00（面售完即止）",
+ l_closed:"休息日",v_closed:"周三、年末年初",
+ l_access:"交通方式",v_access:"从东武日光站乘世界遗产巡回巴士7分钟，「表参道」下车即到。从东照宫步行8分钟。",
+ l_seats:"座位",v_seats:"24席（桌位16、和室8）。欢迎带孩子。",
+ l_resv:"预订",v_resv:"4人以上请来电预约。1至3人可直接前来。",
+ l_addr:"地址",v_addr:"栃木县日光市山内（虚构地址）",l_tel:"电话",
+ cta_copy:"复制号码",cta_map:"打开地图",copied:"已复制",
+ demo:"演示用",foot:"这是演示网站。店家为虚构，与任何实际商家无关。"},
+
+ko:{kicker:"닛코・도쇼구 앞",name:"유바 찻집 스기모토",
+ tagline:"아침에 걷어 올린 닛코 유바를 점심에 냅니다. 1953년부터 이어온 작은 찻집입니다.",
+ s_open:"영업 중",s_closed:"영업시간 아님",s_closedday:"오늘은 휴무",
+ q_hours:"영업시간",q_closed_v:"수요일",q_closed:"휴무",q_walk_v:"도보 8분",q_walk:"도쇼구에서",
+ h_about:"유바란",about:"유바는 두유를 데울 때 표면에 생기는 막입니다. 닛코에서는 여러 겹으로 말아 두껍게 만들기 때문에 교토식보다 씹는 맛이 있습니다. 콩만으로 만들어 고기와 생선은 들어가지 않습니다.",
+ cap_in:"가게 안: 테이블 16석, 다다미 8석",cap_out:"오모테산도에 면한 입구",
+ h_menu:"메뉴",menu_lede:"세금 포함 가격입니다. 식재료는 그날 들어오는 것에 따라 달라질 수 있습니다.",
+ soba:"유바 소바",soba_n:"직접 뽑은 메밀국수에 유바 두 말이.",
+ don:"유바 덮밥",don_n:"달콤짭짤하게 조린 유바를 밥 위에 듬뿍.",
+ sashi:"생유바 사시미",sashi_n:"갓 걷어 올린 생유바. 와사비 간장과 함께.",
+ kori:"천연빙 빙수",kori_n:"닛코 빙고의 천연빙에 말차 시럽과 팥.",
+ t_veg:"채식 가능",t_raw:"생식",
+ h_diet:"알레르기와 식사 제한",diet_lede:"메뉴별로 들어 있는 주요 알레르기 유발 식품입니다. 주문하실 때도 말씀해 주세요.",
+ soy:"대두",wheat:"밀",buck:"메밀",egg:"달걀",dairy:"유제품",none:"다섯 가지 모두 없음",
+ al_key:"대두·밀·메밀·달걀·유제품 다섯 가지를 표시합니다.",
+ diet_note_t:"종교상의 식사 제한",
+ diet_note_b:"돼지고기, 소고기, 닭고기는 일절 사용하지 않습니다. 유바 덮밥의 조림 국물에는 술(미림 포함)이 들어갑니다. 할랄 인증은 받지 않았습니다.",
+ h_pay:"결제",pay_lede:"환전은 불가능합니다.",
+ cash:"현금",cash_s:"일본 엔",card:"신용카드",card_s:"VISA・Mastercard・JCB",qr:"QR 결제",qr_s:"PayPay",ic:"교통 IC 카드",ic_s:"Suica・PASMO 등",
+ ok:"사용 가능",ng:"사용 불가",
+ h_visit:"오시기 전에",
+ l_hours:"영업시간",v_hours:"11:00–15:00 (면이 떨어지면 종료)",
+ l_closed:"휴무일",v_closed:"수요일, 연말연시",
+ l_access:"오시는 길",v_access:"도부 닛코역에서 세계유산 순환버스로 7분, 오모테산도 하차 후 바로. 도쇼구에서 도보 8분.",
+ l_seats:"좌석",v_seats:"24석(테이블 16, 다다미 8). 어린이도 환영합니다.",
+ l_resv:"예약",v_resv:"4인 이상은 전화로 예약해 주세요. 1~3인은 예약 없이 오셔도 됩니다.",
+ l_addr:"주소",v_addr:"도치기현 닛코시 산나이 (가상의 주소입니다)",l_tel:"전화",
+ cta_copy:"번호 복사",cta_map:"지도 열기",copied:"복사했습니다",
+ demo:"데모",foot:"영업용 데모 사이트입니다. 가상의 점포이며 실제 가게와는 관계가 없습니다."}
+};
+
+let current = "ja";
+function el(tag, cls, text){const e=document.createElement(tag); if(cls)e.className=cls; if(text!=null)e.textContent=text; return e;}
+function img(src, cls){const i=document.createElement("img"); i.src=src; i.alt=""; i.loading="lazy"; i.decoding="async"; i.width=1448; i.height=1086; if(cls)i.className=cls; return i;}
+
+/* 日本時間での営業状態。水曜定休、11:00–15:00。 */
+function openState(){
+  const f=new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",weekday:"short",hour:"2-digit",minute:"2-digit",hourCycle:"h23"});
+  const p=Object.fromEntries(f.formatToParts(new Date()).map(x=>[x.type,x.value]));
+  const m=parseInt(p.hour,10)*60+parseInt(p.minute,10);
+  if(p.weekday==="Wed") return "closedday";
+  return (m>=660 && m<900) ? "open" : "closed";
+}
+
+function render(t){
+  const menu=document.getElementById("menu"); menu.textContent="";
+  for(const d of MENU){
+    const card=el("article","dish");
+    card.appendChild(img(d.img));
+    const body=el("div","dish-body");
+    const top=el("div","dish-top");
+    top.appendChild(el("h3","dish-name",t[d.id]));
+    top.appendChild(el("span","price",d.price));
+    body.appendChild(top);
+    body.appendChild(el("p","dish-note",t[d.id+"_n"]));
+    const tags=el("div","tags");
+    for(const g of d.tags) tags.appendChild(el("span","tag "+g, g==="veg"?t.t_veg:t.t_raw));
+    body.appendChild(tags);
+    card.appendChild(body);
+    menu.appendChild(card);
+  }
+
+  const al=document.getElementById("allergen"); al.textContent="";
+  for(const d of MENU){
+    const row=el("div","al");
+    row.appendChild(img(d.img));
+    const main=el("div","al-main");
+    main.appendChild(el("div","al-name",t[d.id]));
+    const chips=el("div","chips");
+    const list=ALLERGEN[d.id];
+    if(list.length) for(const k of list) chips.appendChild(el("span","chip",t[k]));
+    else chips.appendChild(el("span","chip none",t.none));
+    main.appendChild(chips);
+    row.appendChild(main);
+    al.appendChild(row);
+  }
+
+  const pay=document.getElementById("pay"); pay.textContent="";
+  for(const p of PAY){
+    const it=el("div","pay-item");
+    it.appendChild(el("b",null,t[p.id]));
+    it.appendChild(el("small",null,t[p.id+"_s"]));
+    it.appendChild(el("span","pay-state "+(p.ok?"ok":"ng"), p.ok?t.ok:t.ng));
+    pay.appendChild(it);
+  }
+}
+
+function apply(code){
+  current=code;
+  const t=T[code];
+  for(const n of document.querySelectorAll("[data-k]")){ const v=t[n.dataset.k]; if(v!=null) n.textContent=v; }
+  render(t);
+  const st=openState();
+  document.getElementById("status").dataset.open=String(st==="open");
+  document.getElementById("status-text").textContent = st==="open"?t.s_open:(st==="closedday"?t.s_closedday:t.s_closed);
+  document.documentElement.lang=code;
+  for(const b of document.querySelectorAll("#langbar button")) b.setAttribute("aria-pressed",String(b.dataset.lang===code));
+  document.title=t.name;
+}
+
+const bar=document.getElementById("langbar");
+for(const [code,label] of LANGS){
+  const b=el("button",null,label); b.type="button"; b.dataset.lang=code;
+  b.addEventListener("click",()=>apply(code)); bar.appendChild(b);
+}
+
+document.getElementById("copy").addEventListener("click",async ()=>{
+  const num=document.querySelector(".tel").textContent;
+  const label=document.getElementById("copy-label");
+  try{ await navigator.clipboard.writeText(num); label.textContent=T[current].copied+"  "+num; }
+  catch{ const r=document.createRange(); r.selectNodeContents(document.querySelector(".tel"));
+         const s=getSelection(); s.removeAllRanges(); s.addRange(r); label.textContent=num;
+         document.querySelector(".tel").scrollIntoView({block:"center"}); }
+  setTimeout(()=>{ label.textContent=T[current].cta_copy; },2000);
+});
+
+apply("ja");
+</script>
+</body>
+</html>
