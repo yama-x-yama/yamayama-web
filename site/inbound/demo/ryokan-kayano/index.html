@@ -141,6 +141,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   -webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent 100%);
   mask-image:linear-gradient(to bottom,#000 72%,transparent 100%)}
 @media (min-width:860px){.yoru img{aspect-ratio:21/9}}
+.ma{margin:clamp(22px,5vw,32px) 0 0}
+.ma img{width:100%;aspect-ratio:3/2;object-fit:cover;background:var(--wood-2)}
 .gate{padding-top:clamp(18px,5vw,34px)}
 @media (prefers-reduced-motion:no-preference){
   .yoru img{animation:soft 1.4s ease both}
@@ -175,12 +177,18 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
       <h2 data-k="h_rooms"></h2>
       <p data-k="rooms_n"></p>
       <ul class="rooms" id="rooms"></ul>
+      <figure class="ma">
+        <img src="img/02-kyakushitsu.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+      </figure>
     </section>
 
     <section class="part">
       <h2 data-k="h_meal"></h2>
       <p data-k="meal_n"></p>
       <dl class="rows" id="meal"></dl>
+      <figure class="ma">
+        <img src="img/03-yushoku.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+      </figure>
     </section>
 
     <section class="part">

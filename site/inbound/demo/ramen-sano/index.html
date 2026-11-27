@@ -154,6 +154,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 /* 丼の一枚。真上から。黒地なので縁を切らず、左に寄せて置く */
 .don{margin:clamp(22px,6vw,34px) 0 0;max-width:30rem}
 .don img{width:100%;aspect-ratio:1/1;object-fit:cover}
+.mise{margin:0 0 clamp(16px,4vw,22px)}
+.mise img{width:100%;aspect-ratio:4/3;object-fit:cover}
 @media (prefers-reduced-motion:no-preference){
   .don img{animation:press .8s cubic-bezier(.22,1,.36,1) both}
 }
@@ -229,6 +231,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 
     <section class="sec">
       <h2 data-k="h_visit"></h2>
+      <figure class="mise">
+        <img src="img/02-noren.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async">
+      </figure>
       <dl class="rows" id="rows"></dl>
       <a class="go" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A0%83%E6%9C%A8%E7%9C%8C%E4%BD%90%E9%87%8E%E5%B8%82" target="_blank" rel="noopener" data-k="cta_map"></a>
     </section>

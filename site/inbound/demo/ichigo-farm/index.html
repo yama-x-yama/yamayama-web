@@ -154,6 +154,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .hausu{margin:clamp(20px,5vw,30px) 0 0}
 .hausu img{width:100%;aspect-ratio:3/2;max-height:56vh;object-fit:cover;background:var(--glass-2)}
 @media (min-width:760px){.hausu img{aspect-ratio:2/1}}
+.tsubu{margin:clamp(18px,4vw,26px) 0 0}
+.tsubu img{width:100%;aspect-ratio:3/2;object-fit:cover;background:var(--glass-2)}
 @media (prefers-reduced-motion:no-preference){
   .hausu img{animation:in .9s cubic-bezier(.22,1,.36,1) both}
 }
@@ -202,6 +204,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
       <h2 data-k="h_kinds"></h2>
       <p data-k="kinds_n"></p>
       <div class="kinds" id="kinds"></div>
+      <figure class="tsubu">
+        <img src="img/02-berry.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+      </figure>
     </section>
 
     <section class="sec">

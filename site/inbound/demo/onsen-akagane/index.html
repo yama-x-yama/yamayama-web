@@ -36,6 +36,9 @@ img{display:block;max-width:100%;height:auto}
 /* ── 露天の一枚。暖簾の下、柱より上に置く。湯気が引いていくように薄く現れる ── */
 .yu{margin:0;background:var(--indigo)}
 .yu img{width:100%;aspect-ratio:16/9;max-height:58vh;object-fit:cover;object-position:50% 62%}
+.yu-in{margin:clamp(26px,6vw,38px) 0 0;background:none}
+.yu-in img{width:100%;aspect-ratio:3/2;object-fit:cover;background:var(--tile-deep)}
+.yu-in figcaption{margin-top:8px;font-size:12.5px;line-height:1.8;color:var(--indigo-pale)}
 @media (min-width:900px){.yu img{aspect-ratio:21/9;max-height:none}}
 @media (prefers-reduced-motion:no-preference){
   @supports (animation-timeline:view()){
@@ -223,6 +226,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
       <h2 class="t-min" data-k="h_order"></h2>
       <p class="lede" data-k="order_lede"></p>
       <ol class="order" id="order"></ol>
+      <figure class="yu-in">
+        <img src="img/02-uchiyu.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+        <figcaption data-k="cap_uchiyu"></figcaption>
+      </figure>
     </section>
 
     <section class="fuda">
@@ -282,6 +289,7 @@ ja:{where:"栃木県 那須塩原市・塩原",name:"湯処 あかがね",
  infant:"3歳以下",infant_s:"無料。おむつが取れていないお子さまは浴室に入れません",free:"無料",
  h_order:"はじめての方へ　湯の入り方",
  order_lede:"日本の公衆浴場に慣れていない方へ。この順番どおりで大丈夫です。",
+ cap_uchiyu:"内湯。洗い場は4つあります。",
  o1:"玄関で靴を脱ぐ",o1_n:"下足箱に入れ、木札を受付へ。靴のまま上がることはできません。",
  o2:"脱衣所で、身につけているものをすべて脱ぐ",o2_n:"水着やタオルを巻いたままは入れません。浴室は男女で分かれています。貴重品は100円返却式のロッカーへ。",
  o3:"湯に入る前に、体を洗う",o3_n:"洗い場に座り、桶で湯をかけてから石けんで洗います。長い髪は結んでください。",
@@ -324,6 +332,7 @@ en:{where:"Shiobara, Nasushiobara, Tochigi",name:"Akagane Onsen",
  infant:"Age 3 and under",infant_s:"Free. Children still in nappies cannot enter the bath",free:"Free",
  h_order:"If this is your first time",
  order_lede:"For anyone new to a Japanese public bath. Follow these in order and you will be fine.",
+ cap_uchiyu:"The indoor bath. Four washing stations.",
  o1:"Take your shoes off at the entrance",o1_n:"Put them in a shoe box and hand the wooden tag to the front desk. You cannot keep your shoes on.",
  o2:"In the changing room, take everything off",o2_n:"Swimwear and wrapped towels are not allowed. Baths are separate for men and women. Valuables go in a ¥100 returnable locker.",
  o3:"Wash your body before entering the bath",o3_n:"Sit at a washing station, rinse with the bucket, then wash with soap. Please tie up long hair.",
@@ -366,6 +375,7 @@ en:{where:"Shiobara, Nasushiobara, Tochigi",name:"Akagane Onsen",
  infant:"3歲以下",infant_s:"免費。尚未脫離尿布的孩童不可進入浴室",free:"免費",
  h_order:"第一次來的朋友　入浴的順序",
  order_lede:"給不熟悉日本公共浴場的朋友。照這個順序就可以了。",
+ cap_uchiyu:"室內浴池。洗浴位有四個。",
  o1:"在玄關脫鞋",o1_n:"放入鞋櫃，木牌交給櫃檯。不可穿鞋進入。",
  o2:"在更衣室脫下身上所有衣物",o2_n:"不可穿泳衣或圍毛巾入浴。浴室男女分開。貴重物品請放入投幣100日圓可退還的置物櫃。",
  o3:"入浴前先清洗身體",o3_n:"坐在洗澡區，用木桶舀水沖身後再以肥皂清洗。長髮請綁起。",
@@ -408,6 +418,7 @@ en:{where:"Shiobara, Nasushiobara, Tochigi",name:"Akagane Onsen",
  infant:"3岁以下",infant_s:"免费。尚未脱离尿布的儿童不可进入浴室",free:"免费",
  h_order:"第一次来的朋友　入浴的顺序",
  order_lede:"给不熟悉日本公共浴场的朋友。按这个顺序来就可以了。",
+ cap_uchiyu:"室内浴池。洗浴位有四个。",
  o1:"在玄关脱鞋",o1_n:"放入鞋柜，木牌交给前台。不可穿鞋进入。",
  o2:"在更衣室脱下身上所有衣物",o2_n:"不可穿泳衣或围毛巾入浴。浴室男女分开。贵重物品请放入投币100日元可退还的储物柜。",
  o3:"入浴前先清洗身体",o3_n:"坐在洗浴区，用木桶舀水冲身后再用肥皂清洗。长发请扎起。",
@@ -450,6 +461,7 @@ ko:{where:"도치기현 나스시오바라시・시오바라",name:"유도코로
  infant:"3세 이하",infant_s:"무료. 기저귀를 떼지 않은 아이는 욕실에 들어갈 수 없습니다",free:"무료",
  h_order:"처음 오신 분께　입욕 순서",
  order_lede:"일본 공중목욕탕이 처음이신 분께. 이 순서대로 하시면 됩니다.",
+ cap_uchiyu:"실내탕. 샤워 자리는 네 개입니다.",
  o1:"현관에서 신발을 벗습니다",o1_n:"신발장에 넣고 나무 패를 프런트에 맡겨 주세요. 신발을 신고 올라갈 수 없습니다.",
  o2:"탈의실에서 입고 있는 것을 모두 벗습니다",o2_n:"수영복이나 수건을 두른 채로는 들어갈 수 없습니다. 욕실은 남녀가 나뉘어 있습니다. 귀중품은 100엔 반환식 사물함에 넣어 주세요.",
  o3:"탕에 들어가기 전에 몸을 씻습니다",o3_n:"샤워 자리에 앉아 바가지로 물을 끼얹은 뒤 비누로 씻습니다. 긴 머리는 묶어 주세요.",
