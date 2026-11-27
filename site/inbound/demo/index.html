@@ -21,22 +21,24 @@
 /* 見本一覧。事業ページ（../style.css）の配色と書体をそのまま使う。 */
 .gal{margin:0;padding:0;list-style:none;border-bottom:1px solid #ededed}
 .gal > li{border-top:1px solid #ededed}
-.gal a{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px 28px;
-  padding:clamp(24px,3.4vw,38px) 0;color:#0a0a0a}
+.gal a{display:grid;grid-template-columns:clamp(4.6rem,15vw,8.5rem) minmax(0,1fr) auto;align-items:center;
+  gap:10px clamp(16px,2.6vw,28px);padding:clamp(24px,3.4vw,38px) 0;color:#0a0a0a}
+.gal-img{grid-column:1;grid-row:1 / span 3;align-self:start}
+.gal-img img{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;background:#f1f1f1}
 .gal a:hover{color:#0a0a0a}
-.gal-kind{grid-column:1;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#6e6e6e}
-.gal-name{grid-column:1;margin:8px 0 0;font-size:clamp(23px,3.4vw,38px);font-weight:600;
+.gal-kind{grid-column:2;font-size:12px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:#6e6e6e}
+.gal-name{grid-column:2;margin:8px 0 0;font-size:clamp(23px,3.4vw,38px);font-weight:600;
   letter-spacing:-.03em;line-height:1.25;font-feature-settings:"palt";
   transition:transform .6s cubic-bezier(.16,1,.3,1)}
 .gal a:hover .gal-name{transform:translateX(clamp(6px,1vw,14px))}
-.gal-note{grid-column:1;margin:10px 0 0;max-width:34em;font-size:14.5px;line-height:1.9;color:#4a4a4a}
-.gal-go{grid-column:2;grid-row:1 / span 3;display:flex;align-items:center;justify-content:center;
+.gal-note{grid-column:2;margin:10px 0 0;max-width:34em;font-size:14.5px;line-height:1.9;color:#4a4a4a}
+.gal-go{grid-column:3;grid-row:1 / span 3;display:flex;align-items:center;justify-content:center;
   width:46px;height:46px;border:1px solid #cfcfcf;border-radius:50%;flex:none;
   transition:background-color .4s ease,color .4s ease,border-color .4s ease}
 .gal a:hover .gal-go{background:#0a0a0a;color:#ffffff;border-color:#0a0a0a}
 @media (max-width:539px){
-  .gal a{grid-template-columns:minmax(0,1fr)}
-  .gal-go{grid-column:1;grid-row:auto;margin-top:16px}
+  .gal a{grid-template-columns:clamp(4.6rem,22vw,7rem) minmax(0,1fr)}
+  .gal-go{grid-column:2;grid-row:auto;margin-top:16px}
 }
 .gal-soon{display:flex;flex-wrap:wrap;gap:8px;margin:clamp(26px,3.4vw,38px) 0 0;padding:0;list-style:none}
 .gal-soon li{padding:7px 14px;border:1px dashed #d4d4d4;border-radius:999px;font-size:12.5px;
@@ -76,6 +78,7 @@
 
           <li>
             <a href="./yuba-chaya/">
+              <span class="gal-img"><img src="thumb/yuba.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
               <span class="gal-kind">食事処・甘味</span>
               <span class="gal-name jp">湯波茶屋 すぎもと</span>
               <span class="gal-note jp">お品書き、アレルギー、宗教上の制限、支払い手段。写真でお料理を見せて、食べられるかどうかを先に分かるようにしたページ。</span>
@@ -87,9 +90,10 @@
 
           <li>
             <a href="./onsen-akagane/">
+              <span class="gal-img"><img src="thumb/onsen.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
               <span class="gal-kind">日帰り温泉・サウナ</span>
               <span class="gal-name jp">湯処 あかがね</span>
-              <span class="gal-note jp">料金、入浴の手順、刺青のルール。写真よりも、入る前に知っておきたいことを先に置いたページ。</span>
+              <span class="gal-note jp">料金、入浴の手順、刺青のルール。湯の写真は一枚だけにして、入る前に知っておきたいことを先に置いたページ。</span>
               <span class="gal-go" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
               </span>
@@ -98,6 +102,7 @@
 
           <li>
             <a href="./coffee-mizunara/">
+              <span class="gal-img"><img src="thumb/coffee.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
               <span class="gal-kind">カフェ・焙煎所</span>
               <span class="gal-name jp">焙煎所 みずなら</span>
               <span class="gal-note jp">豆の産地と焙煎度、飲みものの値段、Wi-Fiや電源のあるなし。長居していいお店かどうかが先に分かるページ。</span>
@@ -109,9 +114,10 @@
 
           <li>
             <a href="./mashiko-utsuwa/">
+              <span class="gal-img"><img src="thumb/utsuwa.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
               <span class="gal-kind">土産物・工芸品</span>
               <span class="gal-name jp">器 土と灰</span>
-              <span class="gal-note jp">品物の寸法と値段、海外への発送、免税の有無。写真を使わず、器のかたちを線で描いたページ。</span>
+              <span class="gal-note jp">品物の寸法と値段、海外への発送、免税の有無。器を一点ずつ撮って、台帳のように並べたページ。</span>
               <span class="gal-go" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
               </span>
@@ -120,6 +126,7 @@
 
           <li>
             <a href="./ryokan-kayano/">
+              <span class="gal-img"><img src="thumb/ryokan.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
               <span class="gal-kind">旅館・民宿</span>
               <span class="gal-name jp">茅野や</span>
               <span class="gal-note jp">一泊の時間割を背骨にしたページ。何時に食事が出て、何時に玄関が閉まるか。部屋は間取りの線で見せています。</span>
@@ -131,6 +138,7 @@
 
           <li>
             <a href="./pottery-class/">
+              <span class="gal-img"><img src="thumb/pottery.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
               <span class="gal-kind">陶芸などの体験</span>
               <span class="gal-name jp">益子 ろくろ場</span>
               <span class="gal-note jp">2つのプランを並べて比べられるページ。作った器が手元に届くまでの2〜3か月を、図にして先に伝えています。</span>
@@ -142,6 +150,7 @@
 
           <li>
             <a href="./ramen-sano/">
+              <span class="gal-img"><img src="thumb/ramen.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
               <span class="gal-kind">ラーメン・定食</span>
               <span class="gal-name jp">青竹 とみや</span>
               <span class="gal-note jp">券売機の使い方を図にしたページ。先に食券を買う仕組みは、外国の方がいちばん戸惑うところです。麺の量も棒で示しています。</span>
@@ -153,6 +162,7 @@
 
           <li>
             <a href="./ichigo-farm/">
+              <span class="gal-img"><img src="thumb/ichigo.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
               <span class="gal-kind">いちご狩り・観光農園</span>
               <span class="gal-name jp">八幡いちご園</span>
               <span class="gal-note jp">30分の持ち時間を時計で見せるページ。持ち帰りができないこと、品種が日替わりであることを先に伝えます。</span>
@@ -164,6 +174,7 @@
 
           <li>
             <a href="./salon-kuon/">
+              <span class="gal-img"><img src="thumb/salon.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
               <span class="gal-kind">美容室</span>
               <span class="gal-name jp">KUON</span>
               <span class="gal-note jp">料金より先に「ことばが通じなくても切れる」を置いたページ。髪の長さを指差しで伝えられる図があります。</span>
