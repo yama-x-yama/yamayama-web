@@ -1,0 +1,481 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="yama × yama. が多言語ページの見本として作った、架空の美容室「KUON」のデモサイトです。実在の店舗ではありません。">
+<meta name="theme-color" content="#f6f6f7">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>KUON</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<style>
+/* 美容室で外の人が不安なのは「言葉が通じないまま切られること」。
+   だから料金より先に、どう伝えるかを置く。指差しできる長さの図を主役にした。
+   色は鏡の灰白と黒だけ。ピンクも飾りも使わない。
+   文字は細く大きく、行間を広く。動きは、鏡を拭くように横から現れること。 */
+:root{
+  --mirror:#f6f6f7;
+  --mirror-2:#e9e9ec;
+  --ink:#1a1a1d;
+  --ink-2:#55555b;
+  --ink-3:#6e6e76;
+  --hair:#d9d9de;
+  --f-jo:"Jost",ui-sans-serif,system-ui,sans-serif;
+  --f-jp:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --gl:max(20px,env(safe-area-inset-left,0px));
+  --gr:max(20px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--mirror);color:var(--ink);font-family:var(--f-jp);
+  font-size:15px;line-height:2;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+.c{max-width:48rem;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+
+.lang{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--mirror)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:31;background:var(--mirror)}
+.lang .c{display:flex;justify-content:center;gap:clamp(12px,4vw,26px);padding-top:14px;padding-bottom:14px;
+  overflow-x:auto;scrollbar-width:none}
+.lang .c::-webkit-scrollbar{display:none}
+.lang button{flex:none;padding:0;background:none;border:0;color:var(--ink-3);
+  font:400 11.5px/1.6 var(--f-jo);letter-spacing:.14em;text-transform:uppercase;cursor:pointer;
+  white-space:nowrap;transition:color .25s}
+.lang button:hover{color:var(--ink)}
+.lang button[aria-pressed="true"]{color:var(--ink);border-bottom:1px solid var(--ink)}
+
+/* 扉。細い欧文を大きく、和文は小さく添える */
+.door{padding:clamp(40px,12vw,84px) 0 clamp(28px,6vw,40px)}
+.sign{margin:0;font-family:var(--f-jo);font-weight:300;font-size:clamp(50px,17vw,108px);
+  line-height:.92;letter-spacing:.06em}
+.where{margin:16px 0 0;font-size:12px;letter-spacing:.14em;color:var(--ink-3)}
+.say{margin:22px 0 0;max-width:27em;font-size:14.5px;line-height:2.1;color:var(--ink-2)}
+
+/* 言葉。このページの最初の節。料金より前に置く */
+.talk{margin:clamp(32px,8vw,52px) 0 0;padding:clamp(22px,5vw,32px) 0;
+  border-top:1px solid var(--ink);border-bottom:1px solid var(--hair)}
+.talk h2{margin:0 0 14px;font-size:clamp(18px,4.6vw,23px);font-weight:500;line-height:1.6}
+.talk p{margin:0;max-width:30em;font-size:14px;line-height:2.05;color:var(--ink-2)}
+.talk p + p{margin-top:10px}
+
+/* 長さの図。指差して伝えるためのもの */
+.lens{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(50%,7rem),1fr));
+  gap:clamp(12px,3vw,20px);margin:clamp(22px,5vw,30px) 0 0}
+.len{text-align:center}
+.len svg{display:block;width:100%;max-width:92px;margin:0 auto 8px;height:auto}
+.len .hd{fill:var(--mirror-2);stroke:var(--ink);stroke-width:1.4}
+.len .hr{fill:var(--ink);opacity:.86}
+.len .ln{fill:none;stroke:var(--ink-3);stroke-width:1;stroke-dasharray:3 3}
+.len b{display:block;font-size:14px;font-weight:500;line-height:1.6}
+.len span{display:block;font:400 11px/1.7 var(--f-jo);letter-spacing:.08em;color:var(--ink-3)}
+
+.sec{margin-top:clamp(38px,9vw,62px)}
+.sec h2{margin:0 0 clamp(14px,3.2vw,20px);font-size:clamp(18px,4.6vw,23px);font-weight:500;line-height:1.6}
+.sec > p{margin:0 0 clamp(14px,3.2vw,20px);max-width:32em;font-size:14px;line-height:2.05;color:var(--ink-2)}
+
+/* 料金。細い行、値段は右 */
+.menu{margin:0;padding:0;list-style:none}
+.menu li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;
+  padding:clamp(13px,3vw,17px) 0;border-bottom:1px solid var(--hair)}
+.menu li:first-child{border-top:1px solid var(--hair)}
+.mn-n{grid-column:1;font-size:15.5px;font-weight:500;line-height:1.6}
+.mn-d{grid-column:1;font-size:12.5px;line-height:1.85;color:var(--ink-3)}
+.mn-y{grid-column:2;grid-row:1 / span 2;text-align:right;white-space:nowrap}
+.mn-y b{display:block;font:400 19px/1.3 var(--f-jo);letter-spacing:.02em}
+.mn-y span{display:block;font:400 11px/1.6 var(--f-jo);letter-spacing:.06em;color:var(--ink-3)}
+
+/* 担当者。名前と、話せることば */
+.staff{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11rem),1fr));
+  gap:clamp(16px,3.6vw,26px)}
+.st{min-width:0;padding-top:14px;border-top:1px solid var(--ink)}
+.st b{display:block;font:400 19px/1.4 var(--f-jo);letter-spacing:.03em}
+.st em{display:block;font-style:normal;font-size:12px;color:var(--ink-3)}
+.st p{margin:8px 0 0;font-size:13px;line-height:1.95;color:var(--ink-2)}
+.st ul{display:flex;flex-wrap:wrap;gap:5px;margin:9px 0 0;padding:0;list-style:none}
+.st li{padding:2px 8px;background:var(--mirror-2);font:400 11px/1.7 var(--f-jo);letter-spacing:.05em}
+
+.rules{margin:0;padding:0;list-style:none}
+.rules li{padding:clamp(11px,2.6vw,15px) 0;border-bottom:1px solid var(--hair)}
+.rules b{display:block;font-size:14.5px;font-weight:500;line-height:1.7}
+.rules p{margin:2px 0 0;font-size:13px;line-height:1.95;color:var(--ink-2)}
+
+.rows{display:grid;grid-template-columns:6rem minmax(0,1fr);margin:0;font-size:14px}
+.rows dt{padding:9px 0;border-top:1px solid var(--hair);color:var(--ink-3);font-size:12.5px;line-height:1.9}
+.rows dd{margin:0;padding:9px 0;border-top:1px solid var(--hair);line-height:1.9}
+.rows dt:first-of-type,.rows dt:first-of-type + dd{border-top:0}
+@media (max-width:440px){
+  .rows{grid-template-columns:minmax(0,1fr)}
+  .rows dt{padding-bottom:0;border-top:1px solid var(--hair)}
+  .rows dd{padding-top:0;border-top:0}
+  .rows dt:first-of-type{border-top:0}
+}
+.go{display:inline-block;margin-top:22px;padding:14px 30px;border:1px solid var(--ink);color:var(--ink);
+  font:400 13px/1 var(--f-jo);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;
+  transition:background-color .3s,color .3s}
+.go:hover{background:var(--ink);color:var(--mirror)}
+.go-n{margin:12px 0 0;font-size:12.5px;line-height:1.9;color:var(--ink-3)}
+
+.end{margin-top:clamp(40px,9vw,64px);padding:clamp(20px,5vw,26px) 0
+  calc(clamp(28px,7vw,44px) + env(safe-area-inset-bottom,0px));border-top:1px solid var(--hair)}
+.end b{display:block;font:400 11px/1.9 var(--f-jo);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+.end p{margin:6px 0 0;font-size:12.5px;line-height:1.9;color:var(--ink-3)}
+
+:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+
+/* ── 動き：鏡を拭くように、左から現れる。上下には動かさない ── */
+@media (prefers-reduced-motion:no-preference){
+  .sign,.where,.say{animation:wipe 1s cubic-bezier(.3,1,.4,1) both}
+  .where{animation-delay:.1s}.say{animation-delay:.18s}
+  @supports (animation-timeline:view()){
+    .len,.menu li,.st,.rules li{animation:wipe .01s linear both;animation-timeline:view();
+      animation-range:entry 10px entry 170px}
+  }
+}
+@keyframes wipe{from{opacity:0;clip-path:inset(0 100% 0 0)}to{opacity:1;clip-path:inset(0 0 0 0)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="lang" aria-label="Language"><div class="c" id="lb"></div></nav>
+
+<div class="c">
+
+  <header class="door">
+    <h1 class="sign">KUON</h1>
+    <p class="where" data-k="where"></p>
+    <p class="say" data-k="say"></p>
+  </header>
+
+  <main>
+
+    <section class="talk">
+      <h2 data-k="h_talk"></h2>
+      <p data-k="talk_1"></p>
+      <p data-k="talk_2"></p>
+      <div class="lens" id="lens"></div>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_menu"></h2>
+      <p data-k="menu_n"></p>
+      <ul class="menu" id="menu"></ul>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_staff"></h2>
+      <p data-k="staff_n"></p>
+      <div class="staff" id="staff"></div>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_rules"></h2>
+      <ul class="rules" id="rules"></ul>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_visit"></h2>
+      <dl class="rows" id="rows"></dl>
+      <a class="go" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A0%83%E6%9C%A8%E7%9C%8C%E5%AE%87%E9%83%BD%E5%AE%AE%E5%B8%82" target="_blank" rel="noopener" data-k="cta_map"></a>
+      <p class="go-n" data-k="cta_n"></p>
+    </section>
+
+    <footer class="end">
+      <b data-k="demo"></b>
+      <p data-k="foot"></p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const LANGS=[["ja","日本語"],["en","English"],["zh-Hant","繁體"],["zh-Hans","简体"],["ko","한국어"]];
+/* 長さの図。髪の下端の位置だけが違う */
+const HEADS=[
+ {id:"l1",y:52},{id:"l2",y:66},{id:"l3",y:82},{id:"l4",y:96}
+];
+const MENU=[{id:"m1",y:"5,500",t:"60"},{id:"m2",y:"4,000",t:"40"},{id:"m3",y:"9,000",t:"120"},
+            {id:"m4",y:"7,500",t:"90"},{id:"m5",y:"2,000",t:"20"},{id:"m6",y:"3,500",t:"30"}];
+const STAFF=[{id:"p1",lg:["JP","EN"]},{id:"p2",lg:["JP","EN","KO"]},{id:"p3",lg:["JP"]}];
+const RULES=["u1","u2","u3","u4"];
+const ROWS=["hours","closed","book","pay","kids","access","addr"];
+const OPEN_MIN=10*60, CLOSE_MIN=19*60, SHUT=[2]; /* 火曜休み */
+
+const T={
+ja:{where:"栃木県 宇都宮市 オリオン通り",
+ say:"宇都宮の商店街にある、椅子が4つの美容室です。日本語が話せなくても切れるよう、見せて決める形にしています。",
+ h_talk:"ことばが通じなくても、切れます",
+ talk_1:"英語を話せるスタイリストがいます。中国語と韓国語は、翻訳アプリを使ってご案内します。",
+ talk_2:"いちばん確実なのは、なりたい髪型の写真を見せていただくことです。画面を見せてくだされば、できるかどうかをその場でお答えします。下の図を指差していただいても構いません。",
+ l1:"あご",l1_s:"CHIN",l2:"肩",l2_s:"SHOULDER",l3:"胸",l3_s:"CHEST",l4:"そのまま",l4_s:"TRIM ONLY",
+ h_menu:"料金",
+ menu_n:"税込です。シャンプーとブローが入っています。指名の追加料金はありません。",
+ m1:"カット",m1_d:"シャンプー・ブローつき",
+ m2:"前髪だけ",m2_d:"カットと同じ日なら無料",
+ m3:"カラー",m3_d:"カットとあわせた場合。単品は7,000円",
+ m4:"パーマ",m4_d:"カットとあわせた場合。単品は5,500円",
+ m5:"シャンプー・ブローのみ",m5_d:"",
+ m6:"ヘッドスパ",m6_d:"カットのあとに追加できます",
+ min:"分",
+ h_staff:"担当する人",
+ staff_n:"ご予約のときに名前をお伝えください。指名しなくても料金は同じです。",
+ p1:"Yui",p1_r:"店長",p1_n:"短い髪と、くせ毛を乾かしやすくするのが得意です。",
+ p2:"Ren",p2_r:"スタイリスト",p2_n:"ブリーチと色を入れる施術を多くやっています。韓国で2年働いていました。",
+ p3:"Aoi",p3_r:"スタイリスト",p3_n:"髪を伸ばしている途中の方の相談によくのります。",
+ h_rules:"知っておいていただきたいこと",
+ u1:"予約をお勧めします",u1_n:"椅子が4つなので、飛び込みだと入れないことがあります。前日までにお電話かメールをいただけると確実です。",
+ u2:"細い髪・直毛の方へ",u2_n:"日本人向けの薬を使っています。欧米の方の髪質では、パーマが思ったよりかかりにくいことがあります。先にご相談ください。",
+ u3:"遅れそうなときはご連絡を",u3_n:"15分を過ぎると、内容を短くするか、別の日にお願いすることがあります。",
+ u4:"取り消しは前日までに",u4_n:"当日のお取り消しは、料金の半額をいただいています。",
+ h_visit:"場所と予約",
+ hours:"営業時間",hours_v:"10:00〜19:00（最終受付 18:00、カラーは17:00）",
+ closed:"定休日",closed_v:"火曜日、第3水曜日",
+ book:"予約",book_v:"電話またはメール。英語のメールにも返信します。",
+ pay:"支払い",pay_v:"現金・カード・QR決済。交通系ICは使えません。",
+ kids:"お子さま",kids_v:"小学生以下は3,000円。ベビーカーのまま入れます。",
+ access:"行き方",access_v:"JR宇都宮駅西口から徒歩12分。オリオン通りのアーケードの中です。",
+ addr:"所在地",addr_v:"栃木県宇都宮市（架空の住所です）",
+ cta_map:"Open in maps",
+ cta_n:"ご予約は電話かメールで承ります。このページからは予約できません。",
+ demo:"Demonstration",
+ foot:"これは営業用のデモサイトです。架空の店舗で、実在の美容室とは関係ありません。料金・スタッフ・規則もすべて架空のものです。"},
+
+en:{where:"Orion-dori, Utsunomiya, Tochigi",
+ say:"A four-chair salon in an Utsunomiya shopping arcade. We work by showing rather than explaining, so you do not need Japanese.",
+ h_talk:"You do not need Japanese to get a haircut here",
+ talk_1:"One of our stylists speaks English. For Chinese and Korean we use a translation app.",
+ talk_2:"The surest way is to show us a photo of the hair you want. Hold up your screen and we will tell you straight away whether we can do it. Pointing at the diagram below works too.",
+ l1:"Chin",l1_s:"あご",l2:"Shoulder",l2_s:"肩",l3:"Chest",l3_s:"胸",l4:"Trim only",l4_s:"そのまま",
+ h_menu:"Prices",
+ menu_n:"Tax included. Shampoo and blow-dry are included. There is no extra charge to request a stylist.",
+ m1:"Cut",m1_d:"With shampoo and blow-dry",
+ m2:"Fringe only",m2_d:"Free on the same day as a cut",
+ m3:"Colour",m3_d:"With a cut. On its own, ¥7,000",
+ m4:"Perm",m4_d:"With a cut. On its own, ¥5,500",
+ m5:"Shampoo and blow-dry",m5_d:"",
+ m6:"Head spa",m6_d:"Can be added after a cut",
+ min:"min",
+ h_staff:"Who will cut your hair",
+ staff_n:"Give us a name when you book. Requesting someone costs no extra.",
+ p1:"Yui",p1_r:"Owner",p1_n:"Short hair, and making curly hair easier to dry.",
+ p2:"Ren",p2_r:"Stylist",p2_n:"Does most of our bleaching and colour work. Worked in Korea for two years.",
+ p3:"Aoi",p3_r:"Stylist",p3_n:"Often advises people who are in the middle of growing their hair out.",
+ h_rules:"Things worth knowing",
+ u1:"Booking is advisable",u1_n:"With four chairs we cannot always take walk-ins. A call or email the day before makes it certain.",
+ u2:"If your hair is fine or very straight",u2_n:"We use products made for Japanese hair. On some European hair a perm takes less well than expected. Please ask us first.",
+ u3:"Tell us if you will be late",u3_n:"More than fifteen minutes late and we may have to shorten the service or move you to another day.",
+ u4:"Cancel by the day before",u4_n:"Cancelling on the day costs half the price of the service.",
+ h_visit:"Where and how to book",
+ hours:"Hours",hours_v:"10:00–19:00 (last booking 18:00, colour 17:00)",
+ closed:"Closed",closed_v:"Tuesdays and the third Wednesday",
+ book:"Booking",book_v:"Phone or email. We reply to email in English.",
+ pay:"Payment",pay_v:"Cash, card, QR payment. Transit IC cards are not accepted.",
+ kids:"Children",kids_v:"¥3,000 for primary school age and under. Pushchairs can come inside.",
+ access:"Getting here",access_v:"12 minutes on foot from the west exit of JR Utsunomiya Station, inside the Orion-dori arcade.",
+ addr:"Address",addr_v:"Utsunomiya, Tochigi (this address is fictional)",
+ cta_map:"Open in maps",
+ cta_n:"Bookings are taken by phone or email. You cannot book from this page.",
+ demo:"Demonstration",
+ foot:"This is a demonstration site. The salon is fictional and bears no relation to any real salon. The prices, staff and rules are fictional too."},
+
+"zh-Hant":{where:"栃木縣 宇都宮市 Orion通",
+ say:"位於宇都宮商店街、僅有四張座椅的美容室。以實物與圖示溝通，不會日語也能剪。",
+ h_talk:"不會日語也能剪髮",
+ talk_1:"店內有會說英語的設計師。中文與韓語將使用翻譯軟體協助。",
+ talk_2:"最確實的方式是出示想要的髮型照片。只要給我們看畫面，當場就能告訴您是否可行。指著下方的圖示也可以。",
+ l1:"下巴",l1_s:"CHIN",l2:"肩膀",l2_s:"SHOULDER",l3:"胸口",l3_s:"CHEST",l4:"維持長度",l4_s:"TRIM ONLY",
+ h_menu:"價格",
+ menu_n:"含稅，並含洗髮與吹整。指定設計師不另收費。",
+ m1:"剪髮",m1_d:"含洗髮與吹整",
+ m2:"只修瀏海",m2_d:"與剪髮同日免費",
+ m3:"染髮",m3_d:"與剪髮併做之價格。單做為7,000日圓",
+ m4:"燙髮",m4_d:"與剪髮併做之價格。單做為5,500日圓",
+ m5:"只洗髮與吹整",m5_d:"",
+ m6:"頭皮護理",m6_d:"可於剪髮後追加",
+ min:"分鐘",
+ h_staff:"為您服務的設計師",
+ staff_n:"預約時請告知姓名。指定不另收費。",
+ p1:"Yui",p1_r:"店長",p1_n:"擅長短髮，以及讓自然捲更好吹整。",
+ p2:"Ren",p2_r:"設計師",p2_n:"主要負責漂髮與染色。曾於韓國工作兩年。",
+ p3:"Aoi",p3_r:"設計師",p3_n:"常為正在留長髮的客人提供建議。",
+ h_rules:"請先了解的事",
+ u1:"建議事先預約",u1_n:"僅有四張座椅，臨時前來可能無法安排。前一日來電或來信最為確實。",
+ u2:"髮質細軟或極直的客人",u2_n:"本店使用適合日本人髮質的藥劑。部分歐美客人的髮質，燙髮效果可能不如預期，請先與我們討論。",
+ u3:"可能遲到請聯絡我們",u3_n:"遲到超過15分鐘，可能需縮短服務內容或改約他日。",
+ u4:"取消請於前一日",u4_n:"當日取消將收取服務費用的半額。",
+ h_visit:"位置與預約",
+ hours:"營業時間",hours_v:"10:00〜19:00（最後受理 18:00，染髮 17:00）",
+ closed:"公休日",closed_v:"星期二、每月第3個星期三",
+ book:"預約",book_v:"電話或電子郵件。英文郵件亦可回覆。",
+ pay:"支付",pay_v:"現金・信用卡・QR支付。不可使用交通IC卡。",
+ kids:"兒童",kids_v:"小學以下3,000日圓。可推嬰兒車入內。",
+ access:"交通",access_v:"JR宇都宮站西口步行12分鐘，位於Orion通拱廊商店街內。",
+ addr:"地址",addr_v:"栃木縣宇都宮市（此為虛構地址）",
+ cta_map:"Open in maps",
+ cta_n:"預約請以電話或電子郵件辦理。本頁面無法預約。",
+ demo:"Demonstration",
+ foot:"這是示範網站。店家為虛構，與任何實際美容室無關。價格、人員與規定亦為虛構。"},
+
+"zh-Hans":{where:"栃木县 宇都宫市 Orion通",
+ say:"位于宇都宫商店街、仅有四张座椅的美容室。以实物与图示沟通，不会日语也能剪。",
+ h_talk:"不会日语也能剪发",
+ talk_1:"店内有会说英语的发型师。中文与韩语将使用翻译软件协助。",
+ talk_2:"最确实的方式是出示想要的发型照片。只要给我们看画面，当场就能告诉您是否可行。指着下方的图示也可以。",
+ l1:"下巴",l1_s:"CHIN",l2:"肩膀",l2_s:"SHOULDER",l3:"胸口",l3_s:"CHEST",l4:"维持长度",l4_s:"TRIM ONLY",
+ h_menu:"价格",
+ menu_n:"含税，并含洗发与吹整。指定发型师不另收费。",
+ m1:"剪发",m1_d:"含洗发与吹整",
+ m2:"只修刘海",m2_d:"与剪发同日免费",
+ m3:"染发",m3_d:"与剪发一并进行的价格。单做为7,000日元",
+ m4:"烫发",m4_d:"与剪发一并进行的价格。单做为5,500日元",
+ m5:"只洗发与吹整",m5_d:"",
+ m6:"头皮护理",m6_d:"可于剪发后追加",
+ min:"分钟",
+ h_staff:"为您服务的发型师",
+ staff_n:"预约时请告知姓名。指定不另收费。",
+ p1:"Yui",p1_r:"店长",p1_n:"擅长短发，以及让自然卷更好吹整。",
+ p2:"Ren",p2_r:"发型师",p2_n:"主要负责漂发与染色。曾于韩国工作两年。",
+ p3:"Aoi",p3_r:"发型师",p3_n:"常为正在留长发的客人提供建议。",
+ h_rules:"请先了解的事",
+ u1:"建议事先预约",u1_n:"仅有四张座椅，临时前来可能无法安排。前一日来电或来信最为确实。",
+ u2:"发质细软或极直的客人",u2_n:"本店使用适合日本人发质的药剂。部分欧美客人的发质，烫发效果可能不如预期，请先与我们讨论。",
+ u3:"可能迟到请联络我们",u3_n:"迟到超过15分钟，可能需缩短服务内容或改约他日。",
+ u4:"取消请于前一日",u4_n:"当日取消将收取服务费用的半额。",
+ h_visit:"位置与预约",
+ hours:"营业时间",hours_v:"10:00〜19:00（最后受理 18:00，染发 17:00）",
+ closed:"休息日",closed_v:"星期二、每月第3个星期三",
+ book:"预约",book_v:"电话或电子邮件。英文邮件亦可回复。",
+ pay:"支付",pay_v:"现金・信用卡・QR支付。不可使用交通IC卡。",
+ kids:"儿童",kids_v:"小学以下3,000日元。可推婴儿车入内。",
+ access:"交通",access_v:"JR宇都宫站西口步行12分钟，位于Orion通拱廊商店街内。",
+ addr:"地址",addr_v:"栃木县宇都宫市（此为虚构地址）",
+ cta_map:"Open in maps",
+ cta_n:"预约请以电话或电子邮件办理。本页面无法预约。",
+ demo:"Demonstration",
+ foot:"这是演示网站。店家为虚构，与任何实际美容室无关。价格、人员与规定也均为虚构。"},
+
+ko:{where:"도치기현 우쓰노미야시 오리온도리",
+ say:"우쓰노미야 상점가에 있는, 의자가 네 개뿐인 미용실입니다. 말로 설명하지 않고 보여 주며 정하는 방식이라, 일본어를 못 하셔도 괜찮습니다.",
+ h_talk:"일본어를 못 하셔도 자르실 수 있습니다",
+ talk_1:"영어를 하는 스타일리스트가 있습니다. 중국어와 한국어는 번역 앱으로 안내해 드립니다.",
+ talk_2:"가장 확실한 방법은 원하시는 머리 사진을 보여 주시는 것입니다. 화면을 보여 주시면 가능한지 그 자리에서 말씀드립니다. 아래 그림을 가리키셔도 됩니다.",
+ l1:"턱",l1_s:"CHIN",l2:"어깨",l2_s:"SHOULDER",l3:"가슴",l3_s:"CHEST",l4:"길이 유지",l4_s:"TRIM ONLY",
+ h_menu:"요금",
+ menu_n:"세금 포함이며 샴푸와 드라이가 들어 있습니다. 지명 추가 요금은 없습니다.",
+ m1:"커트",m1_d:"샴푸·드라이 포함",
+ m2:"앞머리만",m2_d:"커트와 같은 날이면 무료",
+ m3:"염색",m3_d:"커트와 함께 할 때. 단독은 7,000엔",
+ m4:"펌",m4_d:"커트와 함께 할 때. 단독은 5,500엔",
+ m5:"샴푸·드라이만",m5_d:"",
+ m6:"두피 관리",m6_d:"커트 후에 추가하실 수 있습니다",
+ min:"분",
+ h_staff:"담당하는 사람",
+ staff_n:"예약하실 때 이름을 말씀해 주세요. 지명하셔도 요금은 같습니다.",
+ p1:"Yui",p1_r:"점장",p1_n:"짧은 머리와, 곱슬머리를 말리기 쉽게 하는 것을 잘합니다.",
+ p2:"Ren",p2_r:"스타일리스트",p2_n:"탈색과 염색을 주로 맡고 있습니다. 한국에서 2년 일했습니다.",
+ p3:"Aoi",p3_r:"스타일리스트",p3_n:"머리를 기르는 중인 분들의 상담을 자주 맡습니다.",
+ h_rules:"알아 두시면 좋은 것",
+ u1:"예약을 권합니다",u1_n:"의자가 네 개뿐이라 바로 오시면 못 받을 때가 있습니다. 전날까지 전화나 메일을 주시면 확실합니다.",
+ u2:"머리카락이 가늘거나 아주 곧으신 분께",u2_n:"일본인 머리에 맞춘 약을 씁니다. 서구권 분의 모질에서는 펌이 생각보다 덜 나올 수 있으니 먼저 상의해 주세요.",
+ u3:"늦으실 것 같으면 연락 주세요",u3_n:"15분을 넘기면 시술을 줄이거나 다른 날로 옮겨 드릴 수 있습니다.",
+ u4:"취소는 전날까지",u4_n:"당일 취소는 요금의 절반을 받고 있습니다.",
+ h_visit:"위치와 예약",
+ hours:"영업시간",hours_v:"10:00〜19:00 (마지막 접수 18:00, 염색은 17:00)",
+ closed:"휴무일",closed_v:"화요일, 셋째 수요일",
+ book:"예약",book_v:"전화 또는 이메일. 영어 메일에도 답장합니다.",
+ pay:"결제",pay_v:"현금·카드·QR 결제. 교통 IC 카드는 쓸 수 없습니다.",
+ kids:"어린이",kids_v:"초등학생 이하 3,000엔. 유모차째로 들어오실 수 있습니다.",
+ access:"오시는 길",access_v:"JR 우쓰노미야역 서쪽 출구에서 도보 12분, 오리온도리 아케이드 안입니다.",
+ addr:"주소",addr_v:"도치기현 우쓰노미야시 (가상의 주소입니다)",
+ cta_map:"Open in maps",
+ cta_n:"예약은 전화나 이메일로 받습니다. 이 페이지에서는 예약하실 수 없습니다.",
+ demo:"Demonstration",
+ foot:"영업용 데모 사이트입니다. 가상의 가게이며 실제 미용실과는 관계가 없습니다. 요금, 담당자, 규칙도 모두 가상입니다."}
+};
+
+const el=(t,c,x)=>{const n=document.createElement(t); if(c)n.className=c; if(x!=null)n.textContent=x; return n;};
+/* 髪の長さの図。下端 y だけ変えて4枚描く */
+function head(y){
+  return '<svg viewBox="0 0 80 110" aria-hidden="true">'+
+    '<path class="hr" d="M22 34c0-11 8-19 18-19s18 8 18 19v'+(y-34)+'c0 3-2 5-5 5h-26c-3 0-5-2-5-5z"/>'+
+    '<circle class="hd" cx="40" cy="36" r="13"/>'+
+    '<path class="hd" d="M31 48h18l4 14H27z"/>'+
+    '<path class="ln" d="M14 '+y+'h52"/>'+
+    '</svg>';
+}
+
+function state(){
+  const d=new Date(), w=d.getDay();
+  if(SHUT.indexOf(w)>=0) return "rest";
+  const m=d.getHours()*60+d.getMinutes();
+  return (m>=OPEN_MIN && m<CLOSE_MIN) ? "open" : "shut";
+}
+
+function build(t){
+  const ln=document.getElementById("lens"); ln.textContent="";
+  for(const h of HEADS){
+    const d=el("div","len");
+    d.innerHTML=head(h.y);
+    d.appendChild(el("b",null,t[h.id]));
+    d.appendChild(el("span",null,t[h.id+"_s"]));
+    ln.appendChild(d);
+  }
+
+  const mu=document.getElementById("menu"); mu.textContent="";
+  for(const m of MENU){
+    const li=el("li");
+    li.appendChild(el("span","mn-n",t[m.id]));
+    const y=el("div","mn-y");
+    y.appendChild(el("b",null,"¥"+m.y));
+    y.appendChild(el("span",null,m.t+" "+t.min));
+    li.appendChild(y);
+    if(t[m.id+"_d"]) li.appendChild(el("span","mn-d",t[m.id+"_d"]));
+    mu.appendChild(li);
+  }
+
+  const sf=document.getElementById("staff"); sf.textContent="";
+  for(const p of STAFF){
+    const d=el("div","st");
+    d.appendChild(el("b",null,t[p.id]));
+    d.appendChild(el("em",null,t[p.id+"_r"]));
+    d.appendChild(el("p",null,t[p.id+"_n"]));
+    const ul=el("ul");
+    for(const g of p.lg) ul.appendChild(el("li",null,g));
+    d.appendChild(ul);
+    sf.appendChild(d);
+  }
+
+  const ru=document.getElementById("rules"); ru.textContent="";
+  for(const u of RULES){
+    const li=el("li");
+    li.appendChild(el("b",null,t[u]));
+    li.appendChild(el("p",null,t[u+"_n"]));
+    ru.appendChild(li);
+  }
+
+  const rw=document.getElementById("rows"); rw.textContent="";
+  for(const k of ROWS){ rw.appendChild(el("dt",null,t[k])); rw.appendChild(el("dd",null,t[k+"_v"])); }
+}
+
+function apply(code){
+  const t=T[code];
+  for(const n of document.querySelectorAll("[data-k]")){ const v=t[n.dataset.k]; if(v!=null) n.textContent=v; }
+  build(t);
+  document.documentElement.lang=code;
+  for(const b of document.querySelectorAll("#lb button")) b.setAttribute("aria-pressed",String(b.dataset.lang===code));
+  document.title="KUON";
+}
+
+const lb=document.getElementById("lb");
+for(const [code,label] of LANGS){
+  const b=el("button",null,label); b.type="button"; b.dataset.lang=code;
+  b.addEventListener("click",()=>apply(code));
+  lb.appendChild(b);
+}
+apply("ja");
+</script>
+</body>
+</html>

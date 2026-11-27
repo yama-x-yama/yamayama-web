@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="yama × yama. が多言語ページの見本として作った、架空の佐野ラーメン店「青竹 とみや」のデモサイトです。実在の店舗ではありません。">
+<meta name="theme-color" content="#121212">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>青竹 とみや</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap">
+<style>
+/* ラーメン屋は貼り紙とのれんの世界。だから紙に刷ったポスターのつもりで組む。
+   太い文字と墨と一色の赤。写真はないので、文字の大きさそのものが絵になる。
+   いちばん詰まるのは券売機なので、そこだけ図にして大きく出す。
+   動きは、刷り上がるように文字が下からめくれて出ること。 */
+:root{
+  --black:#121212;
+  --black-2:#1e1e1e;
+  --white:#f5f2eb;      /* わずかに黄ばんだ紙 */
+  --white-2:#bdb8ae;
+  --white-3:#8b867d;
+  --red:#c22a20;        /* のれんの赤。地に敷く用。白文字がのる */
+  --red-ink:#ee6055;    /* 同じ赤を、黒地の上の小さな文字用に明るくしたもの */
+  --line:#333;
+  --f-imp:"Anton",ui-sans-serif,system-ui,sans-serif;
+  --f-jp:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --gl:max(18px,env(safe-area-inset-left,0px));
+  --gr:max(18px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--black);color:var(--white);font-family:var(--f-jp);
+  font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+.c{max-width:44rem;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+
+.lang{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--red)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:31;background:var(--red)}
+.lang .c{display:flex;gap:0;padding:0;overflow-x:auto;scrollbar-width:none}
+.lang .c::-webkit-scrollbar{display:none}
+.lang button{flex:none;padding:11px 13px;background:none;border:0;color:rgba(245,242,235,.66);
+  font:700 12.5px/1.5 var(--f-jp);cursor:pointer;white-space:nowrap;transition:color .18s,background-color .18s}
+.lang button:hover{color:var(--white)}
+.lang button[aria-pressed="true"]{background:var(--black);color:var(--white)}
+
+/* のれん。大きな文字が絵の代わり */
+.noren{padding:clamp(30px,8vw,56px) 0 clamp(24px,5vw,34px);text-align:left}
+.tgt{margin:0;font-size:12px;font-weight:500;letter-spacing:.2em;color:var(--red-ink)}
+.shop{margin:10px 0 0;font-size:clamp(44px,15vw,92px);font-weight:900;line-height:.98;
+  letter-spacing:-.03em;font-feature-settings:"palt"}
+.shop span{display:block;color:var(--red-ink)}
+.roman{margin:12px 0 0;font-family:var(--f-imp);font-size:clamp(14px,3.6vw,18px);letter-spacing:.12em;
+  color:var(--white-3)}
+.say{margin:18px 0 0;max-width:26em;font-size:14.5px;line-height:1.95;color:var(--white-2)}
+.open-now{display:inline-block;margin:20px 0 0;padding:7px 14px;border:2px solid var(--white);
+  font-size:14px;font-weight:700}
+.open-now[data-open="false"]{border-color:var(--white-3);color:var(--white-3)}
+.open-sub{margin:10px 0 0;font-size:13px;color:var(--white-3)}
+
+/* 券売機。ここが外国の方のいちばんの関門なので、図にして大きく */
+.kiosk{margin:clamp(34px,9vw,56px) 0 0;padding:clamp(20px,5vw,30px);background:var(--white);color:var(--black)}
+.kiosk h2{margin:0 0 6px;font-size:clamp(21px,5.6vw,27px);font-weight:900;line-height:1.4;
+  letter-spacing:-.01em}
+.kiosk .k-lede{margin:0 0 clamp(16px,3.6vw,22px);font-size:13.5px;line-height:1.9;color:#4a4740}
+.steps{margin:0;padding:0;list-style:none;counter-reset:k}
+.steps li{display:grid;grid-template-columns:2.1rem minmax(0,1fr);gap:0 12px;
+  padding:0 0 clamp(14px,3.4vw,18px);counter-increment:k}
+.steps li::before{content:counter(k);font-family:var(--f-imp);font-size:25px;line-height:.95;color:var(--red)}
+.steps li:last-child{padding-bottom:0}
+.steps b{grid-column:2;display:block;font-size:15.5px;font-weight:700;line-height:1.6}
+.steps p{grid-column:2;margin:2px 0 0;font-size:13px;line-height:1.9;color:#4a4740}
+.machine{margin:clamp(16px,3.6vw,22px) 0 0}
+.machine svg{display:block;width:100%;max-width:300px;height:auto}
+.machine .fr{fill:none;stroke:var(--black);stroke-width:2}
+.machine .btn{fill:#e9e5db;stroke:var(--black);stroke-width:1.2}
+.machine .btn-hi{fill:var(--red);stroke:var(--red)}
+.machine .slot{fill:var(--black)}
+.machine text{font:700 8px var(--f-jp);fill:var(--black)}
+.machine text.w{fill:var(--white)}
+.machine text.lb{font-weight:400;font-size:7.5px;fill:#6a675f}
+
+/* 品。値段を大きく、名前を太く。写真の代わりに文字で見せる */
+.bowls{margin:0;padding:0;list-style:none}
+.bowl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;
+  padding:clamp(16px,3.8vw,21px) 0;border-bottom:1px solid var(--line)}
+.bowl:first-child{border-top:1px solid var(--line)}
+.bw-n{grid-column:1;font-size:19px;font-weight:700;line-height:1.45}
+.bw-d{grid-column:1;font-size:13px;line-height:1.85;color:var(--white-2)}
+.bw-y{grid-column:2;grid-row:1 / span 2;font-family:var(--f-imp);font-size:27px;line-height:1.1;
+  letter-spacing:.01em;white-space:nowrap}
+.bw-t{grid-column:1 / -1;display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.bw-t span{padding:3px 9px;border:1px solid var(--line);font-size:11.5px;line-height:1.6;color:var(--white-2)}
+.bw-t span.pork{border-color:var(--red-ink);color:var(--red-ink)}
+
+.sec{margin-top:clamp(36px,9vw,58px)}
+.sec h2{margin:0 0 clamp(12px,3vw,18px);font-size:clamp(19px,5vw,25px);font-weight:900;line-height:1.45;
+  letter-spacing:-.01em}
+.sec > p{margin:0 0 clamp(14px,3.2vw,20px);max-width:32em;font-size:14px;line-height:1.95;color:var(--white-2)}
+
+/* 量の目安。棒で見せる */
+.sizes{margin:0;padding:0;list-style:none}
+.sizes li{display:grid;grid-template-columns:4.4rem 1fr auto;gap:0 12px;align-items:center;
+  padding:9px 0;border-bottom:1px solid var(--line)}
+.sizes b{font-size:14.5px;font-weight:700}
+.sizes .bar{height:9px;background:var(--line)}
+.sizes .bar i{display:block;height:100%;background:var(--red-ink)}
+.sizes small{font-size:12px;color:var(--white-3);white-space:nowrap}
+
+.rules{margin:0;padding:0;list-style:none}
+.rules li{padding:clamp(11px,2.6vw,14px) 0;border-bottom:1px solid var(--line)}
+.rules b{display:block;font-size:15px;font-weight:700;line-height:1.65}
+.rules p{margin:2px 0 0;font-size:13px;line-height:1.9;color:var(--white-2)}
+
+.rows{display:grid;grid-template-columns:5.6rem minmax(0,1fr);margin:0;font-size:14px}
+.rows dt{padding:9px 0;border-top:1px solid var(--line);color:var(--white-3);font-size:12.5px;line-height:1.85}
+.rows dd{margin:0;padding:9px 0;border-top:1px solid var(--line);line-height:1.85}
+.rows dt:first-of-type,.rows dt:first-of-type + dd{border-top:0}
+@media (max-width:430px){
+  .rows{grid-template-columns:minmax(0,1fr)}
+  .rows dt{padding-bottom:0;border-top:1px solid var(--line)}
+  .rows dd{padding-top:0;border-top:0}
+  .rows dt:first-of-type{border-top:0}
+}
+.go{display:inline-block;margin-top:20px;padding:14px 24px;background:var(--red);color:var(--white);
+  font-size:14.5px;font-weight:700;text-decoration:none;transition:opacity .2s}
+.go:hover{opacity:.85}
+
+.end{margin-top:clamp(38px,9vw,60px);padding:clamp(20px,5vw,26px) 0
+  calc(clamp(28px,7vw,44px) + env(safe-area-inset-bottom,0px));border-top:2px solid var(--red-ink)}
+.end b{display:block;font-family:var(--f-imp);font-size:12px;letter-spacing:.14em;color:var(--red-ink)}
+.end p{margin:7px 0 0;font-size:12.5px;line-height:1.9;color:var(--white-3)}
+
+:focus-visible{outline:2px solid var(--red-ink);outline-offset:3px}
+
+/* ── 動き：刷り上がるように下からめくれて出る。ほかは動かさない ── */
+@media (prefers-reduced-motion:no-preference){
+  .shop,.roman,.say,.open-now{animation:press .75s cubic-bezier(.2,.9,.3,1) both}
+  .roman{animation-delay:.07s}.say{animation-delay:.13s}.open-now{animation-delay:.2s}
+  @supports (animation-timeline:view()){
+    .bowl,.rules li{animation:press .01s linear both;animation-timeline:view();
+      animation-range:entry 10px entry 170px}
+    .sizes .bar i{animation:fill linear both;animation-timeline:view();animation-range:entry 0 entry 50%}
+    .machine .btn-hi{animation:blink 1.4s steps(1) infinite}
+  }
+}
+@keyframes press{from{opacity:0;clip-path:inset(100% 0 0 0);transform:translateY(6px)}
+  to{opacity:1;clip-path:inset(0 0 0 0);transform:none}}
+@keyframes fill{from{width:0}to{width:var(--w,50%)}}
+@keyframes blink{0%,60%{opacity:1}61%,100%{opacity:.45}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="lang" aria-label="Language"><div class="c" id="lb"></div></nav>
+
+<div class="c">
+
+  <header class="noren">
+    <p class="tgt" data-k="tgt"></p>
+    <h1 class="shop"><span data-k="name1"></span><span data-k="name2"></span></h1>
+    <p class="roman" data-k="roman"></p>
+    <p class="say" data-k="say"></p>
+    <p class="open-now" id="open" data-open="true"></p>
+    <p class="open-sub" data-k="hours_s"></p>
+  </header>
+
+  <main>
+
+    <section class="kiosk">
+      <h2 data-k="h_kiosk"></h2>
+      <p class="k-lede" data-k="kiosk_lede"></p>
+      <ol class="steps" id="steps"></ol>
+      <div class="machine">
+        <svg viewBox="0 0 300 150" role="img" aria-labelledby="mt">
+          <title id="mt" data-k="machine_alt"></title>
+          <rect class="fr" x="2" y="2" width="296" height="146"/>
+          <rect class="slot" x="18" y="16" width="86" height="22"/>
+          <text class="w" x="26" y="31" data-k="m_money"></text>
+          <rect class="btn btn-hi" x="18" y="52" width="80" height="30"/>
+          <text class="w" x="30" y="71" data-k="m_b1"></text>
+          <rect class="btn" x="106" y="52" width="80" height="30"/>
+          <text x="118" y="71" data-k="m_b2"></text>
+          <rect class="btn" x="194" y="52" width="80" height="30"/>
+          <text x="206" y="71" data-k="m_b3"></text>
+          <rect class="btn" x="18" y="90" width="80" height="30"/>
+          <text x="30" y="109" data-k="m_b4"></text>
+          <rect class="btn" x="106" y="90" width="80" height="30"/>
+          <text x="118" y="109" data-k="m_b5"></text>
+          <rect class="btn" x="194" y="90" width="80" height="30"/>
+          <text x="206" y="109" data-k="m_b6"></text>
+          <rect class="slot" x="194" y="16" width="80" height="22"/>
+          <text class="w" x="202" y="31" data-k="m_ticket"></text>
+          <text class="lb" x="18" y="137" data-k="m_note"></text>
+        </svg>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_bowls"></h2>
+      <p data-k="bowls_n"></p>
+      <ul class="bowls" id="bowls"></ul>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_size"></h2>
+      <p data-k="size_n"></p>
+      <ul class="sizes" id="sizes"></ul>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_rules"></h2>
+      <ul class="rules" id="rules"></ul>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_visit"></h2>
+      <dl class="rows" id="rows"></dl>
+      <a class="go" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A0%83%E6%9C%A8%E7%9C%8C%E4%BD%90%E9%87%8E%E5%B8%82" target="_blank" rel="noopener" data-k="cta_map"></a>
+    </section>
+
+    <footer class="end">
+      <b data-k="demo"></b>
+      <p data-k="foot"></p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const LANGS=[["ja","日本語"],["en","English"],["zh-Hant","繁體"],["zh-Hans","简体"],["ko","한국어"]];
+const BOWLS=[
+ {id:"r1",y:"800",t:["pork","egg"]},
+ {id:"r2",y:"950",t:["pork","egg"]},
+ {id:"r3",y:"900",t:["noPork"]},
+ {id:"r4",y:"500",t:["pork"]}
+];
+const SIZES=[{id:"s1",w:50},{id:"s2",w:72},{id:"s3",w:100}];
+const STEPS=["k1","k2","k3","k4"];
+const RULES=["u1","u2","u3","u4"];
+const ROWS=["hours","closed","seats","wait","access","park","addr"];
+const OPEN_MIN=11*60, CLOSE_MIN=14*60+30, SHUT=[1]; /* 月曜休み・スープ切れ終了 */
+
+const T={
+ja:{tgt:"栃木県 佐野市",name1:"青竹",name2:"とみや",roman:"AOTAKE TOMIYA",
+ say:"青竹を踏んで打つ、佐野の麺です。スープは鶏ガラと醤油。昼だけ開けています。",
+ s_open:"営業中",s_shut:"営業時間外",s_rest:"本日は定休日",
+ hours_s:"11:00–14:30（スープがなくなり次第終了）／ 月曜休み",
+ h_kiosk:"券売機の使い方",
+ kiosk_lede:"席に座る前に、入口の機械で食券を買います。店員に直接注文はできません。現金のみです。",
+ k1:"先に紙のお金を入れる",k1_n:"千円札が使えます。一万円札と五千円札は使えません。両替機はありません。",
+ k2:"赤いボタンを押す",k2_n:"いちばん上の左が「青竹ラーメン」です。写真の番号と、下のお品書きが対応しています。",
+ k3:"出てきた札を取る",k3_n:"おつりは下から出ます。取り忘れにご注意ください。",
+ k4:"席に座って、札をカウンターに出す",k4_n:"空いている席にどうぞ。相席をお願いすることがあります。",
+ machine_alt:"食券機の図。左上がお札の投入口、右上が食券の出口、中央に6つのボタン",
+ m_money:"お札",m_ticket:"食券",
+ m_b1:"ラーメン",m_b2:"チャーシュー",m_b3:"野菜",m_b4:"大盛",m_b5:"餃子",m_b6:"ごはん",
+ m_note:"※ 現金のみ。千円札まで。",
+ h_bowls:"お品書き",
+ bowls_n:"すべて税込です。麺の量は「並」で、追加料金なしで変えられます。",
+ r1:"青竹ラーメン",r1_d:"鶏ガラ醤油。チャーシュー2枚、メンマ、なると、ねぎ。",
+ r2:"チャーシューメン",r2_d:"チャーシューを6枚に増やしたもの。",
+ r3:"野菜ラーメン",r3_d:"肉を使っていません。スープは鶏ガラなので、肉を避けたい方はご相談ください。",
+ r4:"餃子（6個）",r4_d:"豚肉と白菜。焼きたてをお出しします。",
+ t_pork:"豚肉",t_egg:"卵",t_noPork:"肉なし",
+ h_size:"麺の量",
+ size_n:"食券を出すときに「少なめ」「並」「大盛」とお伝えください。値段は変わりません。",
+ s1:"少なめ",s1_v:"約130g",s2:"並",s2_v:"約180g",s3:"大盛",s3_v:"約260g",
+ h_rules:"店のきまり",
+ u1:"並んでいるときは、先に食券を買ってください",u1_n:"外に列ができていても、入口の機械までは入れます。",
+ u2:"カウンター7席、テーブル2卓",u2_n:"混んでいるときは相席をお願いします。長い荷物は足元へ。",
+ u3:"写真は、お料理だけどうぞ",u3_n:"ほかのお客さまと、厨房の中は撮らないでください。",
+ u4:"スープは残していただいて構いません",u4_n:"塩辛く感じたら、無理に飲まないでください。",
+ h_visit:"行き方",
+ hours:"営業時間",hours_v:"11:00〜14:30（スープがなくなり次第終了）",
+ closed:"定休日",closed_v:"月曜日、年末年始",
+ seats:"席数",seats_v:"11席（カウンター7・テーブル4）",
+ wait:"待ち時間",wait_v:"土日の12時前後は30〜40分並ぶことがあります。13時半を過ぎると空きます。",
+ access:"行き方",access_v:"JR佐野駅から徒歩12分。",
+ park:"駐車場",park_v:"6台、無料。",
+ addr:"所在地",addr_v:"栃木県佐野市（架空の住所です）",
+ cta_map:"地図を開く",
+ demo:"Demonstration",
+ foot:"これは営業用のデモサイトです。架空の店舗で、実在のラーメン店とは関係ありません。価格・営業時間もすべて架空のものです。"},
+
+en:{tgt:"Sano, Tochigi",name1:"Aotake",name2:"Tomiya",roman:"青竹 とみや",
+ say:"Sano noodles, cut under a green bamboo pole. Chicken and soy soup. Open at lunchtime only.",
+ s_open:"Open now",s_shut:"Closed now",s_rest:"Closed today",
+ hours_s:"11:00–14:30 (until the soup runs out) / closed Mondays",
+ h_kiosk:"How to use the ticket machine",
+ kiosk_lede:"Buy a meal ticket from the machine by the door before you sit down. You cannot order from the staff. Cash only.",
+ k1:"Put in a note first",k1_n:"¥1,000 notes work. ¥10,000 and ¥5,000 notes do not. There is no change machine.",
+ k2:"Press the red button",k2_n:"Top left is Aotake Ramen. The buttons match the menu below.",
+ k3:"Take the ticket that comes out",k3_n:"Your change drops out below. It is easy to forget.",
+ k4:"Sit down and put the ticket on the counter",k4_n:"Take any free seat. We may ask you to share a table.",
+ machine_alt:"Diagram of the ticket machine: note slot top left, ticket slot top right, six buttons in the middle",
+ m_money:"NOTES",m_ticket:"TICKET",
+ m_b1:"Ramen",m_b2:"Extra pork",m_b3:"Vegetable",m_b4:"Large",m_b5:"Gyoza",m_b6:"Rice",
+ m_note:"Cash only. ¥1,000 notes maximum.",
+ h_bowls:"The menu",
+ bowls_n:"All prices include tax. Noodles come regular size; you can change it at no extra charge.",
+ r1:"Aotake Ramen",r1_d:"Chicken and soy. Two slices of pork, bamboo shoots, fish cake, spring onion.",
+ r2:"Chashu Ramen",r2_d:"The same bowl with six slices of pork instead of two.",
+ r3:"Vegetable Ramen",r3_d:"No meat in the bowl. The soup is still chicken-based, so please ask if you avoid meat.",
+ r4:"Gyoza (6)",r4_d:"Pork and cabbage, fried to order.",
+ t_pork:"Pork",t_egg:"Egg",t_noPork:"No meat on top",
+ h_size:"How much noodle",
+ size_n:"Say sukuname, nami or oomori when you hand over your ticket. The price is the same.",
+ s1:"Small",s1_v:"about 130g",s2:"Regular",s2_v:"about 180g",s3:"Large",s3_v:"about 260g",
+ h_rules:"House rules",
+ u1:"If there is a queue, buy your ticket first",u1_n:"Even with a line outside, you may step in as far as the machine.",
+ u2:"Seven counter seats, two tables",u2_n:"We may seat you with others when it is busy. Long bags go by your feet.",
+ u3:"Photos of the food are fine",u3_n:"Please do not photograph other customers or inside the kitchen.",
+ u4:"You do not have to finish the soup",u4_n:"If it tastes salty to you, leave it.",
+ h_visit:"Getting here",
+ hours:"Hours",hours_v:"11:00–14:30 (until the soup runs out)",
+ closed:"Closed",closed_v:"Mondays and the New Year period",
+ seats:"Seats",seats_v:"11 (7 counter, 4 table)",
+ wait:"Waiting",wait_v:"Around noon at weekends the wait can be 30–40 minutes. After 13:30 it clears.",
+ access:"Getting here",access_v:"12 minutes on foot from JR Sano Station.",
+ park:"Parking",park_v:"6 spaces, free of charge.",
+ addr:"Address",addr_v:"Sano, Tochigi (this address is fictional)",
+ cta_map:"Open in Maps",
+ demo:"Demonstration",
+ foot:"This is a demonstration site. The shop is fictional and bears no relation to any real ramen shop. The prices and hours are fictional too."},
+
+"zh-Hant":{tgt:"栃木縣 佐野市",name1:"青竹",name2:"富屋",roman:"AOTAKE TOMIYA",
+ say:"以青竹壓製的佐野麵。湯頭為雞骨醬油。僅中午營業。",
+ s_open:"營業中",s_shut:"非營業時間",s_rest:"本日公休",
+ hours_s:"11:00–14:30（湯頭售完為止）／ 週一公休",
+ h_kiosk:"售票機使用方式",
+ kiosk_lede:"入座前請先在門口的機器購買餐券，無法直接向店員點餐。僅收現金。",
+ k1:"先投入紙鈔",k1_n:"可使用1000日圓紙鈔。10000與5000日圓紙鈔不可使用，店內亦無兌幣機。",
+ k2:"按下紅色按鈕",k2_n:"左上為「青竹拉麵」。按鈕與下方菜單相對應。",
+ k3:"取出餐券",k3_n:"找零由下方退出，請留意不要忘記拿取。",
+ k4:"入座後將餐券放在櫃檯上",k4_n:"可自由入座。客滿時可能需要與其他客人併桌。",
+ machine_alt:"售票機示意圖。左上為紙鈔投入口，右上為餐券出口，中央有六個按鈕",
+ m_money:"紙鈔",m_ticket:"餐券",
+ m_b1:"拉麵",m_b2:"叉燒",m_b3:"蔬菜",m_b4:"大碗",m_b5:"餃子",m_b6:"白飯",
+ m_note:"※ 僅收現金。限1000日圓紙鈔。",
+ h_bowls:"菜單",
+ bowls_n:"均為含稅價。麵量預設為普通，可免費調整。",
+ r1:"青竹拉麵",r1_d:"雞骨醬油。叉燒2片、筍乾、魚板、蔥。",
+ r2:"叉燒拉麵",r2_d:"叉燒增加為6片。",
+ r3:"蔬菜拉麵",r3_d:"不含肉類配料。湯頭仍為雞骨，避食肉類者請先告知。",
+ r4:"餃子（6個）",r4_d:"豬肉與白菜，現點現煎。",
+ t_pork:"豬肉",t_egg:"蛋",t_noPork:"無肉配料",
+ h_size:"麵量",
+ size_n:"遞出餐券時請告知「少量」「普通」「大碗」。價格相同。",
+ s1:"少量",s1_v:"約130g",s2:"普通",s2_v:"約180g",s3:"大碗",s3_v:"約260g",
+ h_rules:"店內規則",
+ u1:"排隊時請先購買餐券",u1_n:"即使門外有排隊人潮，仍可進入至機器處購票。",
+ u2:"吧台7席、桌位2桌",u2_n:"客滿時可能需併桌。長型行李請放於腳邊。",
+ u3:"僅可拍攝餐點",u3_n:"請勿拍攝其他客人與廚房內部。",
+ u4:"湯可以不喝完",u4_n:"若覺得偏鹹，請勿勉強飲用。",
+ h_visit:"交通方式",
+ hours:"營業時間",hours_v:"11:00〜14:30（湯頭售完為止）",
+ closed:"公休日",closed_v:"星期一、年末年初",
+ seats:"座位",seats_v:"11席（吧台7、桌位4）",
+ wait:"等候時間",wait_v:"週末中午前後可能需排隊30〜40分鐘。13:30過後較空。",
+ access:"交通",access_v:"JR佐野站步行12分鐘。",
+ park:"停車場",park_v:"6個車位，免費。",
+ addr:"地址",addr_v:"栃木縣佐野市（此為虛構地址）",
+ cta_map:"開啟地圖",
+ demo:"Demonstration",
+ foot:"這是示範網站。店家為虛構，與任何實際拉麵店無關。價格與營業時間亦為虛構。"},
+
+"zh-Hans":{tgt:"栃木县 佐野市",name1:"青竹",name2:"富屋",roman:"AOTAKE TOMIYA",
+ say:"以青竹压制的佐野面。汤头为鸡骨酱油。仅中午营业。",
+ s_open:"营业中",s_shut:"非营业时间",s_rest:"今日休息",
+ hours_s:"11:00–14:30（汤头售完为止）／ 周一休息",
+ h_kiosk:"售票机使用方式",
+ kiosk_lede:"入座前请先在门口的机器购买餐券，无法直接向店员点单。仅收现金。",
+ k1:"先投入纸币",k1_n:"可使用1000日元纸币。10000与5000日元纸币不可使用，店内也没有兑币机。",
+ k2:"按下红色按钮",k2_n:"左上为「青竹拉面」。按钮与下方菜单相对应。",
+ k3:"取出餐券",k3_n:"找零从下方退出，请留意不要忘记拿取。",
+ k4:"入座后将餐券放在柜台上",k4_n:"可自由入座。满座时可能需要与其他客人拼桌。",
+ machine_alt:"售票机示意图。左上为纸币投入口，右上为餐券出口，中央有六个按钮",
+ m_money:"纸币",m_ticket:"餐券",
+ m_b1:"拉面",m_b2:"叉烧",m_b3:"蔬菜",m_b4:"大碗",m_b5:"饺子",m_b6:"米饭",
+ m_note:"※ 仅收现金。限1000日元纸币。",
+ h_bowls:"菜单",
+ bowls_n:"均为含税价。面量默认为普通，可免费调整。",
+ r1:"青竹拉面",r1_d:"鸡骨酱油。叉烧2片、笋干、鱼板、葱。",
+ r2:"叉烧拉面",r2_d:"叉烧增加为6片。",
+ r3:"蔬菜拉面",r3_d:"不含肉类配料。汤头仍为鸡骨，避食肉类者请先告知。",
+ r4:"饺子（6个）",r4_d:"猪肉与白菜，现点现煎。",
+ t_pork:"猪肉",t_egg:"蛋",t_noPork:"无肉配料",
+ h_size:"面量",
+ size_n:"递出餐券时请告知「少量」「普通」「大碗」。价格相同。",
+ s1:"少量",s1_v:"约130g",s2:"普通",s2_v:"约180g",s3:"大碗",s3_v:"约260g",
+ h_rules:"店内规则",
+ u1:"排队时请先购买餐券",u1_n:"即使门外有排队人潮，仍可进入至机器处购票。",
+ u2:"吧台7席、桌位2桌",u2_n:"满座时可能需拼桌。长型行李请放于脚边。",
+ u3:"仅可拍摄餐点",u3_n:"请勿拍摄其他客人与厨房内部。",
+ u4:"汤可以不喝完",u4_n:"若觉得偏咸，请勿勉强饮用。",
+ h_visit:"交通方式",
+ hours:"营业时间",hours_v:"11:00〜14:30（汤头售完为止）",
+ closed:"休息日",closed_v:"星期一、年末年初",
+ seats:"座位",seats_v:"11席（吧台7、桌位4）",
+ wait:"等候时间",wait_v:"周末中午前后可能需排队30〜40分钟。13:30过后较空。",
+ access:"交通",access_v:"JR佐野站步行12分钟。",
+ park:"停车场",park_v:"6个车位，免费。",
+ addr:"地址",addr_v:"栃木县佐野市（此为虚构地址）",
+ cta_map:"打开地图",
+ demo:"Demonstration",
+ foot:"这是演示网站。店家为虚构，与任何实际拉面店无关。价格与营业时间也均为虚构。"},
+
+ko:{tgt:"도치기현 사노시",name1:"아오타케",name2:"도미야",roman:"AOTAKE TOMIYA",
+ say:"푸른 대나무를 밟아 뽑는 사노의 면입니다. 국물은 닭뼈와 간장. 점심에만 엽니다.",
+ s_open:"영업 중",s_shut:"영업 시간 외",s_rest:"오늘은 휴무",
+ hours_s:"11:00–14:30 (국물이 떨어지면 마감) / 월요일 휴무",
+ h_kiosk:"식권 자판기 쓰는 법",
+ kiosk_lede:"자리에 앉기 전에 입구의 기계에서 식권을 삽니다. 직원에게 직접 주문할 수 없습니다. 현금만 됩니다.",
+ k1:"먼저 지폐를 넣습니다",k1_n:"천 엔권을 쓰실 수 있습니다. 만 엔권과 오천 엔권은 쓸 수 없고, 환전기도 없습니다.",
+ k2:"빨간 버튼을 누릅니다",k2_n:"맨 위 왼쪽이 「아오타케 라멘」입니다. 버튼은 아래 차림표와 짝이 맞습니다.",
+ k3:"나온 식권을 가져갑니다",k3_n:"거스름돈은 아래로 나옵니다. 잊고 가시기 쉬우니 주의해 주세요.",
+ k4:"자리에 앉아 식권을 카운터에 올립니다",k4_n:"빈자리에 앉으시면 됩니다. 붐빌 때는 합석을 부탁드릴 수 있습니다.",
+ machine_alt:"식권 자판기 그림. 왼쪽 위가 지폐 투입구, 오른쪽 위가 식권 출구, 가운데에 버튼 여섯 개",
+ m_money:"지폐",m_ticket:"식권",
+ m_b1:"라멘",m_b2:"차슈",m_b3:"야채",m_b4:"곱빼기",m_b5:"교자",m_b6:"밥",
+ m_note:"※ 현금만. 천 엔권까지.",
+ h_bowls:"차림표",
+ bowls_n:"모두 세금 포함입니다. 면의 양은 보통이며, 추가 요금 없이 바꾸실 수 있습니다.",
+ r1:"아오타케 라멘",r1_d:"닭뼈 간장. 차슈 두 장, 멘마, 어묵, 파.",
+ r2:"차슈멘",r2_d:"차슈를 여섯 장으로 늘린 것.",
+ r3:"야채 라멘",r3_d:"고명에 고기를 쓰지 않습니다. 국물은 닭뼈이니 고기를 피하시는 분은 말씀해 주세요.",
+ r4:"교자 (6개)",r4_d:"돼지고기와 배추. 주문 후 구워 냅니다.",
+ t_pork:"돼지고기",t_egg:"달걀",t_noPork:"고명에 고기 없음",
+ h_size:"면의 양",
+ size_n:"식권을 내실 때 「스쿠나메(적게)」 「나미(보통)」 「오모리(곱빼기)」라고 말씀해 주세요. 값은 같습니다.",
+ s1:"적게",s1_v:"약 130g",s2:"보통",s2_v:"약 180g",s3:"곱빼기",s3_v:"약 260g",
+ h_rules:"가게의 규칙",
+ u1:"줄을 서실 때는 식권을 먼저 사 주세요",u1_n:"밖에 줄이 있어도 기계까지는 들어오실 수 있습니다.",
+ u2:"카운터 7석, 테이블 2개",u2_n:"붐빌 때는 합석을 부탁드립니다. 긴 짐은 발밑에 두세요.",
+ u3:"사진은 음식만 찍어 주세요",u3_n:"다른 손님과 주방 안은 찍지 말아 주세요.",
+ u4:"국물은 남기셔도 됩니다",u4_n:"짜게 느껴지시면 무리해서 드시지 마세요.",
+ h_visit:"오시는 길",
+ hours:"영업시간",hours_v:"11:00〜14:30 (국물이 떨어지면 마감)",
+ closed:"휴무일",closed_v:"월요일, 연말연시",
+ seats:"좌석",seats_v:"11석 (카운터 7, 테이블 4)",
+ wait:"대기",wait_v:"주말 정오 무렵에는 30〜40분 줄을 서실 수 있습니다. 13시 반이 지나면 한산해집니다.",
+ access:"오시는 길",access_v:"JR 사노역에서 도보 12분.",
+ park:"주차장",park_v:"6대, 무료.",
+ addr:"주소",addr_v:"도치기현 사노시 (가상의 주소입니다)",
+ cta_map:"지도 열기",
+ demo:"Demonstration",
+ foot:"영업용 데모 사이트입니다. 가상의 가게이며 실제 라멘집과는 관계가 없습니다. 가격과 영업시간도 모두 가상입니다."}
+};
+
+const el=(t,c,x)=>{const n=document.createElement(t); if(c)n.className=c; if(x!=null)n.textContent=x; return n;};
+
+function state(){
+  const d=new Date(), w=d.getDay();
+  if(SHUT.indexOf(w)>=0) return "rest";
+  const m=d.getHours()*60+d.getMinutes();
+  return (m>=OPEN_MIN && m<CLOSE_MIN) ? "open" : "shut";
+}
+
+function build(t){
+  const st=document.getElementById("steps"); st.textContent="";
+  for(const k of STEPS){
+    const li=el("li");
+    li.appendChild(el("b",null,t[k]));
+    li.appendChild(el("p",null,t[k+"_n"]));
+    st.appendChild(li);
+  }
+
+  const bl=document.getElementById("bowls"); bl.textContent="";
+  for(const b of BOWLS){
+    const li=el("li","bowl");
+    li.appendChild(el("span","bw-n",t[b.id]));
+    li.appendChild(el("span","bw-y","¥"+b.y));
+    li.appendChild(el("span","bw-d",t[b.id+"_d"]));
+    const tg=el("div","bw-t");
+    for(const k of b.t){ const s=el("span",k==="pork"?"pork":null,t["t_"+k]); tg.appendChild(s); }
+    li.appendChild(tg);
+    bl.appendChild(li);
+  }
+
+  const sz=document.getElementById("sizes"); sz.textContent="";
+  for(const s of SIZES){
+    const li=el("li");
+    li.appendChild(el("b",null,t[s.id]));
+    const bar=el("div","bar"); const i=el("i"); i.style.width=s.w+"%"; i.style.setProperty("--w",s.w+"%");
+    bar.appendChild(i); li.appendChild(bar);
+    li.appendChild(el("small",null,t[s.id+"_v"]));
+    sz.appendChild(li);
+  }
+
+  const ru=document.getElementById("rules"); ru.textContent="";
+  for(const u of RULES){
+    const li=el("li");
+    li.appendChild(el("b",null,t[u]));
+    li.appendChild(el("p",null,t[u+"_n"]));
+    ru.appendChild(li);
+  }
+
+  const rw=document.getElementById("rows"); rw.textContent="";
+  for(const k of ROWS){ rw.appendChild(el("dt",null,t[k])); rw.appendChild(el("dd",null,t[k+"_v"])); }
+}
+
+function apply(code){
+  const t=T[code];
+  for(const n of document.querySelectorAll("[data-k]")){ const v=t[n.dataset.k]; if(v!=null) n.textContent=v; }
+  build(t);
+  const s=state(), box=document.getElementById("open");
+  box.dataset.open=String(s==="open");
+  box.textContent = s==="open"?t.s_open:(s==="rest"?t.s_rest:t.s_shut);
+  document.documentElement.lang=code;
+  for(const b of document.querySelectorAll("#lb button")) b.setAttribute("aria-pressed",String(b.dataset.lang===code));
+  document.title=t.name1+" "+t.name2;
+}
+
+const lb=document.getElementById("lb");
+for(const [code,label] of LANGS){
+  const b=el("button",null,label); b.type="button"; b.dataset.lang=code;
+  b.addEventListener("click",()=>apply(code));
+  lb.appendChild(b);
+}
+apply("ja");
+</script>
+</body>
+</html>

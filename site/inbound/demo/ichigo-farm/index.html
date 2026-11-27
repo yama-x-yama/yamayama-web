@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="description" content="yama × yama. が多言語ページの見本として作った、架空のいちご農園「八幡いちご園」のデモサイトです。実在の農園ではありません。">
+<meta name="theme-color" content="#fdfcfa">
+<link rel="icon" href="/favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>八幡いちご園</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+<style>
+/* いちご狩りは時間との勝負。30分で何をするかが全部。
+   だから時計の残り時間を円で出して、それを画面の軸にする。
+   色は温室の白と、いちごの一色だけ。丸いゴシックを使うが、角丸の箱は作らない。
+   動きは、時計の円が描かれることと、品種の粒が色づくこと。 */
+:root{
+  --glass:#fdfcfa;
+  --glass-2:#f1efea;
+  --soil:#2a2622;
+  --soil-2:#5d574f;
+  --soil-3:#6b6459;
+  --hair:#dedad2;
+  --berry:#c8324b;      /* いちご。一色だけ */
+  --f-dm:"DM Sans",ui-sans-serif,system-ui,sans-serif;
+  --f-jp:"Zen Maru Gothic",system-ui,-apple-system,"Hiragino Sans",sans-serif;
+  --gl:max(20px,env(safe-area-inset-left,0px));
+  --gr:max(20px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--glass);color:var(--soil);font-family:var(--f-jp);
+  font-size:15px;line-height:1.95;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+.c{max-width:46rem;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
+
+.lang{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;background:var(--glass);
+  border-bottom:1px solid var(--hair)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);
+  z-index:31;background:var(--glass)}
+.lang .c{display:flex;gap:16px;padding-top:12px;padding-bottom:12px;overflow-x:auto;scrollbar-width:none}
+.lang .c::-webkit-scrollbar{display:none}
+.lang button{flex:none;padding:0;background:none;border:0;color:var(--soil-3);
+  font:500 12.5px/1.6 var(--f-jp);cursor:pointer;white-space:nowrap;transition:color .2s}
+.lang button:hover{color:var(--soil)}
+.lang button[aria-pressed="true"]{color:var(--berry)}
+
+/* 冒頭：時計が主役。左に時計、右に名前 */
+.top{display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 clamp(18px,5vw,30px);
+  align-items:center;padding:clamp(28px,7vw,48px) 0 clamp(22px,5vw,32px)}
+.clock{width:clamp(96px,27vw,132px);flex:none}
+.clock svg{display:block;width:100%;height:auto;transform:rotate(-90deg)}
+.clock .trk{fill:none;stroke:var(--hair);stroke-width:7}
+.clock .run{fill:none;stroke:var(--berry);stroke-width:7;stroke-linecap:round;
+  stroke-dasharray:var(--len,283);stroke-dashoffset:0}
+.clock .mid{font:700 19px var(--f-dm);fill:var(--soil);text-anchor:middle;
+  transform:rotate(90deg);transform-origin:center}
+.farm{margin:0;font-size:12px;letter-spacing:.14em;color:var(--soil-3)}
+.nm{margin:8px 0 0;font-size:clamp(26px,7vw,40px);font-weight:700;line-height:1.3;
+  letter-spacing:-.01em;font-feature-settings:"palt"}
+.open-s{margin:10px 0 0;font-size:13.5px;color:var(--soil-2)}
+.open-s b{font-weight:700;color:var(--soil)}
+.say{margin:clamp(18px,4vw,24px) 0 0;max-width:30em;font-size:14.5px;line-height:2;color:var(--soil-2)}
+
+/* 30分の中身。時計の針を追うように横一列 */
+.mins{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;margin:clamp(24px,5.5vw,34px) 0 0;
+  border-top:2px solid var(--soil);border-bottom:1px solid var(--hair)}
+.mins div{padding:12px 8px 12px 0;border-right:1px solid var(--hair)}
+.mins div:last-child{border-right:0;padding-right:0}
+.mins b{display:block;font:700 15px/1.3 var(--f-dm);letter-spacing:.01em}
+.mins span{display:block;margin-top:3px;font-size:11px;line-height:1.6;color:var(--soil-3)}
+@media (max-width:420px){.mins b{font-size:13.5px}.mins span{font-size:10px}}
+
+.sec{margin-top:clamp(36px,9vw,58px)}
+.sec h2{margin:0 0 clamp(12px,3vw,18px);font-size:clamp(19px,5vw,25px);font-weight:700;line-height:1.5;
+  font-feature-settings:"palt"}
+.sec > p{margin:0 0 clamp(14px,3.2vw,20px);max-width:32em;font-size:14px;line-height:2;color:var(--soil-2)}
+
+/* 料金：月で変わるので、表ではなく期間の帯で見せる */
+.season{margin:0;padding:0;list-style:none}
+.season li{display:grid;grid-template-columns:minmax(0,7.5rem) minmax(0,1fr) auto;gap:0 12px;
+  align-items:center;padding:12px 0;border-bottom:1px solid var(--hair)}
+.season li:first-child{border-top:1px solid var(--hair)}
+.season .mo{font-size:13.5px;font-weight:500;line-height:1.5}
+.season .bar{height:10px;background:var(--glass-2)}
+.season .bar i{display:block;height:100%;background:var(--berry);opacity:var(--o,1)}
+.season .yy{font:700 17px/1.2 var(--f-dm);white-space:nowrap}
+.season small{grid-column:1 / -1;margin-top:2px;font-size:11.5px;line-height:1.7;color:var(--soil-3)}
+
+/* 品種：粒の絵と味の違い */
+.kinds{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,10rem),1fr));
+  gap:clamp(14px,3.4vw,22px)}
+.kind{min-width:0}
+.kind svg{display:block;width:44px;height:auto;margin-bottom:8px}
+.kind .bd{fill:var(--glass-2);stroke:var(--berry);stroke-width:1.6}
+.kind .bd.on{fill:var(--berry)}
+.kind .lf{fill:none;stroke:var(--soil-2);stroke-width:1.6;stroke-linejoin:round}
+.kind b{display:block;font-size:16px;font-weight:700;line-height:1.5}
+.kind p{margin:3px 0 0;font-size:13px;line-height:1.9;color:var(--soil-2)}
+.kind em{display:block;margin-top:5px;font-style:normal;font-size:11.5px;color:var(--soil-3)}
+
+/* きまり。できること・できないことを分けて出す */
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,13rem),1fr));
+  gap:clamp(18px,4vw,30px)}
+.can h3{margin:0 0 10px;font-size:14px;font-weight:700;color:var(--berry)}
+.cant h3{margin:0 0 10px;font-size:14px;font-weight:700;color:var(--soil-3)}
+.two ul{margin:0;padding:0;list-style:none}
+.two li{padding:7px 0 7px 18px;position:relative;font-size:13.5px;line-height:1.85;border-top:1px solid var(--hair)}
+.two li:first-child{border-top:0}
+.can li::before{content:"";position:absolute;left:0;top:.95em;width:9px;height:9px;background:var(--berry)}
+.cant li::before{content:"";position:absolute;left:0;top:1.05em;width:9px;height:1.5px;background:var(--soil-3)}
+.cant li{color:var(--soil-2)}
+
+.rows{display:grid;grid-template-columns:6rem minmax(0,1fr);margin:0;font-size:14px}
+.rows dt{padding:9px 0;border-top:1px solid var(--hair);color:var(--soil-3);font-size:12.5px;line-height:1.9}
+.rows dd{margin:0;padding:9px 0;border-top:1px solid var(--hair);line-height:1.9}
+.rows dt:first-of-type,.rows dt:first-of-type + dd{border-top:0}
+@media (max-width:440px){
+  .rows{grid-template-columns:minmax(0,1fr)}
+  .rows dt{padding-bottom:0;border-top:1px solid var(--hair)}
+  .rows dd{padding-top:0;border-top:0}
+  .rows dt:first-of-type{border-top:0}
+}
+.go{display:inline-block;margin-top:20px;padding:13px 24px;background:var(--berry);color:#fff;
+  font-size:14.5px;font-weight:700;text-decoration:none;transition:opacity .2s}
+.go:hover{opacity:.85}
+.go-n{margin:11px 0 0;font-size:12.5px;line-height:1.9;color:var(--soil-3)}
+
+.end{margin-top:clamp(38px,9vw,60px);padding:clamp(20px,5vw,26px) 0
+  calc(clamp(28px,7vw,44px) + env(safe-area-inset-bottom,0px));border-top:1px solid var(--hair)}
+.end b{display:block;font:700 11px/1.9 var(--f-dm);letter-spacing:.14em;color:var(--soil-3)}
+.end p{margin:6px 0 0;font-size:12.5px;line-height:1.9;color:var(--soil-3)}
+
+:focus-visible{outline:2px solid var(--berry);outline-offset:3px}
+
+/* ── 動き：時計の円が描かれ、粒が色づく。箱は動かさない ── */
+@media (prefers-reduced-motion:no-preference){
+  .clock .run{animation:tick 1.5s cubic-bezier(.3,1,.4,1) both}
+  .nm,.open-s,.say{animation:in .8s ease both}
+  .open-s{animation-delay:.08s}.say{animation-delay:.15s}
+  @supports (animation-timeline:view()){
+    .season .bar i{animation:grow linear both;animation-timeline:view();animation-range:entry 0 entry 45%}
+    .kind .bd{animation:ripen linear both;animation-timeline:view();animation-range:entry 10px entry 55%}
+    .two li{animation:in .01s linear both;animation-timeline:view();animation-range:entry 0 entry 140px}
+  }
+}
+@keyframes tick{from{stroke-dashoffset:var(--len,283)}to{stroke-dashoffset:var(--off,70)}}
+@keyframes grow{from{width:0}to{width:var(--w,60%)}}
+@keyframes ripen{from{fill:var(--glass-2)}to{fill:var(--berry)}}
+@keyframes in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="lang" aria-label="Language"><div class="c" id="lb"></div></nav>
+
+<div class="c">
+
+  <header class="top">
+    <div class="clock">
+      <svg viewBox="0 0 100 100" role="img" aria-labelledby="ct">
+        <title id="ct" data-k="clock_alt"></title>
+        <circle class="trk" cx="50" cy="50" r="45"/>
+        <circle class="run" id="run" cx="50" cy="50" r="45"/>
+        <text class="mid" x="50" y="56" data-k="clock_mid"></text>
+      </svg>
+    </div>
+    <div>
+      <p class="farm" data-k="farm"></p>
+      <h1 class="nm" data-k="name"></h1>
+      <p class="open-s"><b id="st"></b> <span data-k="hours_s"></span></p>
+    </div>
+  </header>
+
+  <p class="say" data-k="say"></p>
+
+  <div class="mins" id="mins"></div>
+
+  <main>
+
+    <section class="sec">
+      <h2 data-k="h_price"></h2>
+      <p data-k="price_n"></p>
+      <ul class="season" id="season"></ul>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_kinds"></h2>
+      <p data-k="kinds_n"></p>
+      <div class="kinds" id="kinds"></div>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_rules"></h2>
+      <div class="two">
+        <div class="can">
+          <h3 data-k="can_t"></h3>
+          <ul id="can"></ul>
+        </div>
+        <div class="cant">
+          <h3 data-k="cant_t"></h3>
+          <ul id="cant"></ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="sec">
+      <h2 data-k="h_visit"></h2>
+      <dl class="rows" id="rows"></dl>
+      <a class="go" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%A0%83%E6%9C%A8%E7%9C%8C%E7%9C%9F%E5%B2%A1%E5%B8%82" target="_blank" rel="noopener" data-k="cta_map"></a>
+      <p class="go-n" data-k="cta_n"></p>
+    </section>
+
+    <footer class="end">
+      <b data-k="demo"></b>
+      <p data-k="foot"></p>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+const LANGS=[["ja","日本語"],["en","English"],["zh-Hant","繁體"],["zh-Hans","简体"],["ko","한국어"]];
+const MINS=["m1","m2","m3","m4"];
+const SEASON=[{id:"p1",y:"2,400",w:100,o:1},{id:"p2",y:"2,000",w:78,o:.78},{id:"p3",y:"1,600",w:56,o:.56}];
+const KINDS=[{id:"v1",on:1},{id:"v2",on:1},{id:"v3",on:0}];
+const CAN=["c1","c2","c3","c4"];
+const CANT=["x1","x2","x3","x4"];
+const ROWS=["season","hours","closed","book","time","access","park","addr"];
+const OPEN_MIN=9*60, CLOSE_MIN=15*60, SHUT=[3]; /* 水曜休み */
+
+const T={
+ja:{farm:"栃木県 真岡市",name:"八幡いちご園",
+ clock_alt:"30分の持ち時間を示す時計の図",clock_mid:"30分",
+ s_open:"受付中",s_shut:"本日の受付は終了",s_rest:"本日は休園日",
+ hours_s:"／ 9:00–15:00（最終受付 14:30）／ 水曜休園",
+ say:"ハウスで育てたいちごを、時間を決めて摘んでいただきます。摘んだぶんをその場で食べる形で、持ち帰りはできません。",
+ m1:"0–5分",m1_n:"受付・手洗い",m2:"5–10分",m2_n:"説明・ハウスへ",
+ m3:"10–28分",m3_n:"摘んで、食べる",m4:"28–30分",m4_n:"片づけ・退出",
+ h_price:"料金",
+ price_n:"30分食べ放題です。練乳は1つ100円。時期によって値段が変わります。小学生未満は半額、3歳以下は無料です。",
+ p1:"1月〜2月",p1_v:"いちばん甘い時期。予約が埋まりやすい。",
+ p2:"3月〜4月",p2_v:"粒が大きくなる。日中は暖かい。",
+ p3:"5月",p3_v:"終わりの時期。実が少ないことがある。",
+ per:"大人ひとり",
+ h_kinds:"育てている品種",
+ kinds_n:"その日に摘めるのは1〜2種類です。どれが摘めるかは、入口の黒板に書いてあります。",
+ v1:"とちおとめ",v1_n:"栃木でいちばん多い品種。しっかりした甘さと、少しの酸味。",v1_s:"11月下旬〜5月",
+ v2:"スカイベリー",v2_n:"粒が大きく、香りが強い。数が少ないので、摘める日は限られます。",v2_s:"12月〜4月",
+ v3:"とちあいか",v3_n:"酸味が少なく、子どもでも食べやすい。断面がハート形になります。",v3_s:"12月〜5月",
+ h_rules:"できること、できないこと",
+ can_t:"できます",
+ c1:"ハウスの中は好きに歩けます",c2:"ヘタを入れる容器はお渡しします",
+ c3:"写真と動画を撮れます",c4:"車いす・ベビーカーで入れる通路があります",
+ cant_t:"できません",
+ x1:"摘んだいちごの持ち帰り（別に売店で買えます）",x2:"食べ物・飲み物の持ち込み",
+ x3:"赤くない実を摘むこと",x4:"ペットを連れてハウスに入ること",
+ h_visit:"来園と予約",
+ season:"時期",season_v:"12月下旬〜5月中旬",
+ hours:"受付時間",hours_v:"9:00〜15:00（最終受付 14:30）",
+ closed:"休園日",closed_v:"水曜日。いちごが少ない日は臨時で閉めます。",
+ book:"予約",book_v:"電話で承ります。予約なしでも、空いていれば入れます。土日は昼前に満員になることが多いです。",
+ time:"所要",time_v:"30分（受付から退出まで）",
+ access:"行き方",access_v:"真岡鐵道 真岡駅から車で10分。駅からの送迎はありません。",
+ park:"駐車場",park_v:"20台、無料。",
+ addr:"所在地",addr_v:"栃木県真岡市（架空の住所です）",
+ cta_map:"地図を開く",
+ cta_n:"ご予約は電話で承ります。このページからは予約できません。",
+ demo:"Demonstration",
+ foot:"これは営業用のデモサイトです。架空の農園で、実在のいちご園とは関係ありません。料金・時期・規則もすべて架空のものです。"},
+
+en:{farm:"Moka, Tochigi",name:"Yawata Strawberry Farm",
+ clock_alt:"A clock showing the thirty minutes you get",clock_mid:"30 min",
+ s_open:"Open for entry",s_shut:"Entry closed for today",s_rest:"Closed today",
+ hours_s:"/ 9:00–15:00 (last entry 14:30) / closed Wednesdays",
+ say:"Pick strawberries in our greenhouse within a set time. You eat what you pick, there and then — you cannot take them away.",
+ m1:"0–5 min",m1_n:"Sign in, wash hands",m2:"5–10 min",m2_n:"Briefing, walk out",
+ m3:"10–28 min",m3_n:"Pick and eat",m4:"28–30 min",m4_n:"Tidy up, leave",
+ h_price:"Price",
+ price_n:"Thirty minutes, eat as much as you like. Condensed milk is ¥100 a cup. The price changes with the season. Half price under 7, free for 3 and under.",
+ p1:"January–February",p1_v:"The sweetest time of year. Bookings fill up.",
+ p2:"March–April",p2_v:"The berries grow larger. Warm inside by midday.",
+ p3:"May",p3_v:"The end of the season. There may be fewer berries.",
+ per:"per adult",
+ h_kinds:"What we grow",
+ kinds_n:"One or two varieties are ready on any given day. The blackboard at the entrance says which.",
+ v1:"Tochiotome",v1_n:"The most common variety in Tochigi. Solid sweetness with a little acidity.",v1_s:"late Nov – May",
+ v2:"Skyberry",v2_n:"Large and strongly scented. We grow few, so the days you can pick them are limited.",v2_s:"Dec – Apr",
+ v3:"Tochiaika",v3_n:"Low in acidity and easy for children. The cut face is heart-shaped.",v3_s:"Dec – May",
+ h_rules:"What you can and cannot do",
+ can_t:"You can",
+ c1:"Walk freely inside the greenhouse",c2:"Use the cup we give you for the stems",
+ c3:"Take photos and video",c4:"Use the aisle that takes wheelchairs and pushchairs",
+ cant_t:"You cannot",
+ x1:"Take picked strawberries away (the shop sells boxes separately)",x2:"Bring your own food or drink",
+ x3:"Pick berries that are not yet red",x4:"Bring pets into the greenhouse",
+ h_visit:"Visiting and booking",
+ season:"Season",season_v:"Late December to mid-May",
+ hours:"Entry",hours_v:"9:00–15:00 (last entry 14:30)",
+ closed:"Closed",closed_v:"Wednesdays. We also close at short notice when there are too few berries.",
+ book:"Booking",book_v:"By phone. You may also come without one if there is room. Weekends often fill before noon.",
+ time:"Length",time_v:"30 minutes, from sign-in to leaving",
+ access:"Getting here",access_v:"10 minutes by car from Moka Station on the Moka Railway. There is no pick-up from the station.",
+ park:"Parking",park_v:"20 spaces, free of charge.",
+ addr:"Address",addr_v:"Moka, Tochigi (this address is fictional)",
+ cta_map:"Open in Maps",
+ cta_n:"Bookings are taken by phone. You cannot book from this page.",
+ demo:"Demonstration",
+ foot:"This is a demonstration site. The farm is fictional and bears no relation to any real strawberry farm. The prices, seasons and rules are fictional too."},
+
+"zh-Hant":{farm:"栃木縣 真岡市",name:"八幡草莓園",
+ clock_alt:"顯示30分鐘體驗時間的時鐘圖",clock_mid:"30分",
+ s_open:"開放入園",s_shut:"本日已停止受理",s_rest:"本日休園",
+ hours_s:"／ 9:00–15:00（最後受理 14:30）／ 週三休園",
+ say:"在溫室內於限定時間採草莓，採下後當場食用，不可帶走。",
+ m1:"0–5分",m1_n:"報到・洗手",m2:"5–10分",m2_n:"說明・前往溫室",
+ m3:"10–28分",m3_n:"採摘與品嚐",m4:"28–30分",m4_n:"整理・離場",
+ h_price:"費用",
+ price_n:"30分鐘吃到飽。煉乳每份100日圓。價格依時期而異。未滿小學半價，3歲以下免費。",
+ p1:"1月〜2月",p1_v:"最甜的時期，預約容易額滿。",
+ p2:"3月〜4月",p2_v:"果粒變大，日間溫暖。",
+ p3:"5月",p3_v:"季末，果實可能較少。",
+ per:"成人每位",
+ h_kinds:"栽種的品種",
+ kinds_n:"每日可採的為1〜2種，當日品種公告於入口黑板。",
+ v1:"栃乙女",v1_n:"栃木最主要的品種。甜度扎實，帶些許酸味。",v1_s:"11月下旬〜5月",
+ v2:"天空莓",v2_n:"果粒大、香氣濃。產量少，可採日期有限。",v2_s:"12月〜4月",
+ v3:"栃愛果",v3_n:"酸味低，孩童也容易入口。切面呈心形。",v3_s:"12月〜5月",
+ h_rules:"可以做的事與不可做的事",
+ can_t:"可以",
+ c1:"於溫室內自由走動",c2:"使用本園提供的果蒂容器",
+ c3:"拍照與錄影",c4:"使用可供輪椅與嬰兒車通行的走道",
+ cant_t:"不可以",
+ x1:"將採下的草莓帶走（賣店另有販售盒裝）",x2:"攜帶外食與飲料入園",
+ x3:"採摘尚未轉紅的果實",x4:"攜帶寵物進入溫室",
+ h_visit:"入園與預約",
+ season:"時期",season_v:"12月下旬〜5月中旬",
+ hours:"受理時間",hours_v:"9:00〜15:00（最後受理 14:30）",
+ closed:"休園日",closed_v:"星期三。果實不足時亦會臨時休園。",
+ book:"預約",book_v:"請以電話預約。未預約亦可，視現場空位而定。週末常於中午前額滿。",
+ time:"所需時間",time_v:"30分鐘（自報到至離場）",
+ access:"交通",access_v:"真岡鐵道真岡站開車10分鐘。本園不提供車站接送。",
+ park:"停車場",park_v:"20個車位，免費。",
+ addr:"地址",addr_v:"栃木縣真岡市（此為虛構地址）",
+ cta_map:"開啟地圖",
+ cta_n:"預約請以電話辦理。本頁面無法預約。",
+ demo:"Demonstration",
+ foot:"這是示範網站。農園為虛構，與任何實際草莓園無關。費用、時期與規則亦為虛構。"},
+
+"zh-Hans":{farm:"栃木县 真冈市",name:"八幡草莓园",
+ clock_alt:"显示30分钟体验时间的时钟图",clock_mid:"30分",
+ s_open:"开放入园",s_shut:"今日已停止受理",s_rest:"今日休园",
+ hours_s:"／ 9:00–15:00（最后受理 14:30）／ 周三休园",
+ say:"在温室内于限定时间采草莓，采下后当场食用，不可带走。",
+ m1:"0–5分",m1_n:"报到・洗手",m2:"5–10分",m2_n:"说明・前往温室",
+ m3:"10–28分",m3_n:"采摘与品尝",m4:"28–30分",m4_n:"整理・离场",
+ h_price:"费用",
+ price_n:"30分钟任吃。炼乳每份100日元。价格依时期而异。未满小学半价，3岁以下免费。",
+ p1:"1月〜2月",p1_v:"最甜的时期，预约容易额满。",
+ p2:"3月〜4月",p2_v:"果粒变大，白天温暖。",
+ p3:"5月",p3_v:"季末，果实可能较少。",
+ per:"成人每位",
+ h_kinds:"栽种的品种",
+ kinds_n:"每日可采的为1〜2种，当日品种公告于入口黑板。",
+ v1:"栃乙女",v1_n:"栃木最主要的品种。甜度扎实，带些许酸味。",v1_s:"11月下旬〜5月",
+ v2:"天空莓",v2_n:"果粒大、香气浓。产量少，可采日期有限。",v2_s:"12月〜4月",
+ v3:"栃爱果",v3_n:"酸味低，儿童也容易入口。切面呈心形。",v3_s:"12月〜5月",
+ h_rules:"可以做的事与不可做的事",
+ can_t:"可以",
+ c1:"于温室内自由走动",c2:"使用本园提供的果蒂容器",
+ c3:"拍照与录像",c4:"使用可供轮椅与婴儿车通行的走道",
+ cant_t:"不可以",
+ x1:"将采下的草莓带走（卖店另有销售盒装）",x2:"携带外食与饮料入园",
+ x3:"采摘尚未转红的果实",x4:"携带宠物进入温室",
+ h_visit:"入园与预约",
+ season:"时期",season_v:"12月下旬〜5月中旬",
+ hours:"受理时间",hours_v:"9:00〜15:00（最后受理 14:30）",
+ closed:"休园日",closed_v:"星期三。果实不足时也会临时休园。",
+ book:"预约",book_v:"请以电话预约。未预约亦可，视现场空位而定。周末常于中午前额满。",
+ time:"所需时间",time_v:"30分钟（自报到至离场）",
+ access:"交通",access_v:"真冈铁道真冈站开车10分钟。本园不提供车站接送。",
+ park:"停车场",park_v:"20个车位，免费。",
+ addr:"地址",addr_v:"栃木县真冈市（此为虚构地址）",
+ cta_map:"打开地图",
+ cta_n:"预约请以电话办理。本页面无法预约。",
+ demo:"Demonstration",
+ foot:"这是演示网站。农园为虚构，与任何实际草莓园无关。费用、时期与规则也均为虚构。"},
+
+ko:{farm:"도치기현 모카시",name:"야와타 딸기농원",
+ clock_alt:"30분의 체험 시간을 나타낸 시계 그림",clock_mid:"30분",
+ s_open:"접수 중",s_shut:"오늘 접수는 끝났습니다",s_rest:"오늘은 휴원",
+ hours_s:"/ 9:00–15:00 (마지막 접수 14:30) / 수요일 휴원",
+ say:"비닐하우스에서 기른 딸기를 정해진 시간 안에 따 드십니다. 그 자리에서 드시는 방식이라 가져가실 수는 없습니다.",
+ m1:"0–5분",m1_n:"접수·손 씻기",m2:"5–10분",m2_n:"설명·하우스로",
+ m3:"10–28분",m3_n:"따서 먹기",m4:"28–30분",m4_n:"정리·퇴장",
+ h_price:"요금",
+ price_n:"30분 무제한입니다. 연유는 한 컵 100엔. 시기에 따라 값이 달라집니다. 초등학생 미만은 반값, 3세 이하는 무료입니다.",
+ p1:"1월〜2월",p1_v:"가장 단 시기. 예약이 금방 찹니다.",
+ p2:"3월〜4월",p2_v:"알이 커집니다. 한낮에는 따뜻합니다.",
+ p3:"5월",p3_v:"끝물. 열매가 적을 수 있습니다.",
+ per:"어른 1인",
+ h_kinds:"기르는 품종",
+ kinds_n:"그날 따실 수 있는 것은 한두 품종입니다. 어느 것인지는 입구 칠판에 적어 둡니다.",
+ v1:"도치오토메",v1_n:"도치기에서 가장 많은 품종. 단단한 단맛과 약간의 산미.",v1_s:"11월 하순〜5월",
+ v2:"스카이베리",v2_n:"알이 크고 향이 강합니다. 수가 적어 따실 수 있는 날이 한정됩니다.",v2_s:"12월〜4월",
+ v3:"도치아이카",v3_n:"산미가 적어 아이도 먹기 좋습니다. 자른 면이 하트 모양입니다.",v3_s:"12월〜5월",
+ h_rules:"하실 수 있는 것과 없는 것",
+ can_t:"하실 수 있습니다",
+ c1:"하우스 안을 자유롭게 걸으실 수 있습니다",c2:"꼭지를 담는 컵을 드립니다",
+ c3:"사진과 영상을 찍으실 수 있습니다",c4:"휠체어와 유모차가 지나는 통로가 있습니다",
+ cant_t:"하실 수 없습니다",
+ x1:"딴 딸기를 가져가시는 것 (매점에서 따로 사실 수 있습니다)",x2:"음식과 음료의 반입",
+ x3:"빨갛지 않은 열매를 따시는 것",x4:"반려동물과 함께 하우스에 들어가시는 것",
+ h_visit:"방문과 예약",
+ season:"시기",season_v:"12월 하순〜5월 중순",
+ hours:"접수 시간",hours_v:"9:00〜15:00 (마지막 접수 14:30)",
+ closed:"휴원일",closed_v:"수요일. 딸기가 적은 날에는 임시로 닫습니다.",
+ book:"예약",book_v:"전화로 받습니다. 예약 없이도 자리가 있으면 들어오실 수 있습니다. 주말은 점심 전에 차는 일이 많습니다.",
+ time:"소요",time_v:"30분 (접수부터 퇴장까지)",
+ access:"오시는 길",access_v:"모카 철도 모카역에서 차로 10분. 역에서의 송영은 없습니다.",
+ park:"주차장",park_v:"20대, 무료.",
+ addr:"주소",addr_v:"도치기현 모카시 (가상의 주소입니다)",
+ cta_map:"지도 열기",
+ cta_n:"예약은 전화로 받습니다. 이 페이지에서는 예약하실 수 없습니다.",
+ demo:"Demonstration",
+ foot:"영업용 데모 사이트입니다. 가상의 농원이며 실제 딸기 농원과는 관계가 없습니다. 요금, 시기, 규칙도 모두 가상입니다."}
+};
+
+const BERRY='<svg viewBox="0 0 40 48" aria-hidden="true"><path class="lf" d="M20 11V5M20 8c-4-4-9-4-12-2 2 4 8 6 12 2zm0 0c4-4 9-4 12-2-2 4-8 6-12 2z"/><path class="bd" d="M20 12c8 0 13 6 13 14 0 10-7 18-13 18S7 36 7 26c0-8 5-14 13-14z"/></svg>';
+const el=(t,c,x)=>{const n=document.createElement(t); if(c)n.className=c; if(x!=null)n.textContent=x; return n;};
+
+function state(){
+  const d=new Date(), w=d.getDay();
+  if(SHUT.indexOf(w)>=0) return "rest";
+  const m=d.getHours()*60+d.getMinutes();
+  return (m>=OPEN_MIN && m<CLOSE_MIN) ? "open" : "shut";
+}
+
+function build(t){
+  const mn=document.getElementById("mins"); mn.textContent="";
+  for(const k of MINS){
+    const d=el("div");
+    d.appendChild(el("b",null,t[k]));
+    d.appendChild(el("span",null,t[k+"_n"]));
+    mn.appendChild(d);
+  }
+
+  const se=document.getElementById("season"); se.textContent="";
+  for(const s of SEASON){
+    const li=el("li");
+    li.appendChild(el("span","mo",t[s.id]));
+    const bar=el("div","bar"); const i=el("i");
+    i.style.width=s.w+"%"; i.style.setProperty("--w",s.w+"%"); i.style.setProperty("--o",s.o);
+    bar.appendChild(i); li.appendChild(bar);
+    li.appendChild(el("span","yy","¥"+s.y));
+    li.appendChild(el("small",null,t[s.id+"_v"]+" ／ "+t.per));
+    se.appendChild(li);
+  }
+
+  const kd=document.getElementById("kinds"); kd.textContent="";
+  for(const k of KINDS){
+    const d=el("div","kind");
+    d.innerHTML=BERRY;
+    if(k.on) d.querySelector(".bd").classList.add("on");
+    d.appendChild(el("b",null,t[k.id]));
+    d.appendChild(el("p",null,t[k.id+"_n"]));
+    d.appendChild(el("em",null,t[k.id+"_s"]));
+    kd.appendChild(d);
+  }
+
+  for(const [id,keys] of [["can",CAN],["cant",CANT]]){
+    const ul=document.getElementById(id); ul.textContent="";
+    for(const k of keys) ul.appendChild(el("li",null,t[k]));
+  }
+
+  const rw=document.getElementById("rows"); rw.textContent="";
+  for(const k of ROWS){ rw.appendChild(el("dt",null,t[k])); rw.appendChild(el("dd",null,t[k+"_v"])); }
+}
+
+function apply(code){
+  const t=T[code];
+  for(const n of document.querySelectorAll("[data-k]")){ const v=t[n.dataset.k]; if(v!=null) n.textContent=v; }
+  build(t);
+  const s=state();
+  document.getElementById("st").textContent = s==="open"?t.s_open:(s==="rest"?t.s_rest:t.s_shut);
+  document.documentElement.lang=code;
+  for(const b of document.querySelectorAll("#lb button")) b.setAttribute("aria-pressed",String(b.dataset.lang===code));
+  document.title=t.name;
+}
+
+/* 時計の円。全周の約3/4ぶんを塗る */
+const run=document.getElementById("run");
+try{
+  const len=run.getTotalLength();
+  run.style.setProperty("--len",len);
+  run.style.strokeDasharray=len;
+  run.style.setProperty("--off",len*0.22);
+  run.style.strokeDashoffset=len*0.22;
+}catch(e){}
+
+const lb=document.getElementById("lb");
+for(const [code,label] of LANGS){
+  const b=el("button",null,label); b.type="button"; b.dataset.lang=code;
+  b.addEventListener("click",()=>apply(code));
+  lb.appendChild(b);
+}
+apply("ja");
+</script>
+</body>
+</html>
