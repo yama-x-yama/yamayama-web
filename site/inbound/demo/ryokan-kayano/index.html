@@ -135,11 +135,25 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 @keyframes fall{from{transform:scaleY(0)}to{transform:scaleY(1)}}
 @keyframes soft{from{opacity:0}to{opacity:1}}
 @keyframes draw{to{stroke-dashoffset:0}}
+/* 夜の外観。下端を地の木の色にとかして、写真の縁を切らない */
+.yoru{margin:0;background:var(--wood)}
+.yoru img{width:100%;aspect-ratio:3/2;max-height:62vh;object-fit:cover;object-position:50% 55%;
+  -webkit-mask-image:linear-gradient(to bottom,#000 72%,transparent 100%);
+  mask-image:linear-gradient(to bottom,#000 72%,transparent 100%)}
+@media (min-width:860px){.yoru img{aspect-ratio:21/9}}
+.gate{padding-top:clamp(18px,5vw,34px)}
+@media (prefers-reduced-motion:no-preference){
+  .yoru img{animation:soft 1.4s ease both}
+}
 </style>
 </head>
 <body>
 
 <nav class="lang" aria-label="Language"><div class="c" id="lb"></div></nav>
+
+<figure class="yoru">
+  <img src="img/01-gaikan.webp" alt="" width="1536" height="1024" fetchpriority="high" decoding="async">
+</figure>
 
 <div class="c">
 

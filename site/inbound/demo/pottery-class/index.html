@@ -136,6 +136,12 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 }
 @keyframes fire{to{stroke-dashoffset:0}}
 @keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* 轆轤の手。見出しと料金表のあいだに、作業の写真を一枚だけ挟む */
+.te{margin:0 0 clamp(26px,6vw,38px)}
+.te img{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:50% 45%;background:var(--clay)}
+@media (prefers-reduced-motion:no-preference){
+  .te img{animation:up .9s cubic-bezier(.22,1,.36,1) both}
+}
 </style>
 </head>
 <body>
@@ -151,6 +157,10 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
   </header>
 
   <main>
+
+    <figure class="te">
+      <img src="img/01-rokuro.webp" alt="" width="1536" height="1024" fetchpriority="high" decoding="async">
+    </figure>
 
     <section>
       <table class="ptable" id="ptable"></table>
