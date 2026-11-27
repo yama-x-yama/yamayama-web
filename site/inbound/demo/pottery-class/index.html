@@ -139,6 +139,8 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 /* 轆轤の手。見出しと料金表のあいだに、作業の写真を一枚だけ挟む */
 .te{margin:0 0 clamp(26px,6vw,38px)}
 .te img{width:100%;aspect-ratio:3/2;object-fit:cover;object-position:50% 45%;background:var(--clay)}
+.tana{margin:clamp(20px,5vw,30px) 0 0}
+.tana img{width:100%;aspect-ratio:3/2;object-fit:cover;background:var(--clay)}
 @media (prefers-reduced-motion:no-preference){
   .te img{animation:up .9s cubic-bezier(.22,1,.36,1) both}
 }
@@ -195,6 +197,9 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
     <section class="sec">
       <h2 data-k="h_flow"></h2>
       <ol class="flow" id="flow"></ol>
+      <figure class="tana">
+        <img src="img/02-shelf.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async">
+      </figure>
     </section>
 
     <section class="sec">
