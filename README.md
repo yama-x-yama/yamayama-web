@@ -57,3 +57,9 @@ GitHub Actionsは `site/` のみを公開します。faviconは提供された `
 - [GitHub Pagesの公開元設定](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 - [独自ドメインの接続](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
 
+
+## Day Maxer public pages
+
+- `site/day-maxer/privacy/` and `site/day-maxer/support/` serve the app links.
+- Update these alongside Day Maxer feature changes. AI/account sections distinguish older releases from the current local ring-first app.
+- Existing Day Maxer contact addresses are retained; this move does not change DNS or shared email configuration.
