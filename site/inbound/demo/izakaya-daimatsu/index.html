@@ -11,23 +11,17 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="image" href="img/01-hero.webp" fetchpriority="high">
 <title>居酒屋 大松</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&amp;family=Zen+Kaku+Gothic+New:wght@400;500;700&amp;family=EB+Garamond:ital,wght@0,500;1,500&amp;display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@500;700;800&amp;family=Zen+Kaku+Gothic+New:wght@400;500;700&amp;family=EB+Garamond:wght@500&amp;display=swap">
 <style>
 /* 居酒屋 大松
    夜の路地の店。煤けた黒い地に、提灯の赤を一色だけ置く（下敷き：IPPUKU&MATCHA の黒地と縦書き）。
-   ページの主役は「お勘定」。写真のすぐ下に、伝票のつもりで金額を並べる。
-   量・人数・注意事項は数字で正面から書く（下敷き：養老うまいもん広場）。
-   見出しは和文＋小さな英字の二段。外国語で読んでいるときは、英字の代わりに日本語の読みを出す。
+   写真で食べたくさせる店のページにする：写真と屋号 → 名物 → 品書き → 宴会 → 店内 → 初めての方へ → アクセス。
+   量・人数は数字で書く（下敷き：養老うまいもん広場）。見出しは和文＋小さな英字の二段。
    文字と写真はHTMLに直接書いてある。JSが動かなくても全部読める。動きはCSSだけ。 */
 :root{
-  --soot:#100d0b;      /* 煤けた黒 */
-  --soot-2:#1a1512;
-  --soot-3:#241d18;
-  --paper:#efe7d8;     /* 品書きの紙 */
-  --paper-2:#b9ad99;
-  --paper-3:#867a68;
-  --lantern:#c4362b;   /* 提灯の赤。地に敷く用 */
-  --lantern-ink:#ea6a52; /* 黒地の上の小さな赤い文字用 */
+  --soot:#100d0b;--soot-2:#1a1512;--soot-3:#241d18;
+  --paper:#efe7d8;--paper-2:#b9ad99;--paper-3:#867a68;
+  --lantern:#c4362b;--lantern-ink:#ea6a52;
   --line:#3a2f27;
   --f-min:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;
   --f-got:"Zen Kaku Gothic New",system-ui,-apple-system,"Hiragino Sans","Yu Gothic",sans-serif;
@@ -37,39 +31,43 @@
   color-scheme:dark;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:60px}
 body{margin:0;background:var(--soot);color:var(--paper);font-family:var(--f-got);
   font-size:15.5px;line-height:1.85;-webkit-font-smoothing:antialiased}
 :lang(ko) body,body:lang(ko){font-family:var(--f-got),"Apple SD Gothic Neo","Malgun Gothic",sans-serif;word-break:keep-all}
 :lang(zh-Hant) body,body:lang(zh-Hant){font-family:var(--f-got),"PingFang TC","Microsoft JhengHei",sans-serif}
 :lang(zh-Hans) body,body:lang(zh-Hans){font-family:var(--f-got),"PingFang SC","Microsoft YaHei",sans-serif}
 img{display:block;max-width:100%}
+a{color:inherit}
 .c{max-width:48rem;margin:0 auto;padding-left:var(--gl);padding-right:var(--gr)}
 [hidden]{display:none!important}
 
-/* ── 上の帯：屋号と言語切替（右上に小さく） ── */
+/* ── 上の帯 ── */
 .bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;background:rgba(16,13,11,.92);
   border-bottom:1px solid var(--line);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:41;background:var(--soot)}
-.bar .c{display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:72rem;min-height:48px}
-.mark{display:flex;align-items:center;gap:9px;font:800 15px/1 var(--f-min);letter-spacing:.14em;color:var(--paper);text-decoration:none;white-space:nowrap}
+.bar .c{display:flex;align-items:center;gap:12px;max-width:72rem;min-height:48px}
+.mark{display:flex;align-items:center;gap:9px;font:800 15px/1 var(--f-min);letter-spacing:.14em;text-decoration:none;white-space:nowrap}
 .mark i{width:9px;height:12px;border-radius:5px/6px;background:var(--lantern);box-shadow:0 0 10px rgba(234,106,82,.7)}
-.lang{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-right:-6px}
+.nav{display:none;gap:22px;margin-left:auto;font-size:13px}
+.nav a{text-decoration:none;color:var(--paper-2);transition:color .2s}
+.nav a:hover{color:var(--paper)}
+.lang{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-left:auto;margin-right:-6px}
 .lang::-webkit-scrollbar{display:none}
 .lang button{flex:none;padding:8px 7px;background:none;border:0;border-bottom:1px solid transparent;
   color:var(--paper-3);font:500 12px/1.4 var(--f-got);cursor:pointer;white-space:nowrap;transition:color .2s,border-color .2s}
 .lang button:hover{color:var(--paper)}
 .lang button[aria-pressed="true"]{color:var(--paper);border-bottom-color:var(--lantern-ink)}
+@media (min-width:1000px){.nav{display:flex}.lang{margin-left:28px}}
 
-/* ── 写真の入っていない枠（写真が届くまでの仮表示） ── */
-.ph{position:relative;margin:0;overflow:hidden;background:
-  repeating-linear-gradient(135deg,var(--soot-2) 0 14px,var(--soot-3) 14px 15px)}
-.ph::before{content:attr(data-ph);position:absolute;left:14px;bottom:12px;right:14px;
-  font:500 12px/1.5 var(--f-got);color:var(--paper-3);letter-spacing:.04em}
+/* ── 写真の枠（写真が届くまでは斜線と「写真：〜」の仮表示） ── */
+.ph{position:relative;margin:0;overflow:hidden;background:repeating-linear-gradient(135deg,var(--soot-2) 0 14px,var(--soot-3) 14px 15px)}
+.ph::before{content:attr(data-ph);position:absolute;left:14px;bottom:12px;right:14px;font:500 12px/1.5 var(--f-got);color:var(--paper-3);letter-spacing:.04em}
 .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.cap{margin:8px 0 0;font-size:12.5px;line-height:1.6;color:var(--paper-3)}
 
-/* ── 最初の画面：路地の写真と、縦書きの屋号 ── */
-.hero{position:relative;height:min(86svh,760px);min-height:460px;background:var(--soot)}
+/* ── 最初の画面 ── */
+.hero{position:relative;height:min(86svh,760px);min-height:460px}
 .hero .ph{position:absolute;inset:0}
 .hero .ph::before{bottom:auto;top:14px;left:auto;right:var(--gr);text-align:right}
 .hero img{object-position:62% 50%}
@@ -87,126 +85,113 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .roman{margin:0;font:500 clamp(13px,3.4vw,15px)/1.4 var(--f-lat);letter-spacing:.32em;color:var(--paper-2)}
 .place{margin:0;font-size:13px;letter-spacing:.08em;color:var(--paper-2)}
 .now{margin:8px 0 0;display:inline-flex;align-items:center;gap:9px;align-self:flex-start;
-  padding:7px 13px 7px 11px;border:1px solid rgba(239,231,216,.35);font-size:13.5px;line-height:1.5;
-  background:rgba(16,13,11,.45)}
+  padding:7px 13px 7px 11px;border:1px solid rgba(239,231,216,.35);font-size:13.5px;line-height:1.5;background:rgba(16,13,11,.45)}
 .now i{width:7px;height:7px;border-radius:50%;background:var(--paper-3);flex:none}
 .now[data-open="true"] i{background:var(--lantern-ink);box-shadow:0 0 0 3px rgba(234,106,82,.22)}
 
 /* ── 二段の見出し ── */
-.sec{padding:clamp(56px,12vw,104px) 0 0}
+.sec{padding:clamp(60px,12vw,108px) 0 0}
 .sl{margin:0;font:500 13px/1.4 var(--f-lat);letter-spacing:.18em;color:var(--lantern-ink)}
-.sl:lang(ja){font-style:normal;text-transform:uppercase;font-size:12px;letter-spacing:.28em}
+.sl:lang(ja){text-transform:uppercase;font-size:12px;letter-spacing:.28em}
 h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacing:.06em;text-wrap:balance}
-.lede{margin:14px 0 0;max-width:30em;color:var(--paper-2)}
+.lede{margin:14px 0 0;max-width:32em;color:var(--paper-2)}
 
-/* ── お勘定（このページの主役）：伝票のように ── */
-.bill{position:relative;z-index:3;margin-top:-6px;padding-top:6px}
-.slip{margin:22px 0 0;padding:0;list-style:none;border-top:1px solid var(--paper-3)}
-.slip li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 14px;align-items:baseline;
-  padding:16px 0;border-bottom:1px dashed var(--line)}
-.slip .k{font-weight:500}
-.slip .v{font:700 17px/1.3 var(--f-min);letter-spacing:.04em;font-variant-numeric:tabular-nums;text-align:right}
-.slip .n{grid-column:1 / -1;font-size:13.5px;line-height:1.7;color:var(--paper-2)}
-.slip .top{border-bottom:1px solid var(--paper-3);padding:6px 0 20px}
-.slip .top .k{font:800 clamp(20px,5.6vw,26px)/1.3 var(--f-min);letter-spacing:.06em}
-.slip .top .v{font-size:clamp(46px,14vw,76px);line-height:1;color:var(--lantern-ink);letter-spacing:0}
-.slip .top .n{margin-top:6px;font-size:15px;color:var(--paper)}
-.slip .top .n b{display:inline-block;margin-right:.5em;padding:1px 8px;background:var(--lantern);color:#fff;font-weight:700;font-size:13px;letter-spacing:.06em}
-.slip .sum .v{font-size:22px}
-.tax{margin:12px 0 0;font-size:12.5px;color:var(--paper-3)}
-
-/* ── お通し ── */
-.oto{display:grid;gap:22px;margin-top:24px}
-.oto .ph{aspect-ratio:1/1;max-width:26rem;width:100%}
-.oto h3{margin:0;font:700 clamp(21px,5.6vw,27px)/1.5 var(--f-min);letter-spacing:.03em;text-wrap:balance}
-.oto p{margin:12px 0 0;color:var(--paper-2)}
-.oto .no{margin-top:18px;padding:16px 0 0;border-top:1px solid var(--line);color:var(--paper);font-weight:500}
-.say{margin:18px 0 0;padding:16px 18px;border:1px solid var(--lantern);display:flex;flex-direction:column;gap:4px}
-.say small{font-size:12px;letter-spacing:.08em;color:var(--lantern-ink)}
-.say strong{font:800 clamp(22px,6vw,28px)/1.35 var(--f-min);letter-spacing:.08em}
-.say em{font:italic 500 15px/1.4 var(--f-lat);color:var(--paper-2);letter-spacing:.04em}
-.cap{margin:8px 0 0;font-size:12.5px;line-height:1.6;color:var(--paper-3)}
-@media (min-width:760px){
-  .oto{grid-template-columns:minmax(0,22rem) minmax(0,1fr);gap:clamp(28px,4vw,48px);align-items:start}
-}
+/* ── 名物：写真が主役 ── */
+.toku{margin:26px 0 0;padding:0;list-style:none;display:grid;gap:clamp(30px,6vw,40px)}
+.toku .ph{aspect-ratio:4/3}
+.toku-t{display:flex;align-items:baseline;justify-content:space-between;gap:14px;margin:14px 0 0}
+.toku-t b{font:800 clamp(19px,5vw,23px)/1.4 var(--f-min);letter-spacing:.04em}
+.toku-t span{font:700 17px/1.4 var(--f-min);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--lantern-ink)}
+.toku p{margin:6px 0 0;color:var(--paper-2);font-size:14.5px}
+@media (min-width:760px){.toku{grid-template-columns:repeat(3,minmax(0,1fr));gap:24px}}
 
 /* ── 品書き ── */
 .menu{margin-top:26px;display:grid;gap:clamp(34px,7vw,48px)}
 .cat{min-width:0}
-.cat-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 4px;
-  padding-bottom:10px;border-bottom:1px solid var(--paper-3)}
+.cat-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin:0 0 4px;padding-bottom:10px;border-bottom:1px solid var(--paper-3)}
 .cat-h b{font:800 21px/1.3 var(--f-min);letter-spacing:.12em}
-.cat-h span{font:italic 500 13.5px/1 var(--f-lat);letter-spacing:.14em;color:var(--paper-3)}
+.cat-h span{font:500 13.5px/1 var(--f-lat);letter-spacing:.14em;color:var(--paper-3)}
 .cat ul{margin:0;padding:0;list-style:none}
 .cat li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:0 14px;padding:12px 0;border-bottom:1px dashed var(--line)}
 .cat .i{font-weight:500;line-height:1.55}
 .cat .p{font:700 15.5px/1.55 var(--f-min);font-variant-numeric:tabular-nums;white-space:nowrap}
 .cat .q{grid-column:1;font-size:12.5px;line-height:1.6;color:var(--paper-2)}
-.tag{display:inline-block;margin-left:.5em;padding:0 6px;border:1px solid var(--paper-3);font-size:11px;line-height:1.6;
-  color:var(--paper-2);vertical-align:2px;font-weight:500}
-.cat .ph{aspect-ratio:4/3;margin:16px 0 0}
-@media (min-width:760px){
-  .menu{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(32px,5vw,56px)}
-}
+.tag{display:inline-block;margin-left:.5em;padding:0 6px;border:1px solid var(--paper-3);font-size:11px;line-height:1.6;color:var(--paper-2);vertical-align:2px;font-weight:500}
+.mnote{margin:26px 0 0;padding:14px 0 0;border-top:1px solid var(--line);font-size:13px;line-height:1.8;color:var(--paper-3)}
+@media (min-width:760px){.menu{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:clamp(32px,5vw,56px)}}
 
-/* ── 飲み放題 ── */
-.nomi{margin-top:24px;display:grid;gap:18px;padding:22px 20px;background:var(--soot-2);border-left:3px solid var(--lantern)}
-.nomi-big{margin:0;font:800 clamp(30px,8.6vw,46px)/1.15 var(--f-min);letter-spacing:.04em;font-variant-numeric:tabular-nums}
-.nomi ul{margin:0;padding:0;list-style:none;display:grid;gap:8px}
-.nomi li{padding-left:1.1em;position:relative;color:var(--paper-2)}
-.nomi li::before{content:"";position:absolute;left:0;top:.8em;width:6px;height:1px;background:var(--lantern-ink)}
+/* ── 宴会コース ── */
+.course{margin:26px 0 0;padding:0;list-style:none;display:grid;gap:14px}
+.course li{padding:22px 20px;background:var(--soot-2);border-top:2px solid var(--lantern)}
+.course li.lite{background:none;border:1px solid var(--line)}
+.course-t{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.course-t b{font:800 22px/1.3 var(--f-min);letter-spacing:.08em}
+.course-t span{font:800 clamp(24px,6.6vw,30px)/1 var(--f-min);font-variant-numeric:tabular-nums;white-space:nowrap}
+.course-t small{font:500 12px/1 var(--f-got);color:var(--paper-3);margin-left:4px;letter-spacing:.04em}
+.course .n{margin:8px 0 0;font-weight:500}
+.course .l{margin:10px 0 0;padding-top:10px;border-top:1px dashed var(--line);font-size:13.5px;line-height:1.85;color:var(--paper-2)}
+.pnote{margin:14px 0 0;font-size:13px;color:var(--paper-3)}
+@media (min-width:760px){.course{grid-template-columns:1fr 1fr}.course li.lite{grid-column:1 / -1}}
 
-/* ── 頼み方と払い方 ── */
-.how{margin:24px 0 0;padding:0;list-style:none;counter-reset:h}
-.how li{counter-increment:h;display:grid;grid-template-columns:2.6rem minmax(0,1fr);gap:0 10px;padding:18px 0;border-bottom:1px solid var(--line)}
-.how li::before{content:counter(h,cjk-ideographic);grid-row:1 / span 2;font:800 24px/1.2 var(--f-min);color:var(--lantern-ink)}
-.how b{font-weight:700;font-size:16.5px;line-height:1.55}
-.how p{margin:6px 0 0;color:var(--paper-2);font-size:14.5px}
+/* ── 店内 ── */
+.inside{margin:26px 0 0;display:grid;gap:22px}
+.inside .ph{aspect-ratio:3/2}
+.inside .tall .ph{aspect-ratio:4/3}
+@media (min-width:760px){.inside{grid-template-columns:3fr 2fr;align-items:start}.inside .wide{grid-column:1 / -1}}
 
-/* ── 食べられないもの ── */
-.diet{margin:22px 0 0;padding:0;list-style:none;display:grid;gap:0}
-.diet li{padding:14px 0;border-bottom:1px solid var(--line)}
-.diet li:first-child{border-top:1px solid var(--line)}
+/* ── 初めての方へ ── */
+.faq{margin:24px 0 0;border-top:1px solid var(--line)}
+.faq div{padding:16px 0;border-bottom:1px solid var(--line)}
+.faq dt{font-weight:700;font-size:15.5px;line-height:1.6}
+.faq dt::before{content:"Q";font:500 15px/1 var(--f-lat);color:var(--lantern-ink);margin-right:10px}
+.faq dd{margin:6px 0 0;padding-left:22px;color:var(--paper-2);font-size:14.5px}
 
 /* ── 時間と場所 ── */
 .rows{margin:22px 0 0;display:grid;grid-template-columns:5.6em minmax(0,1fr);border-top:1px solid var(--line)}
 .rows dt,.rows dd{margin:0;padding:14px 0;border-bottom:1px solid var(--line)}
 .rows dt{font-size:13px;color:var(--paper-3);padding-right:10px;padding-top:16px}
 .rows dd{min-width:0}
-.acc{margin:34px 0 0}
+.map{margin:26px 0 0;aspect-ratio:4/3;border:1px solid var(--line);background:var(--soot-2)}
+.map iframe{display:block;width:100%;height:100%;border:0;filter:grayscale(.6) invert(.9) hue-rotate(180deg) contrast(.9)}
+@media (min-width:760px){.map{aspect-ratio:16/7}}
+.acc{margin:26px 0 0}
 .acc h3{margin:0 0 6px;font:700 17px/1.4 var(--f-min);letter-spacing:.06em}
 .acc ul{margin:0;padding:0;list-style:none}
 .acc li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 14px;padding:12px 0;border-bottom:1px dashed var(--line)}
-.acc .w{font:700 15px/1.6 var(--f-min);white-space:nowrap;color:var(--paper)}
+.acc .w{font:700 15px/1.6 var(--f-min);white-space:nowrap}
 .acc li.far{grid-template-columns:minmax(0,1fr)}
 .acc li.far .w{white-space:normal;font-family:var(--f-got);font-weight:500;font-size:14px;color:var(--paper-2)}
 .go{display:inline-flex;align-items:center;gap:10px;margin:24px 0 0;padding:13px 20px;border:1px solid var(--paper);
-  color:var(--paper);text-decoration:none;font-weight:500;font-size:14.5px;transition:background-color .25s,color .25s}
+  text-decoration:none;font-weight:500;font-size:14.5px;transition:background-color .25s,color .25s}
 .go:hover{background:var(--paper);color:var(--soot)}
 .go::after{content:"→";font-family:var(--f-lat)}
-.pair{display:grid;gap:14px;margin-top:30px}
-.pair .ph{aspect-ratio:3/2}
-@media (min-width:760px){.pair{grid-template-columns:1fr 1fr}}
 
 /* ── 架空の表示 ── */
-.end{margin:clamp(70px,14vw,120px) 0 0;padding:26px 0 calc(40px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);
+.end{margin:clamp(70px,14vw,120px) 0 0;padding:26px 0 calc(110px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);
   font-size:12.5px;line-height:1.8;color:var(--paper-3)}
 .end b{display:inline-block;margin-bottom:6px;padding:1px 8px;border:1px solid var(--paper-3);font-weight:500;letter-spacing:.1em}
 .end p{margin:0;max-width:44em}
 
-/* ── 広い画面：見出しを縦書きにして左に立てる（IPPUKU&MATCHA の縦書き） ── */
+/* ── スマホの下の固定ボタン ── */
+.dock{position:fixed;left:0;right:0;bottom:0;z-index:45;display:grid;grid-template-columns:1fr 1fr;gap:1px;
+  background:var(--line);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom,0px)}
+.dock a{display:flex;align-items:center;justify-content:center;gap:8px;min-height:54px;background:var(--soot);text-decoration:none;font-weight:700;font-size:14.5px}
+.dock a.main{background:var(--lantern);color:#fff}
+.dock svg{width:17px;height:17px;flex:none}
+@media (min-width:1000px){.dock{display:none}.end{padding-bottom:40px}}
+
+/* ── 広い画面：見出しを縦書きにして左に立てる ── */
 @media (min-width:1000px){
   .c{max-width:62rem}
   .sec>.c{display:grid;grid-template-columns:5.5rem minmax(0,1fr);column-gap:clamp(28px,4vw,56px)}
-  .sec>.c>.hd{grid-row:1 / span 20;display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:10px;align-items:flex-start;
-    position:sticky;top:76px;align-self:start}
+  .sec>.c>.hd{grid-row:1 / span 20;display:flex;flex-direction:row-reverse;justify-content:flex-end;gap:10px;align-items:flex-start;position:sticky;top:76px;align-self:start}
   .sec>.c>.hd h2{writing-mode:vertical-rl;margin:0;font-size:38px;letter-spacing:.18em}
   .sec>.c>.hd .sl{writing-mode:vertical-rl;padding-top:6px}
   .sec>.c>:not(.hd){grid-column:2}
   .sec>.c>.lede{margin-top:0}
 }
 
-/* ── 動き（CSSのみ。opacity と transform だけ。0.6秒以内） ── */
+/* ── 動き（CSSのみ。opacity と transform だけ） ── */
 @media (prefers-reduced-motion:no-preference){
   .hero img{animation:settle .6s cubic-bezier(.2,.8,.2,1) both}
   .nm b{animation:rise .5s cubic-bezier(.2,.8,.2,1) both}
@@ -216,7 +201,7 @@ h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacin
   @keyframes settle{from{opacity:.55;transform:scale(1.035)}to{opacity:1;transform:none}}
   @keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
   @supports (animation-timeline:view()){
-    .slip li,.cat li,.how li,.diet li,.acc li,.rows dd{animation:up both;animation-timeline:view();animation-range:entry 0% entry 60%}
+    .toku li,.cat li,.course li,.faq div,.acc li,.rows dd,.inside figure{animation:up both;animation-timeline:view();animation-range:entry 0% entry 60%}
     @keyframes up{from{opacity:.25;transform:translateY(10px)}to{opacity:1;transform:none}}
   }
 }
@@ -226,12 +211,14 @@ h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacin
 <header class="bar">
   <div class="c">
     <a class="mark" href="#top"><i aria-hidden="true"></i>大松</a>
-    <nav class="lang" id="lb" aria-label="Language"></nav>
+    <nav class="nav" aria-label="Sections">
+      <a href="#menu" data-k="n1">品書き</a><a href="#party" data-k="n2">宴会</a><a href="#inside" data-k="n3">店内</a><a href="#access" data-k="n4">アクセス</a>
+    </nav>
+    <div class="lang" id="lb" role="group" aria-label="Language"></div>
   </div>
 </header>
 
 <main id="top">
-  <!-- 最初の画面 -->
   <section class="hero">
     <figure class="ph" data-ph="写真：赤提灯の路地（夜）"><img src="img/01-hero.webp" alt="" width="1536" height="1024" fetchpriority="high" decoding="async"></figure>
     <div class="hero-in">
@@ -244,49 +231,25 @@ h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacin
     </div>
   </section>
 
-  <!-- お勘定（主役） -->
-  <section class="sec bill" id="bill">
+  <section class="sec" id="toku">
     <div class="c">
-      <div class="hd"><h2 data-k="h_bill">お勘定</h2><p class="sl" data-k="s_bill">The bill</p></div>
-      <p class="lede" data-k="bill_lede">先に、お金の話をしておきます。</p>
-      <ul class="slip">
-        <li class="top"><span class="k" data-k="b1">お通し</span><span class="v">¥450</span>
-          <span class="n"><b data-k="b1_tag">断れます</b><span data-k="b1_n">断っても、席料はかかりません。</span></span></li>
-        <li><span class="k" data-k="b2">席料・チャージ</span><span class="v" data-k="none">なし</span></li>
-        <li><span class="k" data-k="b3">サービス料</span><span class="v" data-k="none2">なし</span></li>
-        <li><span class="k" data-k="b4">時価の品</span><span class="v" data-k="none3">なし</span><span class="n" data-k="b4_n">全部の料理に、値段が書いてあります。</span></li>
-        <li class="sum"><span class="k" data-k="b5">ひとりの目安</span><span class="v" data-k="b5_v">¥4,500前後</span><span class="n" data-k="b5_n">お通し＋料理3〜4品＋飲み物2〜3杯</span></li>
+      <div class="hd"><h2 data-k="h_toku">名物</h2><p class="sl" data-k="s_toku">Signature</p></div>
+      <ul class="toku">
+        <li><figure class="ph" data-ph="写真：刺身の三点盛（2人前）"><img src="img/03-sashimi.webp" alt="" width="1536" height="1152" loading="lazy" decoding="async"></figure>
+          <div class="toku-t"><b data-k="t1">本日の刺身 三点盛</b><span>¥1,800</span></div><p data-k="t1d">その日の魚から三種。2人前です。</p></li>
+        <li><figure class="ph" data-ph="写真：銀だら西京焼"><img src="img/02-gindara.webp" alt="" width="1536" height="1152" loading="lazy" decoding="async"></figure>
+          <div class="toku-t"><b data-k="t2">銀だら西京焼</b><span>¥1,400</span></div><p data-k="t2d">白味噌に二晩漬けて、炭火で焼きます。</p></li>
+        <li><figure class="ph" data-ph="写真：炭火で焼く焼き鳥"><img src="img/04-yakitori.webp" alt="" width="1536" height="1152" loading="lazy" decoding="async"></figure>
+          <div class="toku-t"><b data-k="t3">焼き鳥 5本盛り</b><span>¥1,200</span></div><p data-k="t3d">もも・ねぎま・皮・つくね・ハツ。塩かたれで。</p></li>
       </ul>
-      <p class="tax" data-k="tax">値段はすべて税込です。</p>
     </div>
   </section>
 
-  <!-- お通し -->
-  <section class="sec" id="otoshi">
-    <div class="c">
-      <div class="hd"><h2 data-k="h_oto">お通し</h2><p class="sl" data-k="s_oto">Otoshi</p></div>
-      <div class="oto">
-        <div>
-          <figure class="ph" data-ph="写真：お通しの小鉢（切り干し大根の煮物）"><img src="img/02-otoshi.webp" alt="" width="1024" height="1024" loading="lazy" decoding="async"></figure>
-          <p class="cap" data-k="cap_oto">今月のお通し：切り干し大根の煮物</p>
-        </div>
-        <div>
-          <h3 data-k="o_title">頼んでいない小鉢が、最初に出てきます。</h3>
-          <p data-k="o_body">座るとすぐ、小鉢をひとつお出しします。これが「お通し」で、¥450です。日本の居酒屋では、席料のかわりにこの小鉢を出す習わしがあります。</p>
-          <p class="no" data-k="o_no">いらなければ、出てきたときにそう言ってください。下げます。お代はいただきません。</p>
-          <div class="say"><small data-k="o_say">ひとことで伝わります</small><strong>お通し、いりません。</strong><em>Otōshi, irimasen.</em></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 品書き -->
   <section class="sec" id="menu">
     <div class="c">
       <div class="hd"><h2 data-k="h_menu">品書き</h2><p class="sl" data-k="s_menu">Menu</p></div>
-      <p class="lede" data-k="menu_lede">全部の料理に値段と、量の目安を書いておきます。</p>
+      <p class="lede" data-k="menu_lede">全部の料理に、値段と量の目安を書いています。</p>
       <div class="menu">
-
         <div class="cat">
           <p class="cat-h"><b data-k="c1">刺身</b><span>Sashimi</span></p>
           <ul>
@@ -296,10 +259,7 @@ h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacin
             <li><span class="i" data-k="i4">〆さば</span><span class="p">¥800</span><span class="q" data-k="i4q">酢で締めた鯖</span></li>
             <li><span class="i" data-k="i5">たこぶつ</span><span class="p">¥700</span></li>
           </ul>
-          <figure class="ph" data-ph="写真：刺身の三点盛（2人前）"><img src="img/03-sashimi.webp" alt="" width="1536" height="1152" loading="lazy" decoding="async"></figure>
-          <p class="cap" data-k="cap_sashimi">本日の刺身 三点盛（2人前）¥1,800</p>
         </div>
-
         <div class="cat">
           <p class="cat-h"><b data-k="c2">焼き物</b><span>Grilled</span></p>
           <ul>
@@ -310,10 +270,7 @@ h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacin
             <li><span class="i" data-k="i10">つくね</span><span class="p">¥300</span><span class="q" data-k="i10q">1本</span></li>
             <li><span class="i" data-k="i11">厚揚げ焼き</span><span class="p">¥500</span></li>
           </ul>
-          <figure class="ph" data-ph="写真：炭火の焼き場"><img src="img/04-yakiba.webp" alt="" width="1536" height="1152" loading="lazy" decoding="async"></figure>
-          <p class="cap" data-k="cap_yakiba">焼き物は炭火で焼きます。</p>
         </div>
-
         <div class="cat">
           <p class="cat-h"><b data-k="c3">揚げ物</b><span>Fried</span></p>
           <ul>
@@ -322,7 +279,6 @@ h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacin
             <li><span class="i" data-k="i14">ポテトフライ</span><span class="p">¥500</span></li>
           </ul>
         </div>
-
         <div class="cat">
           <p class="cat-h"><b data-k="c4">一品</b><span>Small plates</span></p>
           <ul>
@@ -334,7 +290,6 @@ h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacin
             <li><span class="i"><span data-k="i20">もつ煮込み</span><span class="tag" data-k="pork2">豚</span></span><span class="p">¥650</span></li>
           </ul>
         </div>
-
         <div class="cat">
           <p class="cat-h"><b data-k="c5">〆</b><span>To finish</span></p>
           <ul>
@@ -343,7 +298,6 @@ h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacin
             <li><span class="i"><span data-k="i23">焼きそば</span><span class="tag" data-k="pork3">豚</span></span><span class="p">¥700</span></li>
           </ul>
         </div>
-
         <div class="cat">
           <p class="cat-h"><b data-k="c6">飲み物</b><span>Drinks</span></p>
           <ul>
@@ -357,85 +311,79 @@ h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacin
             <li><span class="i" data-k="d8">ウーロン茶・緑茶</span><span class="p">¥400</span></li>
             <li><span class="i" data-k="d9">ノンアルコールビール</span><span class="p">¥500</span></li>
           </ul>
-          <figure class="ph" data-ph="写真：日本酒の一升瓶が並ぶ棚"><img src="img/05-sake.webp" alt="" width="1536" height="1152" loading="lazy" decoding="async"></figure>
-          <p class="cap" data-k="cap_sake">日本酒は15種類。一合（180ml）からお出しします。</p>
         </div>
-
       </div>
+      <p class="mnote" data-k="menu_note">席に着いたときに、お通し（小鉢）¥450 をお出しします。値段はすべて税込、サービス料はいただきません。</p>
     </div>
   </section>
 
-  <!-- 飲み放題 -->
-  <section class="sec" id="nomihodai">
+  <section class="sec" id="party">
     <div class="c">
-      <div class="hd"><h2 data-k="h_nomi">飲み放題</h2><p class="sl" data-k="s_nomi">All-you-can-drink</p></div>
-      <div class="nomi">
-        <p class="nomi-big" data-k="nomi_big">2時間 ¥2,200</p>
-        <ul>
-          <li data-k="nomi1">上の飲み物を、2時間のあいだ何杯でも頼めます。</li>
-          <li data-k="nomi2">料理は別料金です。</li>
-          <li data-k="nomi3">2名から。テーブルの全員でお願いします。</li>
-          <li data-k="nomi4">最後の注文は、終わる30分前です。</li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- 頼み方と払い方 -->
-  <section class="sec" id="how">
-    <div class="c">
-      <div class="hd"><h2 data-k="h_how">頼み方と払い方</h2><p class="sl" data-k="s_how">How it works</p></div>
-      <ol class="how">
-        <li><b data-k="w1">一度に全部頼まなくて大丈夫です。</b><p data-k="w1n">2〜3品ずつ頼んで、足りなければ足してください。それが普通の頼み方です。</p></li>
-        <li><b data-k="w2">一皿は、1〜2人で分ける量です。</b><p data-k="w2n">刺身の三点盛は2人前です。</p></li>
-        <li><b data-k="w3">呼ぶときは、手を挙げて「すみません」。</b><p data-k="w3n">テーブルに呼び出しのボタンはありません。</p></li>
-        <li><b data-k="w4">お会計は、席でまとめて。</b><p data-k="w4n">レジに並ぶ必要はありません。現金・クレジットカード・PayPay が使えます。</p></li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- 食べられないもの -->
-  <section class="sec" id="diet">
-    <div class="c">
-      <div class="hd"><h2 data-k="h_diet">食べられないものがある方へ</h2><p class="sl" data-k="s_diet">Dietary notes</p></div>
-      <ul class="diet">
-        <li data-k="f1">だしに鰹（魚）を使っています。</li>
-        <li data-k="f2">ベジタリアン・ヴィーガン向けの料理は、ほとんどお出しできません。</li>
-        <li data-k="f3">豚肉を使う料理には「豚」と書いてあります。</li>
-        <li data-k="f4">アレルギーは、注文のときに伝えてください。</li>
+      <div class="hd"><h2 data-k="h_party">宴会コース</h2><p class="sl" data-k="s_party">Party courses</p></div>
+      <p class="lede" data-k="party_lede">どちらも2時間の飲み放題つき。4名さまから、前日までにご予約ください。</p>
+      <ul class="course">
+        <li><div class="course-t"><b data-k="k1">竹コース</b><span>¥4,000<small data-k="per">おひとり</small></span></div>
+          <p class="n" data-k="k1n">料理6品＋飲み放題2時間</p>
+          <p class="l" data-k="k1l">枝豆／刺身三点盛／鶏の唐揚げ／焼き鳥／だし巻き玉子／焼きおにぎり</p></li>
+        <li><div class="course-t"><b data-k="k2">松コース</b><span>¥5,000<small data-k="per2">おひとり</small></span></div>
+          <p class="n" data-k="k2n">料理8品＋飲み放題2時間</p>
+          <p class="l" data-k="k2l">枝豆／刺身五点盛／銀だら西京焼／焼き鳥／海老の天ぷら／もつ煮込み／だし巻き玉子／鯛茶漬け</p></li>
+        <li class="lite"><div class="course-t"><b data-k="k3">飲み放題だけ</b><span>¥2,200<small data-k="per3">おひとり</small></span></div>
+          <p class="n" data-k="k3n">2時間。料理は品書きからお好きに。2名さまから。</p></li>
       </ul>
+      <p class="pnote" data-k="party_note">16〜24名さまで貸切にできます。お電話でご相談ください。</p>
     </div>
   </section>
 
-  <!-- 時間と場所 -->
+  <section class="sec" id="inside">
+    <div class="c">
+      <div class="hd"><h2 data-k="h_in">店内</h2><p class="sl" data-k="s_in">Inside</p></div>
+      <div class="inside">
+        <div class="wide"><figure class="ph" data-ph="写真：カウンター8席"><img src="img/06-counter.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async"></figure>
+          <p class="cap" data-k="cap_counter">カウンター8席。おひとりでもどうぞ。</p></div>
+        <div><figure class="ph" data-ph="写真：4人掛けのテーブル席"><img src="img/07-table.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async"></figure>
+          <p class="cap" data-k="cap_table">テーブル4卓（4名ずつ）。つなげて16名まで。</p></div>
+        <div class="tall"><figure class="ph" data-ph="写真：日本酒の一升瓶が並ぶ棚"><img src="img/05-sake.webp" alt="" width="1536" height="1152" loading="lazy" decoding="async"></figure>
+          <p class="cap" data-k="cap_sake">日本酒は15種類。一合（180ml）からお出しします。</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="faq">
+    <div class="c">
+      <div class="hd"><h2 data-k="h_faq">初めての方へ</h2><p class="sl" data-k="s_faq">FAQ</p></div>
+      <dl class="faq">
+        <div><dt data-k="q1">予約は必要ですか</dt><dd data-k="a1">3名さままでは予約なしでどうぞ。4名さま以上と宴会コースは、お電話でご予約ください。</dd></div>
+        <div><dt data-k="q2">支払い方法は</dt><dd data-k="a2">現金・クレジットカード・PayPay が使えます。お会計はお席でまとめて承ります。</dd></div>
+        <div><dt data-k="q3">最初に出てくる小鉢は何ですか</dt><dd data-k="a3">「お通し」といって、¥450 です。日本の居酒屋で、席料のかわりにお出しするものです。</dd></div>
+        <div><dt data-k="q4">たばこは吸えますか</dt><dd data-k="a4">店内は全席禁煙です。</dd></div>
+        <div><dt data-k="q5">アレルギーや食べられないものがあります</dt><dd data-k="a5">注文のときにお伝えください。だしには鰹（魚）を使っています。豚肉を使う料理には「豚」と書いています。ベジタリアン向けの料理は多くありません。</dd></div>
+        <div><dt data-k="q6">どれくらい頼めばいいですか</dt><dd data-k="a6">一皿は1〜2人で分ける量です。2〜3品ずつ頼んで、足りなければ追加するのがおすすめです。</dd></div>
+      </dl>
+    </div>
+  </section>
+
   <section class="sec" id="access">
     <div class="c">
       <div class="hd"><h2 data-k="h_info">時間と場所</h2><p class="sl" data-k="s_info">Hours &amp; access</p></div>
       <dl class="rows">
         <dt data-k="r1">営業</dt><dd data-k="r1v">17:00–23:30（料理の注文は23:00まで、飲み物は23:15まで）</dd>
         <dt data-k="r2">休み</dt><dd data-k="r2v">日曜・祝日</dd>
-        <dt data-k="r3">席</dt><dd data-k="r3v">カウンター8席・テーブル4卓（全24席）。靴は脱ぎません。</dd>
-        <dt data-k="r4">予約</dt><dd data-k="r4v">3名までは予約なしでどうぞ。4名以上は電話で予約してください。</dd>
+        <dt data-k="r3">席</dt><dd data-k="r3v">カウンター8席・テーブル4卓（全24席）</dd>
         <dt data-k="r5">電話</dt><dd data-k="r5v">+81 3-XXXX-XXXX（架空の番号です）</dd>
-        <dt data-k="r6">たばこ</dt><dd data-k="r6v">全席禁煙。灰皿は置いていません。</dd>
         <dt data-k="r7">住所</dt><dd data-k="r7v">東京都港区新橋3丁目（架空の住所です）</dd>
       </dl>
-
+      <div class="map"><iframe title="Map" src="https://www.google.com/maps?q=%E6%96%B0%E6%A9%8B%E9%A7%85%20%E7%83%8F%E6%A3%AE%E5%8F%A3&amp;z=16&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
       <div class="acc">
         <h3 data-k="acc_h">駅から</h3>
         <ul>
-          <li><span data-k="a1">JR 新橋駅（烏森口）</span><span class="w" data-walk="4">徒歩4分</span></li>
-          <li><span data-k="a2">都営浅草線 新橋駅（A1出口）</span><span class="w" data-walk="5">徒歩5分</span></li>
-          <li><span data-k="a3">東京メトロ銀座線 新橋駅（8番出口）</span><span class="w" data-walk="6">徒歩6分</span></li>
-          <li class="far"><span data-k="a4">羽田空港から</span><span class="w" data-k="a4v">京急線で新橋まで乗り換えなし、約25分</span></li>
+          <li><span data-k="a1s">JR 新橋駅（烏森口）</span><span class="w" data-walk="4">徒歩4分</span></li>
+          <li><span data-k="a2s">都営浅草線 新橋駅（A1出口）</span><span class="w" data-walk="5">徒歩5分</span></li>
+          <li><span data-k="a3s">東京メトロ銀座線 新橋駅（8番出口）</span><span class="w" data-walk="6">徒歩6分</span></li>
+          <li class="far"><span data-k="a4s">羽田空港から</span><span class="w" data-k="a4v">京急線で新橋まで乗り換えなし、約25分</span></li>
         </ul>
       </div>
-      <a class="go" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%96%B0%E6%A9%8B%E9%A7%85%20%E7%83%8F%E6%A3%AE%E5%8F%A3" target="_blank" rel="noopener" data-k="cta_map">Googleマップで見る</a>
-
-      <div class="pair">
-        <div><figure class="ph" data-ph="写真：カウンター8席"><img src="img/06-counter.webp" alt="" width="1536" height="1024" loading="lazy" decoding="async"></figure>
-          <p class="cap" data-k="cap_counter">カウンター8席。おひとりでもどうぞ。</p></div>
-      </div>
+      <a class="go" href="https://www.google.com/maps/search/?api=1&amp;query=%E6%96%B0%E6%A9%8B%E9%A7%85%20%E7%83%8F%E6%A3%AE%E5%8F%A3" target="_blank" rel="noopener" data-k="cta_map">Googleマップで開く</a>
 
       <footer class="end">
         <b data-k="demo">見本</b>
@@ -445,181 +393,150 @@ h2{margin:8px 0 0;font:800 clamp(28px,7.4vw,42px)/1.2 var(--f-min);letter-spacin
   </section>
 </main>
 
+<nav class="dock" aria-label="Contact">
+  <a class="main" href="tel:+813XXXXXXXX"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg><span data-k="dock1">電話で予約</span></a>
+  <a href="#access"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span data-k="dock2">地図</span></a>
+</nav>
+
 <script>
 /* 日本語はHTMLに書いてある。ここには他の4言語だけを置く。 */
 const LANGS=[["ja","日本語"],["en","English"],["zh-Hant","繁體"],["zh-Hans","简体"],["ko","한국어"]];
 const T={
-en:{place:"Shimbashi, Tokyo · since 1978",
- h_bill:"The bill",s_bill:"お勘定 · okanjō",bill_lede:"Let's talk about money first.",
- b1:"Otoshi (starter dish)",b1_tag:"You can say no",b1_n:"If you do, there's still no table charge.",
- b2:"Table or cover charge",b3:"Service charge",b4:"“Market price” items",none:"None",none2:"None",none3:"None",
- b4_n:"Every dish has a printed price.",b5:"Typical spend per person",b5_v:"about ¥4,500",b5_n:"Otoshi + 3–4 dishes + 2–3 drinks",
- tax:"All prices include tax.",
- h_oto:"Otoshi",s_oto:"お通し · otōshi",cap_oto:"This month's otoshi: simmered dried daikon radish",
- o_title:"A small dish arrives before you order.",
- o_body:"As soon as you sit down, we bring one small dish. This is otoshi, and it costs ¥450. Japanese izakaya serve it in place of a table charge.",
- o_no:"If you don't want it, tell us when it arrives. We'll take it away and you won't be charged.",o_say:"Just say this",
+en:{place:"Shimbashi, Tokyo · since 1978",n1:"Menu",n2:"Parties",n3:"Inside",n4:"Access",
+ h_toku:"Signature dishes",s_toku:"名物 · meibutsu",
+ t1:"Today's sashimi, 3 kinds",t1d:"Three kinds from the day's fish. Serves 2.",
+ t2:"Black cod grilled in white miso",t2d:"Marinated for two nights in white miso, then grilled over charcoal.",
+ t3:"Yakitori, 5 skewers",t3d:"Thigh, thigh with leek, skin, meatball and heart. Salt or sauce.",
  h_menu:"Menu",s_menu:"品書き · shinagaki",menu_lede:"Every dish has a price and a portion guide.",
  c1:"Sashimi",c2:"Grilled",c3:"Fried",c4:"Small plates",c5:"To finish",c6:"Drinks",
  i1:"Today's sashimi, 3 kinds",i1q:"serves 2",i2:"Today's sashimi, 5 kinds",i2q:"serves 3–4",i3:"Lean tuna",i4:"Vinegar-cured mackerel",i4q:"cured in rice vinegar",i5:"Octopus, cut into chunks",
- i6:"Black cod, grilled in white miso",i6q:"marinated in sweet white miso",i7:"Grilled Atka mackerel",i7q:"big enough for two",i8:"Grilled horse mackerel",i9:"Yakitori, 5 skewers",i9q:"salt or sauce",i10:"Tsukune (chicken meatball)",i10q:"1 skewer",i11:"Grilled thick fried tofu",
+ i6:"Black cod grilled in white miso",i6q:"marinated in white miso",i7:"Grilled Atka mackerel",i7q:"big enough for two",i8:"Grilled horse mackerel",i9:"Yakitori, 5 skewers",i9q:"salt or sauce",i10:"Tsukune (chicken meatball)",i10q:"1 skewer",i11:"Grilled thick fried tofu",
  i12:"Japanese fried chicken",i12q:"5 pieces",i13:"Shrimp tempura",i13q:"2 shrimp",i14:"French fries",
  i15:"Chilled tofu",i16:"Edamame",i17:"Assorted pickles",i18:"Rolled omelette with dashi",i19:"Simmered pork and potatoes",i20:"Simmered pork offal",
- pork:"pork",pork2:"pork",pork3:"pork",
- i21:"Grilled rice balls",i21q:"2 pieces",i22:"Sea bream on rice with hot tea",i23:"Yakisoba noodles",
+ pork:"pork",pork2:"pork",pork3:"pork",i21:"Grilled rice balls",i21q:"2 pieces",i22:"Sea bream on rice with hot tea",i23:"Yakisoba noodles",
  d1:"Draft beer (medium)",d2:"Bottled beer",d3:"Highball (whisky and soda)",d4:"Lemon sour / Oolong-hai",d5:"Shochu (sweet potato or barley), glass",d6:"Sake, 1 gō (180 ml)",d6q:"15 kinds",d7:"Plum wine",d8:"Oolong tea / green tea",d9:"Non-alcoholic beer",
- cap_sashimi:"Today's sashimi, 3 kinds (serves 2) ¥1,800",cap_yakiba:"Everything grilled is cooked over charcoal.",cap_sake:"15 kinds of sake, served from 1 gō (180 ml).",
- h_nomi:"All-you-can-drink",s_nomi:"飲み放題 · nomihōdai",nomi_big:"2 hours · ¥2,200",
- nomi1:"Order any drink from the list above, as many as you like, for 2 hours.",nomi2:"Food is charged separately.",nomi3:"Minimum 2 people. Everyone at the table joins.",nomi4:"Last order is 30 minutes before your time ends.",
- h_how:"How it works",s_how:"頼み方 · tanomikata",
- w1:"No need to order everything at once.",w1n:"Order 2–3 dishes, then add more if you're still hungry. That's how everyone does it.",
- w2:"Each plate is for 1–2 people to share.",w2n:"The 3-kind sashimi serves 2.",
- w3:"To call us, raise your hand and say “Sumimasen.”",w3n:"There's no call button on the table.",
- w4:"Pay at your seat, all together.",w4n:"No need to queue at a register. We take cash, credit cards and PayPay.",
- h_diet:"Dietary notes",s_diet:"アレルギー · arerugī",
- f1:"Our dashi broth is made with bonito (fish).",f2:"We have almost nothing suitable for vegetarians or vegans. We're sorry.",f3:"Dishes with pork are marked “pork”.",f4:"Please tell us about allergies when you order.",
+ menu_note:"A small starter dish (otoshi, ¥450) is served when you sit down. All prices include tax. No service charge.",
+ h_party:"Party courses",s_party:"宴会 · enkai",party_lede:"Both include 2 hours of all-you-can-drink. From 4 people; please book by the day before.",
+ k1:"Take (bamboo) course",per:"per person",per2:"per person",per3:"per person",k1n:"6 dishes + 2 hours all-you-can-drink",k1l:"Edamame / sashimi, 3 kinds / fried chicken / yakitori / rolled omelette / grilled rice ball",
+ k2:"Matsu (pine) course",k2n:"8 dishes + 2 hours all-you-can-drink",k2l:"Edamame / sashimi, 5 kinds / miso-grilled black cod / yakitori / shrimp tempura / simmered pork offal / rolled omelette / sea bream rice with tea",
+ k3:"All-you-can-drink only",k3n:"2 hours. Order food from the menu as you like. From 2 people.",
+ party_note:"Private hire for 16–24 people. Please call us.",
+ h_in:"Inside",s_in:"店内 · tennai",cap_counter:"8 counter seats. Solo diners welcome.",cap_table:"4 tables for 4. Pushed together, they seat 16.",cap_sake:"15 kinds of sake, served from 1 gō (180 ml).",
+ h_faq:"Before you visit",s_faq:"はじめて · hajimete",
+ q1:"Do I need a reservation?",a1:"Up to 3 people, just walk in. For 4 or more, or a party course, please call to book.",
+ q2:"How can I pay?",a2:"Cash, credit cards and PayPay. We settle the bill at your table.",
+ q3:"What's the small dish served first?",a3:"It's called otoshi (¥450). Japanese izakaya serve it in place of a table charge.",
+ q4:"Can I smoke?",a4:"No. The whole restaurant is non-smoking.",
+ q5:"I have allergies or dietary restrictions.",a5:"Please tell us when you order. Our dashi is made with bonito (fish). Dishes with pork are marked “pork”. We have few vegetarian options.",
+ q6:"How much should I order?",a6:"Each plate is for 1–2 people to share. Start with 2–3 dishes and add more as you go.",
  h_info:"Hours & access",s_info:"営業時間 · eigyō jikan",
- r1:"Open",r1v:"17:00–23:30 (last food order 23:00, last drinks 23:15)",r2:"Closed",r2v:"Sundays and national holidays",
- r3:"Seats",r3v:"8 at the counter, 4 tables (24 in all). Shoes stay on.",r4:"Booking",r4v:"Up to 3 people, just walk in. Groups of 4 or more, please call ahead.",
- r5:"Phone",r5v:"+81 3-XXXX-XXXX (fictional number)",r6:"Smoking",r6v:"No smoking anywhere inside. No ashtrays.",
- r7:"Address",r7v:"Shimbashi 3-chome, Minato-ku, Tokyo (fictional address)",
- acc_h:"From the station",a1:"JR Shimbashi Sta. (Karasumori exit)",a2:"Toei Asakusa Line, Shimbashi (Exit A1)",a3:"Tokyo Metro Ginza Line, Shimbashi (Exit 8)",
- a4:"From Haneda Airport",a4v:"About 25 min to Shimbashi on the Keikyu Line, no transfer",
- cta_map:"Open in Google Maps",cap_counter:"8 counter seats. Solo diners welcome.",
+ r1:"Open",r1v:"17:00–23:30 (last food order 23:00, last drinks 23:15)",r2:"Closed",r2v:"Sundays and national holidays",r3:"Seats",r3v:"8 at the counter, 4 tables (24 in all)",
+ r5:"Phone",r5v:"+81 3-XXXX-XXXX (fictional number)",r7:"Address",r7v:"Shimbashi 3-chome, Minato-ku, Tokyo (fictional address)",
+ acc_h:"From the station",a1s:"JR Shimbashi Sta. (Karasumori exit)",a2s:"Toei Asakusa Line, Shimbashi (Exit A1)",a3s:"Tokyo Metro Ginza Line, Shimbashi (Exit 8)",a4s:"From Haneda Airport",a4v:"About 25 min to Shimbashi on the Keikyu Line, no transfer",
+ cta_map:"Open in Google Maps",dock1:"Call to book",dock2:"Map",
  demo:"Demo",foot:"This is a sample multilingual page made by yama × yama. “Izakaya Daimatsu” is fictional and not connected to any real shop. Prices, hours, phone number and address are all invented.",
- walk:"{n} min walk",
- s_open:"It's {t} in Tokyo. We're open.",s_before:"It's {t} in Tokyo. We open at 17:00.",s_after:"It's {t} in Tokyo. We're closed for tonight.",s_sun:"It's {t} in Tokyo. Closed today (Sunday)."},
+ walk:"{n} min walk",s_open:"It's {t} in Tokyo. We're open.",s_before:"It's {t} in Tokyo. We open at 17:00.",s_after:"It's {t} in Tokyo. We're closed for tonight.",s_sun:"It's {t} in Tokyo. Closed today (Sunday)."},
 
-"zh-Hant":{place:"東京新橋・1978年創業",
- h_bill:"結帳",s_bill:"お勘定 · okanjō",bill_lede:"先把費用說清楚。",
- b1:"小菜（お通し）",b1_tag:"可以拒絕",b1_n:"拒絕也不收座位費。",
- b2:"座位費",b3:"服務費",b4:"時價品項",none:"無",none2:"無",none3:"無",
- b4_n:"所有餐點都標有價格。",b5:"每人預算",b5_v:"約 ¥4,500",b5_n:"小菜＋3〜4道菜＋2〜3杯飲料",
- tax:"價格皆含稅。",
- h_oto:"小菜（お通し）",s_oto:"お通し · otōshi",cap_oto:"本月小菜：燉蘿蔔乾絲",
- o_title:"點餐前，會先送上一小碟。",
- o_body:"入座後會立刻送上一小碟，這就是「お通し」，價格 ¥450。日本居酒屋習慣以這道小菜代替座位費。",
- o_no:"如果不需要，送上時告訴我們即可。我們會收回，不收費。",o_say:"這樣說就可以",
+"zh-Hant":{place:"東京新橋・1978年創業",n1:"菜單",n2:"宴會",n3:"店內",n4:"交通",
+ h_toku:"招牌菜",s_toku:"名物 · meibutsu",
+ t1:"本日生魚片 三種拼盤",t1d:"從當天的魚選三種，2人份。",t2:"西京味噌烤銀鱈",t2d:"以白味噌醃漬兩晚，再以炭火燒烤。",t3:"烤雞肉串 5串",t3d:"雞腿、蔥段雞腿、雞皮、雞肉丸、雞心。鹽味或醬汁。",
  h_menu:"菜單",s_menu:"品書き · shinagaki",menu_lede:"所有餐點都標有價格與份量。",
  c1:"生魚片",c2:"燒烤",c3:"炸物",c4:"單品",c5:"收尾主食",c6:"飲料",
  i1:"本日生魚片 三種拼盤",i1q:"2人份",i2:"本日生魚片 五種拼盤",i2q:"3〜4人份",i3:"鮪魚赤身",i4:"醋漬鯖魚",i4q:"以米醋醃漬",i5:"章魚塊",
  i6:"西京味噌烤銀鱈",i6q:"以白味噌醃漬後燒烤",i7:"烤花魚",i7q:"足夠2人分食",i8:"烤竹筴魚",i9:"烤雞肉串 5串",i9q:"鹽味或醬汁",i10:"雞肉丸串",i10q:"1串",i11:"烤厚炸豆腐",
  i12:"日式炸雞",i12q:"5塊",i13:"炸蝦天婦羅",i13q:"2尾",i14:"炸薯條",
  i15:"冷豆腐",i16:"毛豆",i17:"醃漬物拼盤",i18:"高湯玉子燒",i19:"馬鈴薯燉豬肉",i20:"燉豬內臟",
- pork:"豬肉",pork2:"豬肉",pork3:"豬肉",
- i21:"烤飯糰",i21q:"2個",i22:"鯛魚茶泡飯",i23:"日式炒麵",
+ pork:"豬肉",pork2:"豬肉",pork3:"豬肉",i21:"烤飯糰",i21q:"2個",i22:"鯛魚茶泡飯",i23:"日式炒麵",
  d1:"生啤酒（中杯）",d2:"瓶裝啤酒",d3:"威士忌蘇打（Highball）",d4:"檸檬沙瓦／烏龍燒酒",d5:"燒酎（地瓜・大麥）一杯",d6:"日本酒 一合（180ml）",d6q:"15種",d7:"梅酒",d8:"烏龍茶・綠茶",d9:"無酒精啤酒",
- cap_sashimi:"本日生魚片 三種拼盤（2人份）¥1,800",cap_yakiba:"燒烤類皆以炭火燒烤。",cap_sake:"日本酒共15種，以一合（180ml）起供應。",
- h_nomi:"喝到飽",s_nomi:"飲み放題 · nomihōdai",nomi_big:"2小時 ¥2,200",
- nomi1:"2小時內，上列飲料可無限點。",nomi2:"餐點另計。",nomi3:"2人起，同桌需全員一起參加。",nomi4:"結束前30分鐘為最後點單。",
- h_how:"點餐與結帳方式",s_how:"頼み方 · tanomikata",
- w1:"不必一次點完。",w1n:"先點2〜3道，不夠再加點。這是一般的點法。",
- w2:"每盤約1〜2人分享。",w2n:"三種生魚片拼盤為2人份。",
- w3:"需要服務時，舉手說「すみません（sumimasen）」。",w3n:"桌上沒有服務鈴。",
- w4:"在座位上一起結帳。",w4n:"不需要到收銀台排隊。可使用現金、信用卡、PayPay。",
- h_diet:"有飲食禁忌的客人",s_diet:"アレルギー · arerugī",
- f1:"高湯以鰹魚（魚類）熬製。",f2:"幾乎無法提供素食或純素餐點，敬請見諒。",f3:"含豬肉的餐點標有「豬肉」。",f4:"如有過敏，請在點餐時告知。",
+ menu_note:"入座時會送上小菜（お通し）¥450。價格皆含稅，不收服務費。",
+ h_party:"宴會套餐",s_party:"宴会 · enkai",party_lede:"兩種套餐皆含2小時喝到飽。4人起，請於前一天前預約。",
+ k1:"竹套餐",per:"每人",per2:"每人",per3:"每人",k1n:"料理6道＋2小時喝到飽",k1l:"毛豆／生魚片三種拼盤／日式炸雞／烤雞肉串／高湯玉子燒／烤飯糰",
+ k2:"松套餐",k2n:"料理8道＋2小時喝到飽",k2l:"毛豆／生魚片五種拼盤／西京味噌烤銀鱈／烤雞肉串／炸蝦天婦羅／燉豬內臟／高湯玉子燒／鯛魚茶泡飯",
+ k3:"只點喝到飽",k3n:"2小時，餐點從菜單自由點。2人起。",party_note:"16〜24人可包場，請來電洽詢。",
+ h_in:"店內",s_in:"店内 · tennai",cap_counter:"吧台8席，歡迎一個人來。",cap_table:"4人桌4張，併桌最多16人。",cap_sake:"日本酒共15種，以一合（180ml）起供應。",
+ h_faq:"初次光臨",s_faq:"はじめて · hajimete",
+ q1:"需要訂位嗎？",a1:"3人以內可直接來店。4人以上或宴會套餐請來電預約。",
+ q2:"可以用哪些付款方式？",a2:"現金、信用卡、PayPay。在座位上一起結帳。",
+ q3:"一開始送上的小菜是什麼？",a3:"這叫「お通し」，¥450。日本居酒屋以它代替座位費。",
+ q4:"可以吸菸嗎？",a4:"全店禁菸。",
+ q5:"我有過敏或飲食禁忌。",a5:"請在點餐時告知。高湯使用鰹魚（魚類）。含豬肉的餐點標有「豬肉」。素食選擇不多。",
+ q6:"要點多少才好？",a6:"每盤約1〜2人分享。建議先點2〜3道，不夠再加。",
  h_info:"營業時間與交通",s_info:"営業時間 · eigyō jikan",
- r1:"營業",r1v:"17:00–23:30（餐點最後點單 23:00、飲料 23:15）",r2:"公休",r2v:"週日・國定假日",
- r3:"座位",r3v:"吧台8席・桌位4桌（共24席）。不需脫鞋。",r4:"訂位",r4v:"3人以內可直接來店。4人以上請先電話訂位。",
- r5:"電話",r5v:"+81 3-XXXX-XXXX（虛構號碼）",r6:"吸菸",r6v:"全店禁菸，不提供菸灰缸。",
- r7:"地址",r7v:"東京都港區新橋3丁目（虛構地址）",
- acc_h:"從車站",a1:"JR 新橋站（烏森口）",a2:"都營淺草線 新橋站（A1出口）",a3:"東京Metro銀座線 新橋站（8號出口）",
- a4:"從羽田機場",a4v:"搭京急線直達新橋，約25分鐘",
- cta_map:"在 Google 地圖查看",cap_counter:"吧台8席，歡迎一個人來。",
+ r1:"營業",r1v:"17:00–23:30（餐點最後點單 23:00、飲料 23:15）",r2:"公休",r2v:"週日・國定假日",r3:"座位",r3v:"吧台8席・桌位4桌（共24席）",
+ r5:"電話",r5v:"+81 3-XXXX-XXXX（虛構號碼）",r7:"地址",r7v:"東京都港區新橋3丁目（虛構地址）",
+ acc_h:"從車站",a1s:"JR 新橋站（烏森口）",a2s:"都營淺草線 新橋站（A1出口）",a3s:"東京Metro銀座線 新橋站（8號出口）",a4s:"從羽田機場",a4v:"搭京急線直達新橋，約25分鐘",
+ cta_map:"在 Google 地圖開啟",dock1:"電話訂位",dock2:"地圖",
  demo:"範例",foot:"這是 yama × yama. 製作的多語言網頁範例。「居酒屋 大松」為虛構店家，與任何實際店鋪無關。價格、營業時間、電話與地址皆為虛構。",
- walk:"步行{n}分鐘",
- s_open:"東京現在 {t}，營業中。",s_before:"東京現在 {t}，17:00 開始營業。",s_after:"東京現在 {t}，今天已打烊。",s_sun:"東京現在 {t}，今天週日公休。"},
+ walk:"步行{n}分鐘",s_open:"東京現在 {t}，營業中。",s_before:"東京現在 {t}，17:00 開始營業。",s_after:"東京現在 {t}，今天已打烊。",s_sun:"東京現在 {t}，今天週日公休。"},
 
-"zh-Hans":{place:"东京新桥・1978年创业",
- h_bill:"结账",s_bill:"お勘定 · okanjō",bill_lede:"先把费用说清楚。",
- b1:"小菜（お通し）",b1_tag:"可以拒绝",b1_n:"拒绝也不收座位费。",
- b2:"座位费",b3:"服务费",b4:"时价菜品",none:"无",none2:"无",none3:"无",
- b4_n:"所有菜品都标有价格。",b5:"每人预算",b5_v:"约 ¥4,500",b5_n:"小菜＋3〜4道菜＋2〜3杯饮品",
- tax:"价格均含税。",
- h_oto:"小菜（お通し）",s_oto:"お通し · otōshi",cap_oto:"本月小菜：炖萝卜干丝",
- o_title:"点餐前，会先上一小碟。",
- o_body:"入座后会马上送上一小碟，这就是「お通し」，价格 ¥450。日本居酒屋习惯用这道小菜代替座位费。",
- o_no:"如果不需要，上菜时告诉我们即可。我们会撤下，不收费。",o_say:"这样说就可以",
+"zh-Hans":{place:"东京新桥・1978年创业",n1:"菜单",n2:"宴会",n3:"店内",n4:"交通",
+ h_toku:"招牌菜",s_toku:"名物 · meibutsu",
+ t1:"今日生鱼片 三种拼盘",t1d:"从当天的鱼里选三种，2人份。",t2:"西京味噌烤银鳕",t2d:"用白味噌腌两晚，再用炭火烤。",t3:"烤鸡肉串 5串",t3d:"鸡腿、葱段鸡腿、鸡皮、鸡肉丸、鸡心。盐味或酱汁。",
  h_menu:"菜单",s_menu:"品書き · shinagaki",menu_lede:"所有菜品都标有价格和分量。",
  c1:"生鱼片",c2:"烧烤",c3:"炸物",c4:"单品",c5:"收尾主食",c6:"饮品",
  i1:"今日生鱼片 三种拼盘",i1q:"2人份",i2:"今日生鱼片 五种拼盘",i2q:"3〜4人份",i3:"金枪鱼赤身",i4:"醋腌鲭鱼",i4q:"用米醋腌制",i5:"章鱼块",
  i6:"西京味噌烤银鳕",i6q:"用白味噌腌制后烤",i7:"烤花鱼",i7q:"够2人分着吃",i8:"烤竹荚鱼",i9:"烤鸡肉串 5串",i9q:"盐味或酱汁",i10:"鸡肉丸串",i10q:"1串",i11:"烤厚炸豆腐",
  i12:"日式炸鸡",i12q:"5块",i13:"炸虾天妇罗",i13q:"2只",i14:"炸薯条",
  i15:"冷豆腐",i16:"毛豆",i17:"腌菜拼盘",i18:"高汤玉子烧",i19:"土豆炖猪肉",i20:"炖猪杂",
- pork:"猪肉",pork2:"猪肉",pork3:"猪肉",
- i21:"烤饭团",i21q:"2个",i22:"鲷鱼茶泡饭",i23:"日式炒面",
+ pork:"猪肉",pork2:"猪肉",pork3:"猪肉",i21:"烤饭团",i21q:"2个",i22:"鲷鱼茶泡饭",i23:"日式炒面",
  d1:"生啤酒（中杯）",d2:"瓶装啤酒",d3:"威士忌苏打（Highball）",d4:"柠檬沙瓦／乌龙烧酒",d5:"烧酒（红薯・大麦）一杯",d6:"日本酒 一合（180ml）",d6q:"15种",d7:"梅酒",d8:"乌龙茶・绿茶",d9:"无醇啤酒",
- cap_sashimi:"今日生鱼片 三种拼盘（2人份）¥1,800",cap_yakiba:"烧烤类都用炭火烤制。",cap_sake:"日本酒共15种，一合（180ml）起供应。",
- h_nomi:"畅饮",s_nomi:"飲み放題 · nomihōdai",nomi_big:"2小时 ¥2,200",
- nomi1:"2小时内，上列饮品随便点。",nomi2:"菜品另计。",nomi3:"2人起，同桌需全员参加。",nomi4:"结束前30分钟为最后点单。",
- h_how:"点餐与结账方式",s_how:"頼み方 · tanomikata",
- w1:"不用一次点完。",w1n:"先点2〜3道，不够再加。这是常见的点法。",
- w2:"每盘大约1〜2人分享。",w2n:"三种生鱼片拼盘为2人份。",
- w3:"需要服务时，举手说「すみません（sumimasen）」。",w3n:"桌上没有服务铃。",
- w4:"在座位上统一结账。",w4n:"不用去收银台排队。可使用现金、信用卡、PayPay。",
- h_diet:"有饮食禁忌的客人",s_diet:"アレルギー · arerugī",
- f1:"高汤用鲣鱼（鱼类）熬制。",f2:"几乎无法提供素食或纯素菜品，敬请谅解。",f3:"含猪肉的菜品标有「猪肉」。",f4:"如有过敏，请在点餐时告知。",
+ menu_note:"入座时会送上小菜（お通し）¥450。价格均含税，不收服务费。",
+ h_party:"宴会套餐",s_party:"宴会 · enkai",party_lede:"两种套餐均含2小时畅饮。4人起，请提前一天预约。",
+ k1:"竹套餐",per:"每人",per2:"每人",per3:"每人",k1n:"菜品6道＋2小时畅饮",k1l:"毛豆／生鱼片三种拼盘／日式炸鸡／烤鸡肉串／高汤玉子烧／烤饭团",
+ k2:"松套餐",k2n:"菜品8道＋2小时畅饮",k2l:"毛豆／生鱼片五种拼盘／西京味噌烤银鳕／烤鸡肉串／炸虾天妇罗／炖猪杂／高汤玉子烧／鲷鱼茶泡饭",
+ k3:"只点畅饮",k3n:"2小时，菜品从菜单随意点。2人起。",party_note:"16〜24人可包场，请来电咨询。",
+ h_in:"店内",s_in:"店内 · tennai",cap_counter:"吧台8席，欢迎一个人来。",cap_table:"4人桌4张，拼桌最多16人。",cap_sake:"日本酒共15种，一合（180ml）起供应。",
+ h_faq:"初次光临",s_faq:"はじめて · hajimete",
+ q1:"需要预约吗？",a1:"3人以内可直接来店。4人以上或宴会套餐请来电预约。",
+ q2:"可以用哪些付款方式？",a2:"现金、信用卡、PayPay。在座位上统一结账。",
+ q3:"一开始上的小菜是什么？",a3:"这叫「お通し」，¥450。日本居酒屋用它代替座位费。",
+ q4:"可以吸烟吗？",a4:"全店禁烟。",
+ q5:"我有过敏或饮食禁忌。",a5:"请在点餐时告知。高汤使用鲣鱼（鱼类）。含猪肉的菜品标有「猪肉」。素食选择不多。",
+ q6:"要点多少才好？",a6:"每盘约1〜2人分享。建议先点2〜3道，不够再加。",
  h_info:"营业时间与交通",s_info:"営業時間 · eigyō jikan",
- r1:"营业",r1v:"17:00–23:30（菜品最后点单 23:00、饮品 23:15）",r2:"休息",r2v:"周日・法定节假日",
- r3:"座位",r3v:"吧台8席・桌位4桌（共24席）。不用脱鞋。",r4:"预约",r4v:"3人以内可直接来店。4人以上请先电话预约。",
- r5:"电话",r5v:"+81 3-XXXX-XXXX（虚构号码）",r6:"吸烟",r6v:"全店禁烟，不提供烟灰缸。",
- r7:"地址",r7v:"东京都港区新桥3丁目（虚构地址）",
- acc_h:"从车站",a1:"JR 新桥站（乌森口）",a2:"都营浅草线 新桥站（A1出口）",a3:"东京Metro银座线 新桥站（8号出口）",
- a4:"从羽田机场",a4v:"乘京急线直达新桥，约25分钟",
- cta_map:"在 Google 地图查看",cap_counter:"吧台8席，欢迎一个人来。",
+ r1:"营业",r1v:"17:00–23:30（菜品最后点单 23:00、饮品 23:15）",r2:"休息",r2v:"周日・法定节假日",r3:"座位",r3v:"吧台8席・桌位4桌（共24席）",
+ r5:"电话",r5v:"+81 3-XXXX-XXXX（虚构号码）",r7:"地址",r7v:"东京都港区新桥3丁目（虚构地址）",
+ acc_h:"从车站",a1s:"JR 新桥站（乌森口）",a2s:"都营浅草线 新桥站（A1出口）",a3s:"东京Metro银座线 新桥站（8号出口）",a4s:"从羽田机场",a4v:"乘京急线直达新桥，约25分钟",
+ cta_map:"在 Google 地图打开",dock1:"电话预约",dock2:"地图",
  demo:"示例",foot:"这是 yama × yama. 制作的多语言网页示例。「居酒屋 大松」为虚构店铺，与任何真实店铺无关。价格、营业时间、电话和地址均为虚构。",
- walk:"步行{n}分钟",
- s_open:"东京现在 {t}，营业中。",s_before:"东京现在 {t}，17:00 开始营业。",s_after:"东京现在 {t}，今天已打烊。",s_sun:"东京现在 {t}，今天周日休息。"},
+ walk:"步行{n}分钟",s_open:"东京现在 {t}，营业中。",s_before:"东京现在 {t}，17:00 开始营业。",s_after:"东京现在 {t}，今天已打烊。",s_sun:"东京现在 {t}，今天周日休息。"},
 
-ko:{place:"도쿄 신바시 · 1978년부터",
- h_bill:"계산",s_bill:"お勘定 · okanjō",bill_lede:"먼저 돈 이야기부터 하겠습니다.",
- b1:"오토시 (기본 안주)",b1_tag:"거절할 수 있습니다",b1_n:"거절해도 자릿세는 없습니다.",
- b2:"자릿세",b3:"봉사료",b4:"시가 메뉴",none:"없음",none2:"없음",none3:"없음",
- b4_n:"모든 요리에 가격이 적혀 있습니다.",b5:"1인 예산",b5_v:"약 ¥4,500",b5_n:"오토시 + 요리 3~4개 + 음료 2~3잔",
- tax:"모든 가격은 세금 포함입니다.",
- h_oto:"오토시",s_oto:"お通し · otōshi",cap_oto:"이달의 오토시: 무말랭이 조림",
- o_title:"주문하기 전에 작은 접시가 먼저 나옵니다.",
- o_body:"자리에 앉으면 바로 작은 접시 하나를 드립니다. 이것이 '오토시'이고 ¥450입니다. 일본 이자카야에서는 자릿세 대신 이 접시를 내는 관습이 있습니다.",
- o_no:"필요 없으시면 나왔을 때 말씀해 주세요. 바로 치우고 요금은 받지 않습니다.",o_say:"이렇게 말하면 됩니다",
+ko:{place:"도쿄 신바시 · 1978년부터",n1:"메뉴",n2:"연회",n3:"가게 안",n4:"오시는 길",
+ h_toku:"대표 메뉴",s_toku:"名物 · meibutsu",
+ t1:"오늘의 회 3종 모둠",t1d:"그날의 생선 중 3종. 2인분입니다.",t2:"은대구 사이쿄 된장구이",t2d:"흰 된장에 이틀 밤 재운 뒤 숯불로 굽습니다.",t3:"야키토리 5꼬치",t3d:"다리살·파 꼬치·껍질·쓰쿠네·염통. 소금 또는 소스.",
  h_menu:"메뉴",s_menu:"品書き · shinagaki",menu_lede:"모든 요리에 가격과 양을 적어 두었습니다.",
  c1:"회",c2:"구이",c3:"튀김",c4:"단품 요리",c5:"마무리",c6:"음료",
  i1:"오늘의 회 3종 모둠",i1q:"2인분",i2:"오늘의 회 5종 모둠",i2q:"3~4인분",i3:"참치 붉은살",i4:"초절임 고등어",i4q:"쌀식초에 절임",i5:"문어",
  i6:"은대구 사이쿄 된장구이",i6q:"흰 된장에 재워 구움",i7:"임연수 구이",i7q:"2명이 나눠 먹을 크기",i8:"전갱이 구이",i9:"야키토리 5꼬치",i9q:"소금 또는 소스",i10:"쓰쿠네 (닭고기 완자)",i10q:"1꼬치",i11:"두툼한 유부 구이",
  i12:"닭튀김 (가라아게)",i12q:"5조각",i13:"새우튀김",i13q:"2마리",i14:"감자튀김",
  i15:"차가운 두부",i16:"풋콩 (에다마메)",i17:"절임 모둠",i18:"다시마키 계란말이",i19:"돼지고기 감자조림",i20:"돼지 곱창 조림",
- pork:"돼지고기",pork2:"돼지고기",pork3:"돼지고기",
- i21:"구운 주먹밥",i21q:"2개",i22:"도미 오차즈케",i23:"야키소바",
+ pork:"돼지고기",pork2:"돼지고기",pork3:"돼지고기",i21:"구운 주먹밥",i21q:"2개",i22:"도미 오차즈케",i23:"야키소바",
  d1:"생맥주 (중)",d2:"병맥주",d3:"하이볼",d4:"레몬사와 / 우롱하이",d5:"소주 (고구마·보리) 한 잔",d6:"사케 1홉 (180ml)",d6q:"15종",d7:"매실주",d8:"우롱차·녹차",d9:"무알코올 맥주",
- cap_sashimi:"오늘의 회 3종 모둠 (2인분) ¥1,800",cap_yakiba:"구이는 모두 숯불로 굽습니다.",cap_sake:"사케 15종, 1홉(180ml)부터 드립니다.",
- h_nomi:"노미호다이 (무제한 음료)",s_nomi:"飲み放題 · nomihōdai",nomi_big:"2시간 ¥2,200",
- nomi1:"위 음료를 2시간 동안 무제한으로 주문할 수 있습니다.",nomi2:"음식은 별도 요금입니다.",nomi3:"2인부터, 같은 테이블 모두 함께 이용해 주세요.",nomi4:"종료 30분 전이 마지막 주문입니다.",
- h_how:"주문과 계산 방법",s_how:"頼み方 · tanomikata",
- w1:"한 번에 다 주문하지 않아도 됩니다.",w1n:"2~3가지씩 주문하고, 부족하면 추가하세요. 그게 보통 방식입니다.",
- w2:"한 접시는 1~2명이 나눠 먹는 양입니다.",w2n:"회 3종 모둠은 2인분입니다.",
- w3:"직원을 부를 때는 손을 들고 “스미마센”이라고 하세요.",w3n:"테이블에 호출 벨은 없습니다.",
- w4:"계산은 자리에서 한 번에.",w4n:"계산대에 줄 설 필요 없습니다. 현금·신용카드·PayPay 사용 가능합니다.",
- h_diet:"못 드시는 음식이 있는 분께",s_diet:"アレルギー · arerugī",
- f1:"다시(육수)에 가다랑어(생선)를 사용합니다.",f2:"채식·비건 요리는 거의 제공할 수 없습니다. 죄송합니다.",f3:"돼지고기가 들어간 요리에는 “돼지고기”라고 적혀 있습니다.",f4:"알레르기는 주문할 때 알려 주세요.",
+ menu_note:"자리에 앉으면 기본 안주(오토시) ¥450이 나옵니다. 모든 가격은 세금 포함, 봉사료는 없습니다.",
+ h_party:"연회 코스",s_party:"宴会 · enkai",party_lede:"두 코스 모두 2시간 무제한 음료 포함. 4명부터, 전날까지 예약해 주세요.",
+ k1:"다케(대나무) 코스",per:"1인",per2:"1인",per3:"1인",k1n:"요리 6가지 + 2시간 무제한 음료",k1l:"풋콩 / 회 3종 모둠 / 닭튀김 / 야키토리 / 계란말이 / 구운 주먹밥",
+ k2:"마쓰(소나무) 코스",k2n:"요리 8가지 + 2시간 무제한 음료",k2l:"풋콩 / 회 5종 모둠 / 은대구 된장구이 / 야키토리 / 새우튀김 / 돼지 곱창 조림 / 계란말이 / 도미 오차즈케",
+ k3:"무제한 음료만",k3n:"2시간. 음식은 메뉴에서 자유롭게. 2명부터.",party_note:"16~24명 대관 가능합니다. 전화로 문의해 주세요.",
+ h_in:"가게 안",s_in:"店内 · tennai",cap_counter:"카운터 8석. 혼자 오셔도 괜찮습니다.",cap_table:"4인 테이블 4개. 붙이면 16명까지.",cap_sake:"사케 15종, 1홉(180ml)부터 드립니다.",
+ h_faq:"처음 오시는 분께",s_faq:"はじめて · hajimete",
+ q1:"예약이 필요한가요?",a1:"3명까지는 예약 없이 오세요. 4명 이상이나 연회 코스는 전화로 예약해 주세요.",
+ q2:"결제 방법은?",a2:"현금·신용카드·PayPay. 계산은 자리에서 한 번에 합니다.",
+ q3:"처음 나오는 작은 접시는 뭔가요?",a3:"'오토시'라고 하며 ¥450입니다. 일본 이자카야에서 자릿세 대신 내는 것입니다.",
+ q4:"담배를 피울 수 있나요?",a4:"가게 안은 전석 금연입니다.",
+ q5:"알레르기나 못 먹는 음식이 있어요.",a5:"주문할 때 알려 주세요. 다시에는 가다랑어(생선)를 씁니다. 돼지고기가 들어간 요리에는 “돼지고기” 표시가 있습니다. 채식 메뉴는 많지 않습니다.",
+ q6:"얼마나 주문하면 될까요?",a6:"한 접시는 1~2명이 나눠 먹는 양입니다. 2~3가지씩 주문하고 부족하면 추가하세요.",
  h_info:"영업시간과 위치",s_info:"営業時間 · eigyō jikan",
- r1:"영업",r1v:"17:00–23:30 (음식 주문 23:00, 음료 23:15까지)",r2:"휴무",r2v:"일요일·공휴일",
- r3:"좌석",r3v:"카운터 8석·테이블 4개 (총 24석). 신발은 벗지 않습니다.",r4:"예약",r4v:"3명까지는 예약 없이 오세요. 4명 이상은 전화로 예약해 주세요.",
- r5:"전화",r5v:"+81 3-XXXX-XXXX (가상의 번호)",r6:"흡연",r6v:"전석 금연. 재떨이는 없습니다.",
- r7:"주소",r7v:"도쿄도 미나토구 신바시 3초메 (가상의 주소)",
- acc_h:"역에서",a1:"JR 신바시역 (가라스모리 출구)",a2:"도에이 아사쿠사선 신바시역 (A1 출구)",a3:"도쿄메트로 긴자선 신바시역 (8번 출구)",
- a4:"하네다 공항에서",a4v:"게이큐선으로 환승 없이 신바시까지 약 25분",
- cta_map:"Google 지도에서 보기",cap_counter:"카운터 8석. 혼자 오셔도 괜찮습니다.",
+ r1:"영업",r1v:"17:00–23:30 (음식 주문 23:00, 음료 23:15까지)",r2:"휴무",r2v:"일요일·공휴일",r3:"좌석",r3v:"카운터 8석·테이블 4개 (총 24석)",
+ r5:"전화",r5v:"+81 3-XXXX-XXXX (가상의 번호)",r7:"주소",r7v:"도쿄도 미나토구 신바시 3초메 (가상의 주소)",
+ acc_h:"역에서",a1s:"JR 신바시역 (가라스모리 출구)",a2s:"도에이 아사쿠사선 신바시역 (A1 출구)",a3s:"도쿄메트로 긴자선 신바시역 (8번 출구)",a4s:"하네다 공항에서",a4v:"게이큐선으로 환승 없이 신바시까지 약 25분",
+ cta_map:"Google 지도에서 열기",dock1:"전화 예약",dock2:"지도",
  demo:"견본",foot:"이 페이지는 yama × yama.가 만든 다국어 페이지 견본입니다. '이자카야 다이마쓰'는 가상의 가게로, 실제 가게와는 관계없습니다. 가격·영업시간·전화번호·주소도 모두 가상입니다.",
- walk:"도보 {n}분",
- s_open:"지금 도쿄는 {t}. 영업 중입니다.",s_before:"지금 도쿄는 {t}. 17:00에 엽니다.",s_after:"지금 도쿄는 {t}. 오늘 영업은 끝났습니다.",s_sun:"지금 도쿄는 {t}. 일요일은 쉽니다."}
+ walk:"도보 {n}분",s_open:"지금 도쿄는 {t}. 영업 중입니다.",s_before:"지금 도쿄는 {t}. 17:00에 엽니다.",s_after:"지금 도쿄는 {t}. 오늘 영업은 끝났습니다.",s_sun:"지금 도쿄는 {t}. 일요일은 쉽니다."}
 };
-/* 日本語：HTMLから読み取り、文型だけここに足す */
-const JA={walk:"徒歩{n}分",
- s_open:"いま東京は{t}。開いています。",s_before:"いま東京は{t}。17:00に開きます。",s_after:"いま東京は{t}。今日はもう閉めました。",s_sun:"いま東京は{t}。日曜はお休みです。"};
+const JA={walk:"徒歩{n}分",s_open:"いま東京は{t}。開いています。",s_before:"いま東京は{t}。17:00に開きます。",s_after:"いま東京は{t}。今日はもう閉めました。",s_sun:"いま東京は{t}。日曜はお休みです。"};
 document.querySelectorAll("[data-k]").forEach(n=>{ if(!(n.dataset.k in JA)) JA[n.dataset.k]=n.textContent; });
 T.ja=JA;
 
-/* 東京の時刻で、いま開いているか（旅行者は海外から見ていることが多い） */
 function tokyoNow(){
   const p=Object.fromEntries(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",weekday:"short",hour:"2-digit",minute:"2-digit",hourCycle:"h23"})
     .formatToParts(new Date()).map(x=>[x.type,x.value]));
@@ -629,25 +546,24 @@ function status(t){
   const n=tokyoNow(), min=n.h*60+n.m, key = n.wd==="Sun" ? "s_sun" : (min<17*60 ? "s_before" : (min<23*60+30 ? "s_open" : "s_after"));
   return {open:key==="s_open", text:t[key].replace("{t}",n.t)};
 }
-
 function apply(code){
   const t=T[code]||T.ja;
   document.querySelectorAll("[data-k]").forEach(n=>{ const v=t[n.dataset.k]; if(v!=null) n.textContent=v; });
   document.querySelectorAll("[data-walk]").forEach(n=>{ n.textContent=t.walk.replace("{n}",n.dataset.walk); });
-  /* 品書きの分類：日本語のときは英字、外国語のときは日本語の名前を小さく添える */
   document.querySelectorAll(".cat-h").forEach(h=>{
     const sub=h.querySelector("span"), k=h.querySelector("b").dataset.k;
     if(!sub.dataset.en) sub.dataset.en=sub.textContent;
     sub.textContent = code==="ja" ? sub.dataset.en : JA[k];
   });
+  /* 地図の表記も選んだ言語に */
+  const fr=document.querySelector(".map iframe"), hl={ja:"ja",en:"en","zh-Hant":"zh-TW","zh-Hans":"zh-CN",ko:"ko"}[code];
+  const u=new URL(fr.src); if(u.searchParams.get("hl")!==hl){ u.searchParams.set("hl",hl); fr.src=u.toString(); }
   const s=status(t), box=document.getElementById("now");
   box.dataset.open=String(s.open); document.getElementById("now-t").textContent=s.text;
   document.documentElement.lang=code;
   document.querySelectorAll("#lb button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.lang===code)));
   try{ localStorage.setItem("daimatsu-lang",code); }catch(e){}
 }
-
-/* 言語の初期値：URLの ?lang= → 前回選んだもの → ブラウザの言語 */
 function firstLang(){
   const ok=LANGS.map(l=>l[0]);
   const q=new URLSearchParams(location.search).get("lang"); if(ok.includes(q)) return q;
@@ -661,15 +577,12 @@ function firstLang(){
   }
   return "en";
 }
-
 const lb=document.getElementById("lb");
 for(const [code,label] of LANGS){
   const b=document.createElement("button"); b.type="button"; b.dataset.lang=code; b.textContent=label;
   b.addEventListener("click",()=>apply(code)); lb.appendChild(b);
 }
 apply(firstLang());
-
-/* 写真がまだ無い枠は、仮の表示を見せる */
 document.querySelectorAll(".ph img").forEach(i=>{
   const hide=()=>{ i.hidden=true; };
   if(i.complete && i.naturalWidth===0) hide(); else i.addEventListener("error",hide);
