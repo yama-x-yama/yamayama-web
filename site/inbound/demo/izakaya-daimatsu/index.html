@@ -634,6 +634,12 @@ function apply(code){
   const t=T[code]||T.ja;
   document.querySelectorAll("[data-k]").forEach(n=>{ const v=t[n.dataset.k]; if(v!=null) n.textContent=v; });
   document.querySelectorAll("[data-walk]").forEach(n=>{ n.textContent=t.walk.replace("{n}",n.dataset.walk); });
+  /* 品書きの分類：日本語のときは英字、外国語のときは日本語の名前を小さく添える */
+  document.querySelectorAll(".cat-h").forEach(h=>{
+    const sub=h.querySelector("span"), k=h.querySelector("b").dataset.k;
+    if(!sub.dataset.en) sub.dataset.en=sub.textContent;
+    sub.textContent = code==="ja" ? sub.dataset.en : JA[k];
+  });
   const s=status(t), box=document.getElementById("now");
   box.dataset.open=String(s.open); document.getElementById("now-t").textContent=s.text;
   document.documentElement.lang=code;
